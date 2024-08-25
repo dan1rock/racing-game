@@ -83,10 +83,10 @@ public class Car : MonoBehaviour
     {
         Ray ray = new()
         {
-            origin = wheel.position,
+            origin = wheel.position + wheel.up * 0.5f,
             direction = -wheel.up
         };
-        bool hit = Physics.Raycast(ray, out RaycastHit wheelRay, .5f, layerMask);
+        bool hit = Physics.Raycast(ray, out RaycastHit wheelRay, 1f, layerMask);
 
         if (hit)
         {
@@ -95,7 +95,7 @@ public class Car : MonoBehaviour
             Vector3 springDir = wheel.up;
             Vector3 wheelVelocity = _rb.GetPointVelocity(wheel.position);
 
-            float offset = suspensionRest - wheelRay.distance;
+            float offset = suspensionRest - wheelRay.distance + 0.5f;
             float velocity = Vector3.Dot(springDir, wheelVelocity);
             float force = offset * springStrength - velocity * springDamper;
             
@@ -122,6 +122,14 @@ public class Car : MonoBehaviour
             float availableTorque = torque * _acceleration * speedFactor;
             
             _rb.AddForceAtPosition(accelerationDir * availableTorque, wheel.position);
+            
+            // Drag
+
+            float drag = Mathf.Abs(carSpeed);
+            if (drag > topSpeed * 0.1f) drag = topSpeed * 0.1f;
+            drag *= Mathf.Sign(carSpeed);
+            drag *= 0.2f;
+            _rb.AddForceAtPosition(-accelerationDir * drag, wheel.position);
         }
     }
 }

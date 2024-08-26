@@ -1,4 +1,5 @@
 using System;
+using Unity.Collections;
 using UnityEngine;
 
 public class Car : MonoBehaviour
@@ -16,12 +17,17 @@ public class Car : MonoBehaviour
     [Header("Steering")] 
     [SerializeField] private float tireGrip = 0.8f;
     [SerializeField] private float tireMass = 1f;
+    [SerializeField] private AnimationCurve steeringCurve;
+    [SerializeField] private AnimationCurve gripCurve;
 
     [Header("Acceleration")] 
     [SerializeField] private float torque = 1f;
     [SerializeField] private float topSpeed = 2f;
     
     [SerializeField] private LayerMask layerMask;
+
+    [SerializeField] [ReadOnly] private float speed;
+    [SerializeField] [ReadOnly] private float relativeSpeed;
 
     private float _acceleration = 0f;
         
@@ -61,6 +67,8 @@ public class Car : MonoBehaviour
         {
             steering += 25f;
         }
+
+        steering *= steeringCurve.Evaluate(relativeSpeed);
         
         tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
         tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);
@@ -88,6 +96,11 @@ public class Car : MonoBehaviour
         };
         bool hit = Physics.Raycast(ray, out RaycastHit wheelRay, 1f, layerMask);
 
+        float carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
+        speed = Mathf.Abs(carSpeed);
+        float normalizedSpeed = Mathf.Clamp01(speed / topSpeed);
+        relativeSpeed = normalizedSpeed;
+        
         if (hit)
         {
             // Suspension
@@ -106,7 +119,7 @@ public class Car : MonoBehaviour
             Vector3 steeringDir = wheel.right;
 
             float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
-            float desiredVelocityChange = -steeringVelocity * tireGrip;
+            float desiredVelocityChange = -steeringVelocity * tireGrip * gripCurve.Evaluate(relativeSpeed);
             float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;
             
             _rb.AddForceAtPosition(steeringDir * (tireMass * desiredAcceleration), wheel.position);
@@ -114,9 +127,6 @@ public class Car : MonoBehaviour
             // Acceleration
 
             Vector3 accelerationDir = wheel.forward;
-
-            float carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
-            float normalizedSpeed = Mathf.Clamp01(Mathf.Abs(carSpeed) / topSpeed);
 
             float speedFactor = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration) ? 1f - normalizedSpeed : 1f;
             float availableTorque = torque * _acceleration * speedFactor;

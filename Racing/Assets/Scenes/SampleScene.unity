@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19709001, y: -0.000000016868885, z: 0.0000000033912062, w: 0.9803854}
+  m_LocalRotation: {x: 0.19709, y: 0.000000016868885, z: -0.000000003391206, w: 0.9803854}
   m_LocalPosition: {x: 0, y: 5.69, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -714,7 +714,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -1348,7 +1348,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19709001, y: -0.000000016868885, z: 0.0000000033912062, w: 0.9803854}
+  m_LocalRotation: {x: 0.19709, y: 0.000000016868885, z: -0.000000003391206, w: 0.9803854}
   m_LocalPosition: {x: 0, y: 5.69, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1445,13 +1445,72 @@ MonoBehaviour:
   suspensionRest: 0.5
   springStrength: 30
   springDamper: 10
-  tireGrip: 0.5
+  tireGrip: 0.8
   tireMass: 0.05
+  steeringCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.2141688
+      outSlope: -2.2141688
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.13058652
+    - serializedVersion: 3
+      time: 1
+      value: 0.17132312
+      inSlope: -0.23557012
+      outSlope: -0.23557012
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14015257
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gripCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.014150981
+      outSlope: -0.014150981
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.16666663
+    - serializedVersion: 3
+      time: 0.54848266
+      value: 0.6554573
+      inSlope: -0.026382403
+      outSlope: -0.026382403
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.17702265
+      outWeight: 0.13233657
+    - serializedVersion: 3
+      time: 1
+      value: 0.4551887
+      inSlope: -0.5433953
+      outSlope: -0.5433953
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16078147
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   torque: 2
   topSpeed: 20
   layerMask:
     serializedVersion: 2
     m_Bits: 55
+  speed: 0
+  relativeSpeed: 0
 --- !u!54 &2091110692
 Rigidbody:
   m_ObjectHideFlags: 0

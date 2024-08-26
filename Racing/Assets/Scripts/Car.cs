@@ -2,6 +2,13 @@ using System;
 using Unity.Collections;
 using UnityEngine;
 
+public enum Drivetrain
+{
+    AWD,
+    RWD,
+    FWD
+}
+
 public class Car : MonoBehaviour
 {
     [SerializeField] private Transform tire_fr;
@@ -21,8 +28,10 @@ public class Car : MonoBehaviour
     [SerializeField] private AnimationCurve gripCurve;
 
     [Header("Acceleration")] 
+    [SerializeField] private Drivetrain drivetrain;
     [SerializeField] private float torque = 1f;
     [SerializeField] private float topSpeed = 2f;
+    [SerializeField] private AnimationCurve accelerationCurve;
     
     [SerializeField] private LayerMask layerMask;
 
@@ -81,13 +90,14 @@ public class Car : MonoBehaviour
 
     private void HandleCarPhysics()
     {
-        ProcessWheel(tire_fr);
-        ProcessWheel(tire_fl);
-        ProcessWheel(tire_rr);
-        ProcessWheel(tire_rl);
+        ProcessWheel(tire_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD);
+        ProcessWheel(tire_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD);
+
+        ProcessWheel(tire_rr, drivetrain is Drivetrain.RWD or Drivetrain.AWD);
+        ProcessWheel(tire_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD);
     }
 
-    private void ProcessWheel(Transform wheel)
+    private void ProcessWheel(Transform wheel, bool applyTorque)
     {
         Ray ray = new()
         {
@@ -127,11 +137,14 @@ public class Car : MonoBehaviour
             // Acceleration
 
             Vector3 accelerationDir = wheel.forward;
-
-            float speedFactor = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration) ? 1f - normalizedSpeed : 1f;
+            
+            float speedFactor = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration) ? accelerationCurve.Evaluate(normalizedSpeed) : 1f;
             float availableTorque = torque * _acceleration * speedFactor;
             
-            _rb.AddForceAtPosition(accelerationDir * availableTorque, wheel.position);
+            if (applyTorque)
+            {
+                _rb.AddForceAtPosition(accelerationDir * availableTorque, wheel.position);
+            }
             
             // Drag
 

@@ -1,6 +1,7 @@
 using System;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum Drivetrain
 {
@@ -39,7 +40,8 @@ public class Car : MonoBehaviour
     [SerializeField] private float tireGrip = 0.8f;
     [SerializeField] private float tireMass = 1f;
     [SerializeField] private AnimationCurve steeringCurve;
-    [SerializeField] private AnimationCurve gripCurve;
+    [SerializeField] private AnimationCurve gripSlipCurve;
+    [SerializeField] private AnimationCurve gripSpeedCurve;
 
     [Header("Acceleration")] 
     [SerializeField] private Drivetrain drivetrain;
@@ -148,9 +150,15 @@ public class Car : MonoBehaviour
             // Steering
 
             Vector3 steeringDir = tire.right;
+            
+            float slipAngle = Vector3.SignedAngle(tire.forward, wheelVelocity, tire.up);
+            slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
+            slipAngle = Mathf.Clamp01(slipAngle);
+            if (!applyTorque) slipAngle = 0f;
 
             float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
-            float desiredVelocityChange = -steeringVelocity * tireGrip * gripCurve.Evaluate(relativeSpeed);
+            float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
+            float desiredVelocityChange = -steeringVelocity * grip;
             float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;
             
             _rb.AddForceAtPosition(steeringDir * (tireMass * desiredAcceleration), tire.position);
@@ -160,7 +168,7 @@ public class Car : MonoBehaviour
             Vector3 accelerationDir = tire.forward;
             
             float speedFactor = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration) ? accelerationCurve.Evaluate(normalizedSpeed) : 1f;
-            float availableTorque = torque * _acceleration * speedFactor;
+            float availableTorque = torque * _acceleration * speedFactor * grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
             
             if (applyTorque)

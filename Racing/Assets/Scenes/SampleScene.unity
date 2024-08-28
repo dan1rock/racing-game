@@ -1573,27 +1573,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gripCurve:
+  gripSlipCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.33207557
-      outSlope: -0.33207557
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.078124985
-    - serializedVersion: 3
-      time: 1
-      value: 0.23112863
-      inSlope: -0.5433953
-      outSlope: -0.5433953
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16078147
-      outWeight: 0
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gripSpeedCurve:
+    serializedVersion: 2
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -2329,8 +2317,8 @@ MonoBehaviour:
   wheelOffset: -0.11
   suspensionLength: 0.5
   suspensionRest: 0.45
-  springStrength: 30
-  springDamper: 10
+  springStrength: 100
+  springDamper: 2
   tireGrip: 0.8
   tireMass: 0.05
   steeringCurve:
@@ -2357,32 +2345,56 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gripCurve:
+  gripSlipCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0041656494
+      value: 1
+      inSlope: -0.35497293
+      outSlope: -0.35497293
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.24583334
+    - serializedVersion: 3
+      time: 1
+      value: 0.2688675
+      inSlope: -0.7280995
+      outSlope: -0.7280995
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gripSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.33207557
-      outSlope: -0.33207557
-      tangentMode: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.078124985
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.23112863
-      inSlope: -0.5433953
-      outSlope: -0.5433953
-      tangentMode: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0.16078147
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  drivetrain: 0
-  torque: 10
+  drivetrain: 1
+  torque: 20
   topSpeed: 20
   accelerationCurve:
     serializedVersion: 2
@@ -2411,8 +2423,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 55
-  speed: 0
-  relativeSpeed: 0
+  speed: 0.012280038
+  relativeSpeed: 0.0006140019
 --- !u!4 &4803701803603286719
 Transform:
   m_ObjectHideFlags: 0

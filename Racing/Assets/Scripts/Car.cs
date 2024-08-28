@@ -37,6 +37,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float springDamper = 10f;
 
     [Header("Steering")] 
+    [SerializeField] private AnimationCurve smoothSteering;
     [SerializeField] private float tireGrip = 0.8f;
     [SerializeField] private float tireMass = 1f;
     [SerializeField] private AnimationCurve steeringCurve;
@@ -55,6 +56,7 @@ public class Car : MonoBehaviour
     [SerializeField] [ReadOnly] private float relativeSpeed;
 
     private float _acceleration = 0f;
+    private float _steering;
         
     private Rigidbody _rb;
 
@@ -86,20 +88,39 @@ public class Car : MonoBehaviour
             _acceleration -= 1f;
         }
 
-        float steering = 0f;
-        
         if (Input.GetKey(KeyCode.A))
         {
-            steering -= 25f;
+            _steering -= 1f * Time.deltaTime;
+
+            if (_steering > 0f) _steering -= 5f * Time.deltaTime;
         }
         
         if (Input.GetKey(KeyCode.D))
         {
-            steering += 25f;
+            _steering += 1f * Time.deltaTime;
+            
+            if (_steering < 0f) _steering += 5f * Time.deltaTime;
         }
 
-        steering *= steeringCurve.Evaluate(relativeSpeed);
-        
+        if (!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        {
+            float diff = Mathf.Sign(_steering) * 5f * Time.deltaTime;
+            if (Mathf.Abs(diff) > Mathf.Abs(_steering))
+            {
+                _steering = 0f;
+            }
+            else
+            {
+                _steering -= diff;
+            }
+        }
+
+        _steering = Mathf.Clamp(_steering, -1f, 1f);
+
+        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * 25f * Mathf.Sign(_steering);
+
+        steering *= steeringCurve.Evaluate(speed / 100f);
+
         tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
         tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);
     }
@@ -182,7 +203,7 @@ public class Car : MonoBehaviour
             // Drag
 
             float drag = Mathf.Abs(carSpeed);
-            if (drag > topSpeed * 0.1f) drag = topSpeed * 0.1f;
+            if (drag > 1f) drag = 1f;
             drag *= Mathf.Sign(carSpeed);
             drag *= 0.5f;
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);

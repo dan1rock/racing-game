@@ -1,7 +1,5 @@
-using System;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum Drivetrain
 {
@@ -49,11 +47,14 @@ public class Car : MonoBehaviour
     [SerializeField] private float torque = 1f;
     [SerializeField] private float topSpeed = 2f;
     [SerializeField] private AnimationCurve accelerationCurve;
+    [SerializeField] private bool useGripInAcceleration = true;
     
     [SerializeField] private LayerMask layerMask;
 
     [SerializeField] [ReadOnly] private float speed;
     [SerializeField] [ReadOnly] private float relativeSpeed;
+
+    [SerializeField] public bool playerControlled = false;
 
     private float _acceleration = 0f;
     private float _steering;
@@ -72,11 +73,23 @@ public class Car : MonoBehaviour
 
     private void Update()
     {
+        if (!playerControlled) return;
         HandleInput();
     }
 
     private void HandleInput()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position += Vector3.up;
+            
+            Vector3 rotation = transform.rotation.eulerAngles;
+            rotation.x = 0f;
+            rotation.z = 0f;
+            
+            transform.rotation = Quaternion.Euler(rotation);
+        }
+        
         _acceleration = 0f;
         if (Input.GetKey(KeyCode.W))
         {
@@ -189,7 +202,8 @@ public class Car : MonoBehaviour
             Vector3 accelerationDir = tire.forward;
             
             float speedFactor = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration) ? accelerationCurve.Evaluate(normalizedSpeed) : 1f;
-            float availableTorque = torque * _acceleration * speedFactor * grip;
+            float availableTorque = torque * _acceleration * speedFactor;
+            if (useGripInAcceleration) availableTorque *= grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
             
             if (applyTorque)
@@ -207,6 +221,10 @@ public class Car : MonoBehaviour
             drag *= Mathf.Sign(carSpeed);
             drag *= 0.5f;
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
+        }
+        else
+        {
+            wheel.transform.position = tire.position + tire.up * wheelOffset;
         }
     }
 }

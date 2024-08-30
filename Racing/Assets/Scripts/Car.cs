@@ -34,6 +34,10 @@ public class Car : MonoBehaviour
     [SerializeField] private float springStrength = 30f;
     [SerializeField] private float springDamper = 10f;
 
+    [Header("Downforce")] 
+    [SerializeField] private float downForce = 1f;
+    [SerializeField] private AnimationCurve downforceCurve;
+
     [Header("Steering")] 
     [SerializeField] private AnimationCurve smoothSteering;
     [SerializeField] private float tireGrip = 0.8f;
@@ -150,6 +154,10 @@ public class Car : MonoBehaviour
 
         ProcessWheel(tire_rr, _wheel_rr, drivetrain is Drivetrain.RWD or Drivetrain.AWD);
         ProcessWheel(tire_rl, _wheel_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD);
+        
+        // Downforce
+            
+        _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
     }
 
     private void ProcessWheel(Transform tire, Wheel wheel, bool applyTorque)
@@ -176,11 +184,12 @@ public class Car : MonoBehaviour
             float offset = suspensionRest - wheelRay.distance + 0.5f;
             float velocity = Vector3.Dot(springDir, wheelVelocity);
             float force = offset * springStrength - velocity * springDamper;
-            
+
+            if (force < 0f) force = 0f; 
             _rb.AddForceAtPosition(springDir * force, tire.position);
 
             wheel.transform.position = tire.position + springDir * (offset + wheelOffset);
-            
+
             // Steering
 
             Vector3 steeringDir = tire.right;

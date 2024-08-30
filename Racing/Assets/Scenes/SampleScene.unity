@@ -3059,6 +3059,13 @@ MonoBehaviour:
   suspensionRest: 0.5
   springStrength: 30
   springDamper: 10
+  downForce: 1
+  downforceCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   smoothSteering:
     serializedVersion: 2
     m_Curve: []
@@ -4150,6 +4157,31 @@ MonoBehaviour:
   suspensionRest: 0.45
   springStrength: 100
   springDamper: 2
+  downForce: 50
+  downforceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.1132073
+      outSlope: 3.1132073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.033333335
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.14375551
+      outSlope: 0.14375551
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2625
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   smoothSteering:
     serializedVersion: 2
     m_Curve:
@@ -4483,6 +4515,31 @@ MonoBehaviour:
   suspensionRest: 0.35
   springStrength: 150
   springDamper: 5
+  downForce: 50
+  downforceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.6792452
+      outSlope: 3.6792452
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.033333335
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.35094342
+      outSlope: 0.35094342
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20833331
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   smoothSteering:
     serializedVersion: 2
     m_Curve:

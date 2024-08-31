@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -45,6 +46,7 @@ public class Car : MonoBehaviour
     [SerializeField] private AnimationCurve steeringCurve;
     [SerializeField] private AnimationCurve gripSlipCurve;
     [SerializeField] private AnimationCurve gripSpeedCurve;
+    [SerializeField] private float driftTrailTrigger = 0.1f;
 
     [Header("Acceleration")] 
     [SerializeField] private Drivetrain drivetrain;
@@ -70,17 +72,17 @@ public class Car : MonoBehaviour
     private float _acceleration = 0f;
     private float _steering;
     private bool _handbrake = false;
-        
+    
     private Rigidbody _rb;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
 
-        _wheel_fr = wheel_fr.GetComponent<Wheel>();
-        _wheel_fl = wheel_fl.GetComponent<Wheel>();
-        _wheel_rr = wheel_rr.GetComponent<Wheel>();
-        _wheel_rl = wheel_rl.GetComponent<Wheel>();
+        _wheel_fr = wheel_fr.GetComponentInChildren<Wheel>();
+        _wheel_fl = wheel_fl.GetComponentInChildren<Wheel>();
+        _wheel_rr = wheel_rr.GetComponentInChildren<Wheel>();
+        _wheel_rl = wheel_rl.GetComponentInChildren<Wheel>();
     }
 
     private void Update()
@@ -198,6 +200,10 @@ public class Car : MonoBehaviour
             //if (!applyTorque) slipAngle = 0f;
             
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
+
+            bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 0.1f;
+            
+            wheel.SetTrailState(emitTrail);
             
             // Suspension
             
@@ -272,6 +278,8 @@ public class Car : MonoBehaviour
         else
         {
             wheel.transform.position = tire.position + tire.up * (suspensionRest - suspensionLength + wheelOffset);
+
+            wheel.SetTrailState(false);
         }
     }
 }

@@ -4,9 +4,16 @@ using UnityEngine;
 public class Wheel : MonoBehaviour
 {
     [SerializeField] private float velocityRatio = 50f;
+
+    private WheelTrail _wheelTrail;
     
     private float _currentRotationSpeed = 0f;
     private float _velocityUpdated = 0f;
+
+    private void Awake()
+    {
+        _wheelTrail = transform.parent.GetComponentInChildren<WheelTrail>();
+    }
 
     private void Update()
     {
@@ -21,5 +28,12 @@ public class Wheel : MonoBehaviour
     {
         _currentRotationSpeed = speed * velocityRatio;
         _velocityUpdated = Time.time;
+    }
+
+    public void SetTrailState(bool state)
+    {
+        if (!_wheelTrail) return;
+
+        _wheelTrail.emitTrail = state;
     }
 }

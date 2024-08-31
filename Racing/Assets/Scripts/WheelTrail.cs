@@ -9,15 +9,19 @@ public class WheelTrail : MonoBehaviour
     public bool emitTrail = false;
 
     private TrailRenderer _trailRenderer;
+    private ParticleSystem _particleSystem;
 
     private void Awake()
     {
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
+        _particleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
     private void Update()
     {
         _trailRenderer.emitting = emitTrail;
+        ParticleSystem.EmissionModule emission = _particleSystem.emission;
+        emission.enabled = emitTrail;
         
         Ray ray = new()
         {

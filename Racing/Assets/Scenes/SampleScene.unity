@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -526,7 +526,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
+  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2744,7 +2744,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
+  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3138,6 +3138,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
+  breakForce: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -4153,7 +4154,7 @@ MonoBehaviour:
   wheel_rr: {fileID: 4803701803603286715}
   wheel_rl: {fileID: 4803701803603286713}
   wheelOffset: -0.11
-  suspensionLength: 0.6
+  suspensionLength: 0.5
   suspensionRest: 0.45
   springStrength: 100
   springDamper: 2
@@ -4308,6 +4309,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
+  breakForce: 10
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -4353,7 +4355,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!4 &4858553262350108607
@@ -4511,7 +4513,7 @@ MonoBehaviour:
   wheel_rr: {fileID: 4858553262350108607}
   wheel_rl: {fileID: 494306763015712792}
   wheelOffset: -0.07
-  suspensionLength: 0.5
+  suspensionLength: 0.4
   suspensionRest: 0.35
   springStrength: 150
   springDamper: 5
@@ -4666,6 +4668,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
+  breakForce: 0
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -4696,7 +4699,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!23 &6962661899049663102

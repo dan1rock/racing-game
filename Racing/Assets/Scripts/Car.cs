@@ -52,6 +52,9 @@ public class Car : MonoBehaviour
     [SerializeField] private float topSpeed = 2f;
     [SerializeField] private AnimationCurve accelerationCurve;
     [SerializeField] private bool useGripInAcceleration = true;
+
+    [Header("Breaks")] 
+    [SerializeField] private float breakForce = 5f;
     
     [SerializeField] private LayerMask layerMask;
 
@@ -185,7 +188,7 @@ public class Car : MonoBehaviour
             float velocity = Vector3.Dot(springDir, wheelVelocity);
             float force = offset * springStrength - velocity * springDamper;
 
-            if (force < 0f) force = 0f; 
+            if (force < 0f) force = 0f;
             _rb.AddForceAtPosition(springDir * force, tire.position);
 
             wheel.transform.position = tire.position + springDir * (offset + wheelOffset);
@@ -193,8 +196,9 @@ public class Car : MonoBehaviour
             // Steering
 
             Vector3 steeringDir = tire.right;
-            
-            float slipAngle = Vector3.SignedAngle(tire.forward, wheelVelocity, tire.up);
+
+            float sign = Mathf.Sign(carSpeed);
+            float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
             slipAngle = Mathf.Clamp01(slipAngle);
             if (!applyTorque) slipAngle = 0f;
@@ -209,8 +213,9 @@ public class Car : MonoBehaviour
             // Acceleration
 
             Vector3 accelerationDir = tire.forward;
-            
-            float speedFactor = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration) ? accelerationCurve.Evaluate(normalizedSpeed) : 1f;
+
+            bool accelerate = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration);
+            float speedFactor = accelerate ? accelerationCurve.Evaluate(normalizedSpeed) : 0f;
             float availableTorque = torque * _acceleration * speedFactor;
             if (useGripInAcceleration) availableTorque *= grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
@@ -223,6 +228,13 @@ public class Car : MonoBehaviour
             float accelerationVelocity = Vector3.Dot(accelerationDir, wheelVelocity);
             wheel.SetRotationSpeed(accelerationVelocity);
             
+            // Breaks
+
+            if (!accelerate && _acceleration != 0f)
+            {
+                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), tire.position);
+            }
+            
             // Drag
 
             float drag = Mathf.Abs(carSpeed);
@@ -233,7 +245,7 @@ public class Car : MonoBehaviour
         }
         else
         {
-            wheel.transform.position = tire.position + tire.up * wheelOffset;
+            wheel.transform.position = tire.position + tire.up * (suspensionRest - suspensionLength + wheelOffset);
         }
     }
 }

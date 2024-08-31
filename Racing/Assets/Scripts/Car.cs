@@ -55,6 +55,10 @@ public class Car : MonoBehaviour
 
     [Header("Breaks")] 
     [SerializeField] private float breakForce = 5f;
+
+    [Header("Handbrake")] 
+    [SerializeField] private float handbrakeForce = 2f;
+    [SerializeField] private float handbrakeGripMultiplier = 0.5f;
     
     [SerializeField] private LayerMask layerMask;
 
@@ -65,6 +69,7 @@ public class Car : MonoBehaviour
 
     private float _acceleration = 0f;
     private float _steering;
+    private bool _handbrake = false;
         
     private Rigidbody _rb;
 
@@ -107,6 +112,8 @@ public class Car : MonoBehaviour
         {
             _acceleration -= 1f;
         }
+
+        _handbrake = Input.GetKey(KeyCode.Space);
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -152,18 +159,18 @@ public class Car : MonoBehaviour
 
     private void HandleCarPhysics()
     {
-        ProcessWheel(tire_fr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD);
-        ProcessWheel(tire_fl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD);
+        ProcessWheel(tire_fr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
+        ProcessWheel(tire_fl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
 
-        ProcessWheel(tire_rr, _wheel_rr, drivetrain is Drivetrain.RWD or Drivetrain.AWD);
-        ProcessWheel(tire_rl, _wheel_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD);
+        ProcessWheel(tire_rr, _wheel_rr, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
+        ProcessWheel(tire_rl, _wheel_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
         
         // Downforce
             
         _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
     }
 
-    private void ProcessWheel(Transform tire, Wheel wheel, bool applyTorque)
+    private void ProcessWheel(Transform tire, Wheel wheel, bool applyTorque, bool isRear)
     {
         Ray ray = new()
         {
@@ -179,10 +186,22 @@ public class Car : MonoBehaviour
         
         if (hit)
         {
+            // Grip calculation
+            
+            Vector3 wheelVelocity = _rb.GetPointVelocity(tire.position);
+            
+            float sign = Mathf.Sign(carSpeed);
+            
+            float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
+            slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
+            slipAngle = Mathf.Clamp01(slipAngle);
+            //if (!applyTorque) slipAngle = 0f;
+            
+            float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
+            
             // Suspension
             
             Vector3 springDir = tire.up;
-            Vector3 wheelVelocity = _rb.GetPointVelocity(tire.position);
 
             float offset = suspensionRest - wheelRay.distance + 0.5f;
             float velocity = Vector3.Dot(springDir, wheelVelocity);
@@ -192,23 +211,6 @@ public class Car : MonoBehaviour
             _rb.AddForceAtPosition(springDir * force, tire.position);
 
             wheel.transform.position = tire.position + springDir * (offset + wheelOffset);
-
-            // Steering
-
-            Vector3 steeringDir = tire.right;
-
-            float sign = Mathf.Sign(carSpeed);
-            float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
-            slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
-            slipAngle = Mathf.Clamp01(slipAngle);
-            if (!applyTorque) slipAngle = 0f;
-
-            float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
-            float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
-            float desiredVelocityChange = -steeringVelocity * grip;
-            float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;
-            
-            _rb.AddForceAtPosition(steeringDir * (tireMass * desiredAcceleration), tire.position);
             
             // Acceleration
 
@@ -220,7 +222,7 @@ public class Car : MonoBehaviour
             if (useGripInAcceleration) availableTorque *= grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
             
-            if (applyTorque)
+            if (applyTorque && (!isRear || !_handbrake))
             {
                 _rb.AddForceAtPosition(accelerationDir * availableTorque, tire.position);
             }
@@ -230,9 +232,23 @@ public class Car : MonoBehaviour
             
             // Breaks
 
-            if (!accelerate && _acceleration != 0f)
+            bool isBreaking = !accelerate && _acceleration != 0f;
+            
+            if (isBreaking)
             {
                 _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), tire.position);
+            }
+            
+            // Handbrake
+
+            if (isRear && _handbrake)
+            {
+                if (!isBreaking)
+                {
+                    _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(carSpeed)), tire.position);
+                }
+
+                grip *= handbrakeGripMultiplier;
             }
             
             // Drag
@@ -242,6 +258,16 @@ public class Car : MonoBehaviour
             drag *= Mathf.Sign(carSpeed);
             drag *= 0.5f;
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
+            
+            // Steering
+
+            Vector3 steeringDir = tire.right;
+
+            float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
+            float desiredVelocityChange = -steeringVelocity * grip;
+            float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;
+            
+            _rb.AddForceAtPosition(steeringDir * (tireMass * desiredAcceleration), tire.position);
         }
         else
         {

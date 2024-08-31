@@ -526,7 +526,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
+  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2744,7 +2744,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
+  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3139,6 +3139,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   useGripInAcceleration: 1
   breakForce: 0
+  handbrakeForce: 0
+  handbrakeGripMultiplier: 0.5
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -4309,7 +4311,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
-  breakForce: 10
+  breakForce: 5
+  handbrakeForce: 2
+  handbrakeGripMultiplier: 0.8
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -4668,7 +4672,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
-  breakForce: 0
+  breakForce: 5
+  handbrakeForce: 2
+  handbrakeGripMultiplier: 0.5
   layerMask:
     serializedVersion: 2
     m_Bits: 55

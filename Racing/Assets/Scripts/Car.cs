@@ -52,6 +52,7 @@ public class Car : MonoBehaviour
     [SerializeField] private Drivetrain drivetrain;
     [SerializeField] private float torque = 1f;
     [SerializeField] private float topSpeed = 2f;
+    [SerializeField] private float topReverse = 20f;
     [SerializeField] private AnimationCurve accelerationCurve;
     [SerializeField] private bool useGripInAcceleration = true;
 
@@ -72,12 +73,15 @@ public class Car : MonoBehaviour
     private float _acceleration = 0f;
     private float _steering;
     private bool _handbrake = false;
-    
-    private Rigidbody _rb;
 
+    private Controls _controls;
+    private Rigidbody _rb;
+    
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+
+        _controls = Controls.Get();
 
         _wheel_fr = wheel_fr.GetComponentInChildren<Wheel>();
         _wheel_fl = wheel_fl.GetComponentInChildren<Wheel>();
@@ -93,9 +97,9 @@ public class Car : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(_controls.resetCarKey))
         {
-            transform.position += Vector3.up;
+            _rb.MovePosition(transform.position + Vector3.up);
             
             Vector3 rotation = transform.rotation.eulerAngles;
             rotation.x = 0f;
@@ -105,33 +109,33 @@ public class Car : MonoBehaviour
         }
         
         _acceleration = 0f;
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(_controls.accelerateKey))
         {
             _acceleration += 1f;
         }
         
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(_controls.breakKey))
         {
             _acceleration -= 1f;
         }
 
-        _handbrake = Input.GetKey(KeyCode.Space);
+        _handbrake = Input.GetKey(_controls.handBreakKey);
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(_controls.leftKey))
         {
             _steering -= 1f * Time.deltaTime;
 
             if (_steering > 0f) _steering -= 5f * Time.deltaTime;
         }
         
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(_controls.rightKey))
         {
             _steering += 1f * Time.deltaTime;
             
             if (_steering < 0f) _steering += 5f * Time.deltaTime;
         }
 
-        if (!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        if (!Input.GetKey(_controls.rightKey) && !Input.GetKey(_controls.leftKey))
         {
             float diff = Mathf.Sign(_steering) * 5f * Time.deltaTime;
             if (Mathf.Abs(diff) > Mathf.Abs(_steering))
@@ -184,6 +188,7 @@ public class Car : MonoBehaviour
         float carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
         speed = Mathf.Abs(carSpeed);
         float normalizedSpeed = Mathf.Clamp01(speed / topSpeed);
+        float normalizedReverse = Mathf.Clamp01(speed / topReverse);
         relativeSpeed = normalizedSpeed;
         
         if (hit)
@@ -198,6 +203,8 @@ public class Car : MonoBehaviour
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
             slipAngle = Mathf.Clamp01(slipAngle);
             //if (!applyTorque) slipAngle = 0f;
+
+            if (speed < 0.5f) slipAngle = 0f;
             
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
 
@@ -223,7 +230,8 @@ public class Car : MonoBehaviour
             Vector3 accelerationDir = tire.forward;
 
             bool accelerate = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration);
-            float speedFactor = accelerate ? accelerationCurve.Evaluate(normalizedSpeed) : 0f;
+            float curveValue = _acceleration < 0f ? normalizedReverse : normalizedSpeed;
+            float speedFactor = accelerate ? accelerationCurve.Evaluate(curveValue) : 0f;
             float availableTorque = torque * _acceleration * speedFactor;
             if (useGripInAcceleration) availableTorque *= grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;

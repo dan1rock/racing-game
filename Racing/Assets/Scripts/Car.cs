@@ -62,6 +62,11 @@ public class Car : MonoBehaviour
     [Header("Handbrake")] 
     [SerializeField] private float handbrakeForce = 2f;
     [SerializeField] private float handbrakeGripMultiplier = 0.5f;
+
+    [Header("Sounds")] 
+    [SerializeField] private float minEnginePitch = 0.2f;
+    [SerializeField] private float maxEnginePitch = 1.6f;
+    [SerializeField] private AnimationCurve enginePitchCurve;
     
     [SerializeField] private LayerMask layerMask;
 
@@ -70,17 +75,21 @@ public class Car : MonoBehaviour
 
     [SerializeField] public bool playerControlled = false;
 
+    private float _carSpeed;
     private float _acceleration = 0f;
     private float _steering;
     private bool _handbrake = false;
+    private bool _torqueWheelContact = false;
 
     private Controls _controls;
+    private AudioSource _audioSource;
     private Rigidbody _rb;
     
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-
+        _audioSource = GetComponent<AudioSource>();
+        
         _controls = Controls.Get();
 
         _wheel_fr = wheel_fr.GetComponentInChildren<Wheel>();
@@ -161,10 +170,13 @@ public class Car : MonoBehaviour
     private void FixedUpdate()
     {
         HandleCarPhysics();
+        HandleEngineSound();
     }
 
     private void HandleCarPhysics()
     {
+        _torqueWheelContact = false;
+        
         ProcessWheel(tire_fr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
         ProcessWheel(tire_fl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
 
@@ -185,8 +197,8 @@ public class Car : MonoBehaviour
         };
         bool hit = Physics.Raycast(ray, out RaycastHit wheelRay, suspensionLength + 0.5f, layerMask);
 
-        float carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
-        speed = Mathf.Abs(carSpeed);
+        _carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
+        speed = Mathf.Abs(_carSpeed);
         float normalizedSpeed = Mathf.Clamp01(speed / topSpeed);
         float normalizedReverse = Mathf.Clamp01(speed / topReverse);
         relativeSpeed = normalizedSpeed;
@@ -197,7 +209,7 @@ public class Car : MonoBehaviour
             
             Vector3 wheelVelocity = _rb.GetPointVelocity(tire.position);
             
-            float sign = Mathf.Sign(carSpeed);
+            float sign = Mathf.Sign(_carSpeed);
             
             float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
@@ -211,6 +223,8 @@ public class Car : MonoBehaviour
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 0.1f;
             
             wheel.SetTrailState(emitTrail);
+
+            if (applyTorque) _torqueWheelContact = true;
             
             // Suspension
             
@@ -229,7 +243,7 @@ public class Car : MonoBehaviour
 
             Vector3 accelerationDir = tire.forward;
 
-            bool accelerate = Mathf.Sign(carSpeed) == Mathf.Sign(_acceleration);
+            bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration);
             float curveValue = _acceleration < 0f ? normalizedReverse : normalizedSpeed;
             float speedFactor = accelerate ? accelerationCurve.Evaluate(curveValue) : 0f;
             float availableTorque = torque * _acceleration * speedFactor;
@@ -259,7 +273,7 @@ public class Car : MonoBehaviour
             {
                 if (!isBreaking)
                 {
-                    _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(carSpeed)), tire.position);
+                    _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(_carSpeed)), tire.position);
                 }
 
                 grip *= handbrakeGripMultiplier;
@@ -267,9 +281,9 @@ public class Car : MonoBehaviour
             
             // Drag
 
-            float drag = Mathf.Abs(carSpeed);
+            float drag = Mathf.Abs(_carSpeed);
             if (drag > 1f) drag = 1f;
-            drag *= Mathf.Sign(carSpeed);
+            drag *= Mathf.Sign(_carSpeed);
             drag *= 0.5f;
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
             
@@ -289,5 +303,21 @@ public class Car : MonoBehaviour
 
             wheel.SetTrailState(false);
         }
+    }
+
+    private float enginePitchFactor = 0f;
+    private void HandleEngineSound()
+    {
+        if (!_audioSource) return;
+
+        bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration) && _acceleration != 0f;
+
+        float to = accelerate ? relativeSpeed : relativeSpeed - 0.3f;
+        if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch; 
+        enginePitchFactor = Mathf.Lerp(enginePitchFactor, to, Time.deltaTime);
+
+        enginePitchFactor = Mathf.Clamp01(enginePitchFactor);
+        
+        _audioSource.pitch = enginePitchCurve.Evaluate(enginePitchFactor) * (maxEnginePitch - minEnginePitch) + minEnginePitch;
     }
 }

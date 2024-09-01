@@ -15,6 +15,8 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         _controls = Controls.Get();
+
+        Application.targetFrameRate = 60;
         
         UpdateTargetCar();
     }

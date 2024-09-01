@@ -97,7 +97,7 @@ public class Car : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(_controls.resetCarKey))
+        if (_controls.GetKeyDown(ControlKey.ResetCar))
         {
             _rb.MovePosition(transform.position + Vector3.up);
             
@@ -109,33 +109,33 @@ public class Car : MonoBehaviour
         }
         
         _acceleration = 0f;
-        if (Input.GetKey(_controls.accelerateKey))
+        if (_controls.GetKey(ControlKey.Accelerate))
         {
             _acceleration += 1f;
         }
         
-        if (Input.GetKey(_controls.breakKey))
+        if (_controls.GetKey(ControlKey.Break))
         {
             _acceleration -= 1f;
         }
 
-        _handbrake = Input.GetKey(_controls.handBreakKey);
+        _handbrake = _controls.GetKey(ControlKey.Handbrake);
 
-        if (Input.GetKey(_controls.leftKey))
+        if (_controls.GetKey(ControlKey.Left))
         {
             _steering -= 1f * Time.deltaTime;
 
             if (_steering > 0f) _steering -= 5f * Time.deltaTime;
         }
         
-        if (Input.GetKey(_controls.rightKey))
+        if (_controls.GetKey(ControlKey.Right))
         {
             _steering += 1f * Time.deltaTime;
             
             if (_steering < 0f) _steering += 5f * Time.deltaTime;
         }
 
-        if (!Input.GetKey(_controls.rightKey) && !Input.GetKey(_controls.leftKey))
+        if (!_controls.GetKey(ControlKey.Right) && !_controls.GetKey(ControlKey.Left))
         {
             float diff = Mathf.Sign(_steering) * 5f * Time.deltaTime;
             if (Mathf.Abs(diff) > Mathf.Abs(_steering))

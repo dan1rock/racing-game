@@ -10,8 +10,12 @@ public class LevelManager : MonoBehaviour
 
     private int _activeCar = 0;
 
+    private Controls _controls;
+
     private void Awake()
     {
+        _controls = Controls.Get();
+        
         UpdateTargetCar();
     }
 
@@ -22,7 +26,7 @@ public class LevelManager : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (_controls.GetKeyDown(ControlKey.CycleCar))
         {
             cars[_activeCar].playerControlled = false;
             _activeCar += 1;

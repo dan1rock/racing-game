@@ -33,7 +33,7 @@ public class Controls : MonoBehaviour
 
     private void Awake()
     {
-        if (_controls)
+        if (_controls != this)
         {
             DestroyImmediate(gameObject);
             return;
@@ -81,6 +81,7 @@ public class Controls : MonoBehaviour
 
     public static Controls Get()
     {
+        if (!_controls) _controls = FindObjectOfType<Controls>();
         return _controls;
     }
 

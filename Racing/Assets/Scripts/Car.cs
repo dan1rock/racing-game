@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum Drivetrain
 {
@@ -42,12 +43,14 @@ public class Car : MonoBehaviour
     [Header("Steering")] 
     [SerializeField] private AnimationCurve smoothSteering;
     [SerializeField] private float speedSteeringDampening = 3f;
-    [SerializeField] private float tireGrip = 0.8f;
+    [SerializeField] private float frontTireGrip = 0.8f;
+    [SerializeField] private float rearTireGrip = 0.8f;
     [SerializeField] private float tireMass = 1f;
     [SerializeField] private AnimationCurve steeringCurve;
     [SerializeField] private AnimationCurve gripSlipCurve;
     [SerializeField] private AnimationCurve gripSpeedCurve;
     [SerializeField] private float driftTrailTrigger = 0.1f;
+    [SerializeField] private bool isDriftCar = false;
 
     [Header("Acceleration")] 
     [SerializeField] private Drivetrain drivetrain;
@@ -240,7 +243,9 @@ public class Car : MonoBehaviour
             //if (!applyTorque) slipAngle = 0f;
 
             if (speed < 0.5f) slipAngle = 0f;
-            
+
+            float tireGrip = isRear ? rearTireGrip : frontTireGrip;
+            if (isDriftCar && isRear && _acceleration != 0f) tireGrip *= 0.6f;
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
 
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 0.1f;

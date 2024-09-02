@@ -727,7 +727,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
+  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5076,7 +5076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
+  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6237,6 +6237,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  speedSteeringDampening: 3
   tireGrip: 0.8
   tireMass: 0.05
   steeringCurve:
@@ -7048,6 +7049,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  speedSteeringDampening: 3
   tireGrip: 0.8
   tireMass: 0.05
   steeringCurve:
@@ -7056,20 +7058,38 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -2.7272727
-      outSlope: -2.7272727
+      inSlope: -6.2264156
+      outSlope: -6.2264156
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.04583268
+      outWeight: 0.19085577
+    - serializedVersion: 3
+      time: 0.092487246
+      value: 0.4214788
+      inSlope: -3.6365716
+      outSlope: -3.6365716
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.17827791
+    - serializedVersion: 3
+      time: 0.25148666
+      value: 0.114878565
+      inSlope: -0.4760971
+      outSlope: -0.4760971
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24293916
     - serializedVersion: 3
       time: 1.0000143
       value: 0.015658706
-      inSlope: -0.489924
-      outSlope: -0.489924
+      inSlope: -0.07659869
+      outSlope: -0.07659869
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.17501181
+      inWeight: 0.26608622
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -7184,8 +7204,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 55
-  speed: 0
-  relativeSpeed: 0
+  speed: 6.1952477
+  relativeSpeed: 0.061952475
   playerControlled: 1
 --- !u!4 &4803701803603286719
 Transform:
@@ -7541,6 +7561,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  speedSteeringDampening: 3
   tireGrip: 0.8
   tireMass: 0.2
   steeringCurve:
@@ -7663,7 +7684,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
-  breakForce: 5
+  breakForce: 10
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.5
   minEnginePitch: 0.2
@@ -7697,7 +7718,7 @@ MonoBehaviour:
     m_Bits: 55
   speed: 9.550037
   relativeSpeed: 0.09550037
-  playerControlled: 1
+  playerControlled: 0
 --- !u!54 &5744824720459907740
 Rigidbody:
   m_ObjectHideFlags: 0

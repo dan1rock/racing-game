@@ -41,6 +41,7 @@ public class Car : MonoBehaviour
 
     [Header("Steering")] 
     [SerializeField] private AnimationCurve smoothSteering;
+    [SerializeField] private float speedSteeringDampening = 3f;
     [SerializeField] private float tireGrip = 0.8f;
     [SerializeField] private float tireMass = 1f;
     [SerializeField] private AnimationCurve steeringCurve;
@@ -78,6 +79,7 @@ public class Car : MonoBehaviour
     private float _carSpeed;
     private float _acceleration = 0f;
     private float _steering;
+    private float _speedSteeringRatio;
     private bool _handbrake = false;
     private bool _torqueWheelContact = false;
 
@@ -96,6 +98,8 @@ public class Car : MonoBehaviour
         _wheel_fl = wheel_fl.GetComponentInChildren<Wheel>();
         _wheel_rr = wheel_rr.GetComponentInChildren<Wheel>();
         _wheel_rl = wheel_rl.GetComponentInChildren<Wheel>();
+
+        _speedSteeringRatio = 1f / speedSteeringDampening;
     }
 
     private void Update()
@@ -130,16 +134,19 @@ public class Car : MonoBehaviour
 
         _handbrake = _controls.GetKey(ControlKey.Handbrake);
 
+        float steeringLimit = steeringCurve.Evaluate(speed / 100f);
+        float steeringRatio = steeringLimit * _speedSteeringRatio + (1f - _speedSteeringRatio);
+        
         if (_controls.GetKey(ControlKey.Left))
         {
-            _steering -= 1f * Time.deltaTime;
+            _steering -= 1f * Time.deltaTime * steeringRatio;
 
             if (_steering > 0f) _steering -= 5f * Time.deltaTime;
         }
         
         if (_controls.GetKey(ControlKey.Right))
         {
-            _steering += 1f * Time.deltaTime;
+            _steering += 1f * Time.deltaTime * steeringRatio;
             
             if (_steering < 0f) _steering += 5f * Time.deltaTime;
         }
@@ -156,8 +163,7 @@ public class Car : MonoBehaviour
                 _steering -= diff;
             }
         }
-
-        float steeringLimit = steeringCurve.Evaluate(speed / 100f);
+        
         _steering = Mathf.Clamp(_steering, -steeringLimit, steeringLimit);
         
         float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * 25f * Mathf.Sign(_steering);

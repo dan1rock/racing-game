@@ -69,6 +69,8 @@ public class Car : MonoBehaviour
     [SerializeField] private float maxEnginePitch = 1.6f;
     [SerializeField] private AnimationCurve enginePitchCurve;
     
+    
+    [Header("Misc")]
     [SerializeField] private LayerMask layerMask;
 
     [SerializeField] [ReadOnly] private float speed;
@@ -80,8 +82,11 @@ public class Car : MonoBehaviour
     private float _acceleration = 0f;
     private float _steering;
     private float _speedSteeringRatio;
+
+    private bool _pendingReset = false;
     private bool _handbrake = false;
     private bool _torqueWheelContact = false;
+    private bool _wheelContact = false;
 
     private Controls _controls;
     private AudioSource _audioSource;
@@ -112,13 +117,7 @@ public class Car : MonoBehaviour
     {
         if (_controls.GetKeyDown(ControlKey.ResetCar))
         {
-            _rb.MovePosition(transform.position + Vector3.up);
-            
-            Vector3 rotation = transform.rotation.eulerAngles;
-            rotation.x = 0f;
-            rotation.z = 0f;
-            
-            transform.rotation = Quaternion.Euler(rotation);
+            _pendingReset = true;
         }
         
         _acceleration = 0f;
@@ -174,6 +173,21 @@ public class Car : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_pendingReset)
+        {
+            _rb.MovePosition(transform.position + Vector3.up);
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            
+            Vector3 rotation = transform.rotation.eulerAngles;
+            rotation.x = 0f;
+            rotation.z = 0f;
+            
+            transform.rotation = Quaternion.Euler(rotation);
+
+            _pendingReset = false;
+        }
+        
         HandleCarPhysics();
         HandleEngineSound();
     }
@@ -181,6 +195,7 @@ public class Car : MonoBehaviour
     private void HandleCarPhysics()
     {
         _torqueWheelContact = false;
+        _wheelContact = false;
         
         ProcessWheel(tire_fr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
         ProcessWheel(tire_fl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
@@ -189,8 +204,11 @@ public class Car : MonoBehaviour
         ProcessWheel(tire_rl, _wheel_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
         
         // Downforce
-            
-        _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
+        
+        if (_wheelContact)
+        {
+            _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
+        }
     }
 
     private void ProcessWheel(Transform tire, Wheel wheel, bool applyTorque, bool isRear)
@@ -230,6 +248,7 @@ public class Car : MonoBehaviour
             wheel.SetTrailState(emitTrail);
 
             if (applyTorque) _torqueWheelContact = true;
+            _wheelContact = true;
             
             // Suspension
             

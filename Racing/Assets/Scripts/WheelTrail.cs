@@ -10,14 +10,20 @@ public class WheelTrail : MonoBehaviour
 
     private TrailRenderer _trailRenderer;
     private ParticleSystem _particleSystem;
+    private AudioSource _audioSource;
 
     private Vector3 _trailLastNormal;
     private Vector3 _trailLastPosition;
+
+    private float _driftVolume = 0f;
 
     private void Awake()
     {
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
         _particleSystem = GetComponentInChildren<ParticleSystem>();
+        _audioSource = GetComponent<AudioSource>();
+
+        _audioSource.pitch = Random.Range(0.8f, 1.2f);
     }
 
     private void Update()
@@ -25,6 +31,12 @@ public class WheelTrail : MonoBehaviour
         _trailRenderer.emitting = emitTrail;
         ParticleSystem.EmissionModule emission = _particleSystem.emission;
         emission.enabled = emitTrail;
+
+        float to = emitTrail ? 1f : 0f;
+        float rate = emitTrail ? 1f : 5f;
+        _driftVolume = Mathf.Lerp(_driftVolume, to, Time.deltaTime * rate);
+        
+        _audioSource.volume = _driftVolume;
         
         Ray ray = new()
         {

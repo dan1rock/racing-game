@@ -11,6 +11,9 @@ public class WheelTrail : MonoBehaviour
     private TrailRenderer _trailRenderer;
     private ParticleSystem _particleSystem;
 
+    private Vector3 _trailLastNormal;
+    private Vector3 _trailLastPosition;
+
     private void Awake()
     {
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
@@ -35,6 +38,14 @@ public class WheelTrail : MonoBehaviour
         {
             trail.up = outRay.normal;
             trail.position = outRay.point + outRay.normal * groundOffset;
+
+            _trailLastNormal = trail.up;
+            _trailLastPosition = trail.position;
+        }
+        else
+        {
+            trail.up = _trailLastNormal;
+            trail.position = _trailLastPosition;
         }
     }
 }

@@ -157,11 +157,10 @@ public class Car : MonoBehaviour
             }
         }
 
-        _steering = Mathf.Clamp(_steering, -1f, 1f);
-
+        float steeringLimit = steeringCurve.Evaluate(speed / 100f);
+        _steering = Mathf.Clamp(_steering, -steeringLimit, steeringLimit);
+        
         float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * 25f * Mathf.Sign(_steering);
-
-        steering *= steeringCurve.Evaluate(speed / 100f);
 
         tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
         tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);

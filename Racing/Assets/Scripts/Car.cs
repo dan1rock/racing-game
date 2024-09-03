@@ -42,6 +42,7 @@ public class Car : MonoBehaviour
 
     [Header("Steering")] 
     [SerializeField] private AnimationCurve smoothSteering;
+    [SerializeField] private float steeringMaxAngle = 25f;
     [SerializeField] private float speedSteeringDampening = 3f;
     [SerializeField] private float frontTireGrip = 0.8f;
     [SerializeField] private float rearTireGrip = 0.8f;
@@ -125,13 +126,13 @@ public class Car : MonoBehaviour
         {
             _pendingReset = true;
         }
-        
+
         _acceleration = 0f;
         if (_controls.GetKey(ControlKey.Accelerate))
         {
             _acceleration += 1f;
         }
-        
+
         if (_controls.GetKey(ControlKey.Break))
         {
             _acceleration -= 1f;
@@ -141,18 +142,18 @@ public class Car : MonoBehaviour
 
         float steeringLimit = steeringCurve.Evaluate(speed / 100f);
         float steeringRatio = steeringLimit * _speedSteeringRatio + (1f - _speedSteeringRatio);
-        
+
         if (_controls.GetKey(ControlKey.Left))
         {
             _steering -= 1f * Time.deltaTime * steeringRatio;
 
             if (_steering > 0f) _steering -= 5f * Time.deltaTime;
         }
-        
+
         if (_controls.GetKey(ControlKey.Right))
         {
             _steering += 1f * Time.deltaTime * steeringRatio;
-            
+
             if (_steering < 0f) _steering += 5f * Time.deltaTime;
         }
 
@@ -168,10 +169,11 @@ public class Car : MonoBehaviour
                 _steering -= diff;
             }
         }
-        
+
         _steering = Mathf.Clamp(_steering, -steeringLimit, steeringLimit);
-        
-        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * 25f * Mathf.Sign(_steering) + _driftCounterSteering;
+
+        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
+                         _driftCounterSteering;
 
         tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
         tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);

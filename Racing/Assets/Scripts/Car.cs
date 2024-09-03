@@ -51,6 +51,7 @@ public class Car : MonoBehaviour
     [SerializeField] private AnimationCurve gripSpeedCurve;
     [SerializeField] private float driftTrailTrigger = 0.1f;
     [SerializeField] private bool isDriftCar = false;
+    [SerializeField] private float driftCounterSteering = 30f;
 
     [Header("Acceleration")] 
     [SerializeField] private Drivetrain drivetrain;
@@ -83,6 +84,7 @@ public class Car : MonoBehaviour
 
     private float _carSpeed;
     private float _acceleration = 0f;
+    private float _driftCounterSteering;
     private float _steering;
     private float _speedSteeringRatio;
 
@@ -168,7 +170,7 @@ public class Car : MonoBehaviour
         
         _steering = Mathf.Clamp(_steering, -steeringLimit, steeringLimit);
         
-        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * 25f * Mathf.Sign(_steering);
+        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * 25f * Mathf.Sign(_steering) + _driftCounterSteering;
 
         tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
         tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);
@@ -211,6 +213,15 @@ public class Car : MonoBehaviour
         if (_wheelContact)
         {
             _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
+        }
+        
+        // Drift counter steering
+
+        if (isDriftCar)
+        {
+            float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
+            _driftCounterSteering = Mathf.Abs(angle) < 90f ? angle * Mathf.Deg2Rad * driftCounterSteering : 0f;
+            Debug.Log(_driftCounterSteering);
         }
     }
 

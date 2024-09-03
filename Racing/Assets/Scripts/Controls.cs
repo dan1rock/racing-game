@@ -22,7 +22,7 @@ public class Controls : MonoBehaviour
     [SerializeField] public KeyCode resetCarKey = KeyCode.R;
     [SerializeField] public KeyCode cycleCarsKey = KeyCode.T;
 
-    private static Controls _controls;
+    private static Controls _instance;
 
     private int _keysNum;
     
@@ -33,17 +33,19 @@ public class Controls : MonoBehaviour
 
     private void Awake()
     {
-        if (_controls != this)
+        if (_instance != null && _instance != this)
         {
             DestroyImmediate(gameObject);
             return;
         }
 
-        _controls = this;
+        _instance = this;
 
         _keysNum = Enum.GetNames(typeof(ControlKey)).Length;
         _keys = new bool[_keysNum];
         _keysDown = new bool[_keysNum];
+        
+        Debug.Log(_instance);
     }
 
     private void Update()
@@ -81,8 +83,8 @@ public class Controls : MonoBehaviour
 
     public static Controls Get()
     {
-        if (!_controls) _controls = FindObjectOfType<Controls>();
-        return _controls;
+        if (!_instance) _instance = FindObjectOfType<Controls>();
+        return _instance;
     }
 
     public void OnButtonDown(ControlKey key, bool down)

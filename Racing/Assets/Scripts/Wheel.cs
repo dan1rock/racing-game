@@ -30,10 +30,11 @@ public class Wheel : MonoBehaviour
         _velocityUpdated = Time.time;
     }
 
-    public void SetTrailState(bool state)
+    public void SetTrailState(bool state, float speed)
     {
         if (!_wheelTrail) return;
 
         _wheelTrail.emitTrail = state;
+        _wheelTrail.wheelSpeed = speed;
     }
 }

@@ -3661,21 +3661,21 @@ MonoBehaviour:
   wheelOffset: -0.015
   suspensionLength: 0.4
   suspensionRest: 0.35
-  springStrength: 100
-  springDamper: 2
+  springStrength: 150
+  springDamper: 4
   downForce: 50
   downforceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 3.1132073
-      outSlope: 3.1132073
+      value: 0.16036987
+      inSlope: 2.36494
+      outSlope: 2.36494
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.033333335
+      outWeight: 0.04687499
     - serializedVersion: 3
       time: 1
       value: 1
@@ -3806,10 +3806,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  driftTrailTrigger: 0.2
+  driftTrailTrigger: 0.1
   isDriftCar: 1
-  driftCounterSteering: 30
-  drivetrain: 2
+  driftCounterSteering: 40
+  drivetrain: 1
   torque: 7
   topSpeed: 100
   topReverse: 20
@@ -3838,7 +3838,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 0
-  breakForce: 5
+  breakForce: 7
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.8
   minEnginePitch: 0.2
@@ -3870,8 +3870,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 55
-  speed: 0.0006735243
-  relativeSpeed: 0.000006735243
+  speed: 0
+  relativeSpeed: 0
   playerControlled: 0
 --- !u!54 &1082250927
 Rigidbody:

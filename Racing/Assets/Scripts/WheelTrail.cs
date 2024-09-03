@@ -4,9 +4,11 @@ public class WheelTrail : MonoBehaviour
 {
     [SerializeField] private Transform trail;
     [SerializeField] private float groundOffset = 0.05f;
+    [SerializeField] private float maxVolume = 0.7f;
     [SerializeField] private LayerMask layerMask;
 
     public bool emitTrail = false;
+    public float wheelSpeed = 0f;
 
     private TrailRenderer _trailRenderer;
     private ParticleSystem _particleSystem;
@@ -32,8 +34,9 @@ public class WheelTrail : MonoBehaviour
         ParticleSystem.EmissionModule emission = _particleSystem.emission;
         emission.enabled = emitTrail;
 
-        float to = emitTrail ? 1f : 0f;
-        float rate = emitTrail ? 1f : 5f;
+        float volume = Mathf.Clamp01(wheelSpeed / 100f) * 0.8f + 0.2f;
+        float to = emitTrail ? volume * maxVolume : 0f;
+        float rate = emitTrail ? 2f : 5f;
         _driftVolume = Mathf.Lerp(_driftVolume, to, Time.deltaTime * rate);
         
         _audioSource.volume = _driftVolume;

@@ -44,8 +44,6 @@ public class Controls : MonoBehaviour
         _keysNum = Enum.GetNames(typeof(ControlKey)).Length;
         _keys = new bool[_keysNum];
         _keysDown = new bool[_keysNum];
-        
-        Debug.Log(_instance);
     }
 
     private void Update()

@@ -87,6 +87,7 @@ public class Car : MonoBehaviour
     private float _driftCounterSteering;
     private float _steering;
     private float _speedSteeringRatio;
+    private float _rearSlipAngle;
 
     private bool _pendingReset = false;
     private bool _handbrake = false;
@@ -221,7 +222,6 @@ public class Car : MonoBehaviour
         {
             float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
             _driftCounterSteering = Mathf.Abs(angle) < 90f ? angle * Mathf.Deg2Rad * driftCounterSteering : 0f;
-            Debug.Log(_driftCounterSteering);
         }
     }
 
@@ -254,14 +254,15 @@ public class Car : MonoBehaviour
             //if (!applyTorque) slipAngle = 0f;
 
             if (speed < 0.5f) slipAngle = 0f;
+            if (isRear) _rearSlipAngle = slipAngle;
 
             float tireGrip = isRear ? rearTireGrip : frontTireGrip;
             if (isDriftCar && isRear && _acceleration != 0f) tireGrip *= 0.6f;
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
 
-            bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 0.1f;
+            bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
             
-            wheel.SetTrailState(emitTrail);
+            wheel.SetTrailState(emitTrail, Mathf.Abs(Vector3.Dot(wheelVelocity, tire.right)));
 
             if (applyTorque) _torqueWheelContact = true;
             _wheelContact = true;
@@ -341,7 +342,7 @@ public class Car : MonoBehaviour
         {
             wheel.transform.position = tire.position + tire.up * (suspensionRest - suspensionLength + wheelOffset);
 
-            wheel.SetTrailState(false);
+            wheel.SetTrailState(false, 0f);
         }
     }
 
@@ -352,8 +353,11 @@ public class Car : MonoBehaviour
 
         bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration) && _acceleration != 0f;
 
-        float to = accelerate ? relativeSpeed : relativeSpeed - 0.3f;
-        if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch; 
+        float to = accelerate 
+            ? relativeSpeed + (drivetrain == Drivetrain.FWD ? 0f : _rearSlipAngle) 
+            : relativeSpeed - 0.3f;
+        
+        if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
         enginePitchFactor = Mathf.Lerp(enginePitchFactor, to, Time.deltaTime);
 
         enginePitchFactor = Mathf.Clamp01(enginePitchFactor);

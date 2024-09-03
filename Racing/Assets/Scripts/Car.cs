@@ -223,7 +223,9 @@ public class Car : MonoBehaviour
         if (isDriftCar)
         {
             float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
-            _driftCounterSteering = Mathf.Abs(angle) < 90f ? angle * Mathf.Deg2Rad * driftCounterSteering : 0f;
+            _driftCounterSteering = Mathf.Abs(angle) < 90f && speed > 1f && _wheelContact
+                ? angle * Mathf.Deg2Rad * driftCounterSteering 
+                : 0f;
         }
     }
 
@@ -356,7 +358,7 @@ public class Car : MonoBehaviour
         bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration) && _acceleration != 0f;
 
         float to = accelerate 
-            ? relativeSpeed + (drivetrain == Drivetrain.FWD ? 0f : _rearSlipAngle) 
+            ? relativeSpeed + (drivetrain == Drivetrain.FWD || !_wheelContact || speed < 1f ? 0f : _rearSlipAngle) 
             : relativeSpeed - 0.3f;
         
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;

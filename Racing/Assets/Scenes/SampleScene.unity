@@ -258,6 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 571ff6cd513699e489be2710a489ff24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  masterVolume: 1
+  graphicsPreset: 1
 --- !u!4 &142152182
 Transform:
   m_ObjectHideFlags: 0
@@ -952,7 +954,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
+  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4082,12 +4084,12 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 140
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -4127,7 +4129,7 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -287
+      value: -727
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -4240,7 +4242,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 468c1a08e48aae64d81b90da45bb9dde, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 0.2
@@ -4742,12 +4744,12 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 140
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -4787,7 +4789,7 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -727
+      value: -287
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -5670,12 +5672,12 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 140
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -5904,12 +5906,12 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 140
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -7204,7 +7206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
+  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8429,12 +8431,12 @@ PrefabInstance:
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 140
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 865338900753500883, guid: 9437452655620a54c8b3cc0fae8828ff,
         type: 3}
@@ -9695,7 +9697,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 468c1a08e48aae64d81b90da45bb9dde, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 0.2
@@ -9954,21 +9956,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 3.6792452
-      outSlope: 3.6792452
+      value: 0.27593994
+      inSlope: 2.3910239
+      outSlope: 2.3910239
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.033333335
+      outWeight: 0.04340277
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0.35094342
-      outSlope: 0.35094342
+      value: 0.97169876
+      inSlope: 0.22115757
+      outSlope: 0.22115757
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.20833331
+      inWeight: 0.07465297
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -10156,8 +10158,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 55
-  speed: 9.550037
-  relativeSpeed: 0.09550037
+  speed: 0.0209001
+  relativeSpeed: 0.00020900104
   playerControlled: 0
 --- !u!54 &5744824720459907740
 Rigidbody:
@@ -10196,7 +10198,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 468c1a08e48aae64d81b90da45bb9dde, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 0.2

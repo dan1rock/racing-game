@@ -141,6 +141,7 @@ public class Car : MonoBehaviour
         _handbrake = _controls.GetKey(ControlKey.Handbrake);
 
         float steeringLimit = steeringCurve.Evaluate(speed / 100f);
+        if (_carSpeed < 0f) steeringLimit = 1f;
         float steeringRatio = steeringLimit * _speedSteeringRatio + (1f - _speedSteeringRatio);
 
         if (_controls.GetKey(ControlKey.Left))

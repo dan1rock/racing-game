@@ -26,10 +26,6 @@ public class Wheel : MonoBehaviour
         newEuler.y = 0f;
         float wheelRotation = _wheelPhysics.localEulerAngles.y;
         if (wheelRotation > 180f) wheelRotation -= 360f;
-        if (wheelRotation > 1f)
-        {
-            Debug.Log(wheelRotation);
-        }
         if (Mathf.Abs(wheelRotation) > 45f)
         {
             newEuler.y = -wheelRotation + 45f * Mathf.Sign(wheelRotation);

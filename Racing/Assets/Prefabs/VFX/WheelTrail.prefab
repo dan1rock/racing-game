@@ -48,10 +48,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trail: {fileID: 1048158877037759571}
   groundOffset: 0.05
+  maxVolume: 0.7
   layerMask:
     serializedVersion: 2
     m_Bits: 1
   emitTrail: 0
+  wheelSpeed: 0
 --- !u!82 &542818791151850605
 AudioSource:
   m_ObjectHideFlags: 0
@@ -64,7 +66,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e1122d4ee83ec9041aedf00ebefd55d0, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0

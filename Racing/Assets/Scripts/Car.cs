@@ -51,7 +51,7 @@ public class Car : MonoBehaviour
     [SerializeField] private AnimationCurve gripSlipCurve;
     [SerializeField] private AnimationCurve gripSpeedCurve;
     [SerializeField] private float driftTrailTrigger = 0.1f;
-    [SerializeField] private bool isDriftCar = false;
+    [SerializeField] public bool isDriftCar = false;
     [SerializeField] private float driftCounterSteering = 30f;
 
     [Header("Acceleration")] 
@@ -96,6 +96,7 @@ public class Car : MonoBehaviour
     private bool _wheelContact = false;
 
     private Controls _controls;
+    private DriftCounter _driftCounter;
     private AudioSource _audioSource;
     private Rigidbody _rb;
     
@@ -103,6 +104,7 @@ public class Car : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
+        _driftCounter = FindObjectOfType<DriftCounter>();
         
         _controls = Controls.Get();
 
@@ -199,6 +201,7 @@ public class Car : MonoBehaviour
         
         HandleCarPhysics();
         HandleEngineSound();
+        HandleDrift();
     }
 
     private void HandleCarPhysics()
@@ -255,11 +258,11 @@ public class Car : MonoBehaviour
             
             float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
+            if (isRear) _rearSlipAngle = slipAngle;
             slipAngle = Mathf.Clamp01(slipAngle);
             //if (!applyTorque) slipAngle = 0f;
 
             if (speed < 0.5f) slipAngle = 0f;
-            if (isRear) _rearSlipAngle = slipAngle;
 
             float tireGrip = isRear ? rearTireGrip : frontTireGrip;
             if (isDriftCar && isRear && _acceleration != 0f) tireGrip *= 0.6f;
@@ -368,5 +371,13 @@ public class Car : MonoBehaviour
         enginePitchFactor = Mathf.Clamp01(enginePitchFactor);
         
         _audioSource.pitch = enginePitchCurve.Evaluate(enginePitchFactor) * (maxEnginePitch - minEnginePitch) + minEnginePitch;
+    }
+
+    private void HandleDrift()
+    {
+        if (!isDriftCar) return;
+        if (!_wheelContact) return;
+        
+        _driftCounter.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
     }
 }

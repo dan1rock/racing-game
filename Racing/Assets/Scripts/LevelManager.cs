@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private List<Car> cars;
+    [SerializeField] private GameObject driftUI;
 
     private int _activeCar = 0;
 
@@ -42,5 +43,6 @@ public class LevelManager : MonoBehaviour
         cars[_activeCar].playerControlled = true;
         virtualCamera.Follow = cars[_activeCar].transform;
         virtualCamera.LookAt = cars[_activeCar].transform;
+        driftUI.SetActive(cars[_activeCar].isDriftCar);
     }
 }

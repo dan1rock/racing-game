@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public enum Drivetrain
 {
@@ -74,8 +75,10 @@ public class Car : MonoBehaviour
     [SerializeField] private float minEnginePitch = 0.2f;
     [SerializeField] private float maxEnginePitch = 1.6f;
     [SerializeField] private AnimationCurve enginePitchCurve;
-    
-    
+    [SerializeField] private List<float> relativeGears;
+    [SerializeField] private List<float> gearMinPitch;
+    [SerializeField] private AudioSource gearShiftAudio;
+
     [Header("Misc")]
     [SerializeField] private LayerMask layerMask;
 
@@ -90,6 +93,8 @@ public class Car : MonoBehaviour
     private float _steering;
     private float _speedSteeringRatio;
     private float _rearSlipAngle;
+
+    private int _currentGear = 1;
 
     private bool _pendingReset = false;
     private bool _handbrake = false;
@@ -209,6 +214,12 @@ public class Car : MonoBehaviour
     {
         _torqueWheelContact = false;
         _wheelContact = false;
+        
+        // Process gears
+
+        HandleGears();
+
+        // Process wheels
         
         ProcessWheel(tire_fr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
         ProcessWheel(tire_fl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
@@ -364,16 +375,42 @@ public class Car : MonoBehaviour
 
         bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration) && _acceleration != 0f;
 
+        float bottomBoundary = relativeGears[_currentGear - 1];
+        float topBoundary = _currentGear < relativeGears.Count ? relativeGears[_currentGear] : 1f;
+        float gearPitch = (relativeSpeed - bottomBoundary) / (topBoundary - bottomBoundary);
+        
         float to = accelerate 
-            ? relativeSpeed + (drivetrain == Drivetrain.FWD || !_wheelContact || speed < 1f ? 0f : _rearSlipAngle) 
-            : relativeSpeed - 0.3f;
+            ? gearPitch + (drivetrain == Drivetrain.FWD || !_wheelContact || speed < 1f ? 0f : _rearSlipAngle) 
+            : gearPitch - 0.3f;
         
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
-        enginePitchFactor = Mathf.Lerp(enginePitchFactor, to, Time.deltaTime);
+
+        float lerpSpeed = enginePitchFactor < to ? 1f : 2f;
+        enginePitchFactor = Mathf.Lerp(enginePitchFactor, to, Time.deltaTime * lerpSpeed);
 
         enginePitchFactor = Mathf.Clamp01(enginePitchFactor);
+
+        float minPitch = gearMinPitch[_currentGear - 1];
+        _audioSource.pitch = enginePitchCurve.Evaluate(enginePitchFactor) * (maxEnginePitch - minPitch) + minPitch;
+    }
+
+    private void HandleGears()
+    {
+        if (relativeGears[_currentGear - 1] > relativeSpeed)
+        {
+            gearShiftAudio.pitch = Random.Range(0.8f, 1.2f);
+            gearShiftAudio.Play();
+            _currentGear--;
+        }
         
-        _audioSource.pitch = enginePitchCurve.Evaluate(enginePitchFactor) * (maxEnginePitch - minEnginePitch) + minEnginePitch;
+        if (_currentGear >= relativeGears.Count) return;
+        
+        if (relativeGears[_currentGear] < relativeSpeed)
+        {
+            gearShiftAudio.pitch = Random.Range(0.8f, 1.2f);
+            gearShiftAudio.Play();
+            _currentGear++;
+        }
     }
 
     private void HandleDrift()

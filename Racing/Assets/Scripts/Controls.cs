@@ -29,8 +29,6 @@ public class Controls : MonoBehaviour
     private bool[] _keys;
     private bool[] _keysDown;
 
-    private bool _keysCleared = false;
-
     private void Awake()
     {
         if (_instance != null && _instance != this)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -260,7 +261,6 @@ public class Car : MonoBehaviour
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
             if (isRear) _rearSlipAngle = slipAngle;
             slipAngle = Mathf.Clamp01(slipAngle);
-            //if (!applyTorque) slipAngle = 0f;
 
             if (speed < 0.5f) slipAngle = 0f;
 
@@ -274,6 +274,8 @@ public class Car : MonoBehaviour
 
             if (applyTorque) _torqueWheelContact = true;
             _wheelContact = true;
+
+            wheel.isContactingTrack = wheelRay.transform.gameObject.layer == 7;
             
             // Suspension
             
@@ -351,6 +353,7 @@ public class Car : MonoBehaviour
             wheel.transform.position = tire.position + tire.up * (suspensionRest - suspensionLength + wheelOffset);
 
             wheel.SetTrailState(false, 0f);
+            wheel.isContactingTrack = false;
         }
     }
 
@@ -377,7 +380,27 @@ public class Car : MonoBehaviour
     {
         if (!isDriftCar) return;
         if (!_wheelContact) return;
+
+        int tiresOnTrack = 0;
+
+        if (_wheel_fl.isContactingTrack) tiresOnTrack++;
+        if (_wheel_fr.isContactingTrack) tiresOnTrack++;
+        if (_wheel_rl.isContactingTrack) tiresOnTrack++;
+        if (_wheel_rr.isContactingTrack) tiresOnTrack++;
+        
+        if (tiresOnTrack < 3) return;
         
         _driftCounter.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (isDriftCar)
+        {
+            if (other.impulse.magnitude > 0.5f && other.gameObject.layer != 7)
+            {
+                _driftCounter.DriftFailed();
+            }
+        }
     }
 }

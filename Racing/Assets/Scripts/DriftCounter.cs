@@ -24,6 +24,7 @@ public class DriftCounter : MonoBehaviour
     private float _score = 0f;
     private float _overallScore = 0f;
     private float _lastDriftDetected;
+    private float _lastDriftFail = -100f;
     private float _driftStart;
     private float _driftDistance = 0f;
     private bool _isDrifting = false;
@@ -79,6 +80,7 @@ public class DriftCounter : MonoBehaviour
         angle = Mathf.Abs(angle);
         if (angle < _minAngleRads) return;
         if (speed < minSpeed) return;
+        if (Time.time - _lastDriftFail < 1f) return;
         
         _score += speed * angle * speedMultiplier.Evaluate(Mathf.Clamp01(speed / speedMultiplierRatio));
 
@@ -93,5 +95,20 @@ public class DriftCounter : MonoBehaviour
             _driftStart = Time.time;
             _isDrifting = true;
         }
+    }
+
+    public void DriftFailed()
+    {
+        _score = 0f;
+        _multiplier = 1;
+        _driftDistance = 0f;
+        
+        _singleScore.SetActive(false);
+        singleDriftScore.text = ((int)_score).ToString();
+        overallDriftScore.text = ((int)_overallScore).ToString();
+        scoreMultiplier.text = _multiplier.ToString();
+        _isDrifting = false;
+
+        _lastDriftFail = Time.time;
     }
 }

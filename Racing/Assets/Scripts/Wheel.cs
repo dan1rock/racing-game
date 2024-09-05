@@ -5,6 +5,8 @@ public class Wheel : MonoBehaviour
 {
     [SerializeField] private float velocityRatio = 50f;
 
+    public bool isContactingTrack = false;
+
     private WheelTrail _wheelTrail;
 
     private Transform _wheelPhysics;

@@ -130,7 +130,11 @@ public class Car : MonoBehaviour
 
     private void Update()
     {
-        _engineVolume = Mathf.Lerp(_engineVolume, _engineOn ? 0.7f : 0f, Time.deltaTime * 3f);
+        if (!_engineStarting)
+        {
+            _engineVolume = Mathf.Lerp(_engineVolume, _engineOn ? 0.7f : 0f, Time.deltaTime * 3f);
+        }
+        _audioSource.volume = _engineVolume;
         
         if (!playerControlled) return;
         HandleInput();
@@ -388,7 +392,8 @@ public class Car : MonoBehaviour
     private void HandleEngineSound()
     {
         if (!_audioSource) return;
-
+        if (!_engineOn) return;
+        
         bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration) && _acceleration != 0f;
 
         float bottomBoundary = relativeGears[_currentGear - 1];
@@ -399,8 +404,6 @@ public class Car : MonoBehaviour
             ? gearPitch + (drivetrain == Drivetrain.FWD || !_wheelContact || speed < 1f ? 0f : _rearSlipAngle) 
             : gearPitch - 0.3f;
 
-        if (!_engineOn) to = 0f;
-        
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
 
         float lerpSpeed = _enginePitchFactor < to ? 1f : 2f;
@@ -463,6 +466,38 @@ public class Car : MonoBehaviour
         gearShiftAudio.Play();
 
         yield return new WaitForSeconds(0.4f);
+
+        _enginePitchFactor = 0f;
+        _audioSource.pitch = minEnginePitch;
+
+        while (_engineVolume < 0.4f)
+        {
+            _engineVolume = Mathf.Lerp(_engineVolume, 0.7f, Time.deltaTime * 3f);
+
+            yield return null;
+        }
+
+        while (_enginePitchFactor < 0.3f)
+        {
+            _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minEnginePitch) +
+                                 minEnginePitch;
+            _engineVolume = Mathf.Lerp(_engineVolume, 0.7f, Time.deltaTime * 3f);
+
+            _enginePitchFactor += Time.deltaTime * 0.5f;
+
+            yield return null;
+        }
+        
+        while (_enginePitchFactor > 0f)
+        {
+            _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - 0.2f) + 0.2f;
+            _engineVolume = Mathf.Lerp(_engineVolume, 0.7f, Time.deltaTime * 3f);
+
+            _enginePitchFactor -= Time.deltaTime * 0.3f;
+            _enginePitchFactor = Mathf.Clamp01(_enginePitchFactor);
+
+            yield return null;
+        }
 
         _engineOn = true;
         _engineStarting = false;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -712,7 +712,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &302613663
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1065,7 +1065,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
+  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3554,6 +3554,7 @@ MonoBehaviour:
   handBreakKey: 32
   resetCarKey: 114
   cycleCarsKey: 116
+  stopEngineKey: 121
 --- !u!4 &732784476
 Transform:
   m_ObjectHideFlags: 0
@@ -5147,9 +5148,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 1706315812}
   cars:
+  - {fileID: 1082250926}
   - {fileID: 4803701803603286718}
   - {fileID: 5744824720459907739}
-  - {fileID: 1082250926}
   driftUI: {fileID: 1596422013}
 --- !u!114 &958329067
 MonoBehaviour:
@@ -5669,7 +5670,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 0
   m_Pitch: 0.2
   Loop: 1
   Mute: 0
@@ -6012,6 +6013,8 @@ MonoBehaviour:
   - 0.5
   - 0.7
   gearShiftAudio: {fileID: 1124129324}
+  gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
+  engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183
@@ -9611,7 +9614,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.69323725, z: 0.13936374, w: 0.69323707}
+  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -29.999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11564,6 +11567,8 @@ MonoBehaviour:
   relativeGears: []
   gearMinPitch: []
   gearShiftAudio: {fileID: 0}
+  gearShiftClip: {fileID: 0}
+  engineStartClip: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -12530,6 +12535,8 @@ MonoBehaviour:
   - 0.5
   - 0.7
   gearShiftAudio: {fileID: 1688363379}
+  gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
+  engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183
@@ -12590,7 +12597,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 0
   m_Pitch: 0.2
   Loop: 1
   Mute: 0
@@ -13058,6 +13065,8 @@ MonoBehaviour:
   - 0.5
   - 0.7
   gearShiftAudio: {fileID: 389160454}
+  gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
+  engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183
@@ -13103,7 +13112,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 0
   m_Pitch: 0.2
   Loop: 1
   Mute: 0

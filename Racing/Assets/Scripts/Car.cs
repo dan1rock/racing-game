@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -78,6 +79,8 @@ public class Car : MonoBehaviour
     [SerializeField] private List<float> relativeGears;
     [SerializeField] private List<float> gearMinPitch;
     [SerializeField] private AudioSource gearShiftAudio;
+    [SerializeField] private AudioClip gearShiftClip;
+    [SerializeField] private AudioClip engineStartClip;
 
     [Header("Misc")]
     [SerializeField] private LayerMask layerMask;
@@ -96,6 +99,8 @@ public class Car : MonoBehaviour
 
     private int _currentGear = 1;
 
+    private bool _engineOn = false;
+    private bool _engineStarting = false;
     private bool _pendingReset = false;
     private bool _handbrake = false;
     private bool _torqueWheelContact = false;
@@ -110,6 +115,7 @@ public class Car : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = 0f;
         _driftCounter = FindObjectOfType<DriftCounter>();
         
         _controls = Controls.Get();
@@ -124,6 +130,8 @@ public class Car : MonoBehaviour
 
     private void Update()
     {
+        _engineVolume = Mathf.Lerp(_engineVolume, _engineOn ? 0.7f : 0f, Time.deltaTime * 3f);
+        
         if (!playerControlled) return;
         HandleInput();
     }
@@ -135,15 +143,22 @@ public class Car : MonoBehaviour
             _pendingReset = true;
         }
 
+        if (_controls.GetKeyDown(ControlKey.StopEngine))
+        {
+            _engineOn = false;
+        }
+
         _acceleration = 0f;
         if (_controls.GetKey(ControlKey.Accelerate))
         {
             _acceleration += 1f;
+            if (!_engineOn && !_engineStarting) StartCoroutine(StartEngine());
         }
 
         if (_controls.GetKey(ControlKey.Break))
         {
             _acceleration -= 1f;
+            if (!_engineOn && !_engineStarting) StartCoroutine(StartEngine());
         }
 
         _handbrake = _controls.GetKey(ControlKey.Handbrake);
@@ -312,7 +327,7 @@ public class Car : MonoBehaviour
             if (useGripInAcceleration) availableTorque *= grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
             
-            if (applyTorque && (!isRear || !_handbrake))
+            if (applyTorque && (!isRear || !_handbrake) && _engineOn)
             {
                 _rb.AddForceAtPosition(accelerationDir * availableTorque, tire.position);
             }
@@ -324,7 +339,7 @@ public class Car : MonoBehaviour
 
             bool isBreaking = !accelerate && _acceleration != 0f;
             
-            if (isBreaking)
+            if (isBreaking && (!isRear || !_handbrake))
             {
                 _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), tire.position);
             }
@@ -368,7 +383,8 @@ public class Car : MonoBehaviour
         }
     }
 
-    private float enginePitchFactor = 0f;
+    private float _enginePitchFactor = 0f;
+    private float _engineVolume = 0f;
     private void HandleEngineSound()
     {
         if (!_audioSource) return;
@@ -382,22 +398,29 @@ public class Car : MonoBehaviour
         float to = accelerate 
             ? gearPitch + (drivetrain == Drivetrain.FWD || !_wheelContact || speed < 1f ? 0f : _rearSlipAngle) 
             : gearPitch - 0.3f;
+
+        if (!_engineOn) to = 0f;
         
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
 
-        float lerpSpeed = enginePitchFactor < to ? 1f : 2f;
-        enginePitchFactor = Mathf.Lerp(enginePitchFactor, to, Time.deltaTime * lerpSpeed);
+        float lerpSpeed = _enginePitchFactor < to ? 1f : 2f;
+        _enginePitchFactor = Mathf.Lerp(_enginePitchFactor, to, Time.deltaTime * lerpSpeed);
 
-        enginePitchFactor = Mathf.Clamp01(enginePitchFactor);
+        _enginePitchFactor = Mathf.Clamp01(_enginePitchFactor);
 
         float minPitch = gearMinPitch[_currentGear - 1];
-        _audioSource.pitch = enginePitchCurve.Evaluate(enginePitchFactor) * (maxEnginePitch - minPitch) + minPitch;
+        _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minPitch) + minPitch;
+
+        _audioSource.volume = _engineVolume;
     }
 
     private void HandleGears()
     {
+        if (!_engineOn) return;
+        
         if (relativeGears[_currentGear - 1] > relativeSpeed)
         {
+            gearShiftAudio.clip = gearShiftClip;
             gearShiftAudio.pitch = Random.Range(0.8f, 1.2f);
             gearShiftAudio.Play();
             _currentGear--;
@@ -407,6 +430,7 @@ public class Car : MonoBehaviour
         
         if (relativeGears[_currentGear] < relativeSpeed)
         {
+            gearShiftAudio.clip = gearShiftClip;
             gearShiftAudio.pitch = Random.Range(0.8f, 1.2f);
             gearShiftAudio.Play();
             _currentGear++;
@@ -428,6 +452,20 @@ public class Car : MonoBehaviour
         if (tiresOnTrack < 3) return;
         
         _driftCounter.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
+    }
+
+    private IEnumerator StartEngine()
+    {
+        _engineStarting = true;
+        
+        gearShiftAudio.clip = engineStartClip;
+        gearShiftAudio.pitch = 1f;
+        gearShiftAudio.Play();
+
+        yield return new WaitForSeconds(0.4f);
+
+        _engineOn = true;
+        _engineStarting = false;
     }
 
     private void OnCollisionEnter(Collision other)

@@ -9,7 +9,8 @@ public enum ControlKey
     Left,
     Handbrake,
     ResetCar,
-    CycleCar
+    CycleCar,
+    StopEngine
 }
 
 public class Controls : MonoBehaviour
@@ -21,6 +22,7 @@ public class Controls : MonoBehaviour
     [SerializeField] public KeyCode handBreakKey = KeyCode.Space;
     [SerializeField] public KeyCode resetCarKey = KeyCode.R;
     [SerializeField] public KeyCode cycleCarsKey = KeyCode.T;
+    [SerializeField] public KeyCode stopEngineKey = KeyCode.Y;
 
     private static Controls _instance;
 
@@ -53,6 +55,7 @@ public class Controls : MonoBehaviour
         ProcessKey(handBreakKey, 4);
         ProcessKey(resetCarKey, 5);
         ProcessKey(cycleCarsKey, 6);
+        ProcessKey(stopEngineKey, 7);
     }
 
     private void LateUpdate()

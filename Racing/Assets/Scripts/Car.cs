@@ -81,6 +81,7 @@ public class Car : MonoBehaviour
     [SerializeField] private AudioSource gearShiftAudio;
     [SerializeField] private AudioClip gearShiftClip;
     [SerializeField] private AudioClip engineStartClip;
+    [SerializeField] private AudioClip engineStopClip;
 
     [Header("Misc")]
     [SerializeField] private LayerMask layerMask;
@@ -149,20 +150,20 @@ public class Car : MonoBehaviour
 
         if (_controls.GetKeyDown(ControlKey.StopEngine))
         {
-            _engineOn = false;
+            StartCoroutine(StopEngine());
         }
 
         _acceleration = 0f;
         if (_controls.GetKey(ControlKey.Accelerate))
         {
             _acceleration += 1f;
-            if (!_engineOn && !_engineStarting) StartCoroutine(StartEngine());
+            if (!_engineOn) StartCoroutine(StartEngine());
         }
 
         if (_controls.GetKey(ControlKey.Break))
         {
             _acceleration -= 1f;
-            if (!_engineOn && !_engineStarting) StartCoroutine(StartEngine());
+            if (!_engineOn) StartCoroutine(StartEngine());
         }
 
         _handbrake = _controls.GetKey(ControlKey.Handbrake);
@@ -343,9 +344,13 @@ public class Car : MonoBehaviour
 
             bool isBreaking = !accelerate && _acceleration != 0f;
             
-            if (isBreaking && (!isRear || !_handbrake))
+            if (isBreaking && (!isRear || !_handbrake) && !(_handbrake && speed < 0.5f))
             {
                 _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), tire.position);
+            }
+            else
+            {
+                isBreaking = false;
             }
             
             // Handbrake
@@ -459,6 +464,8 @@ public class Car : MonoBehaviour
 
     private IEnumerator StartEngine()
     {
+        if (_engineStarting) yield break;
+        
         _engineStarting = true;
         
         gearShiftAudio.clip = engineStartClip;
@@ -500,6 +507,32 @@ public class Car : MonoBehaviour
         }
 
         _engineOn = true;
+        _engineStarting = false;
+    }
+
+    private IEnumerator StopEngine()
+    {
+        if (_engineStarting) yield break;
+        
+        _engineStarting = true;
+        _engineOn = false;
+        
+        _audioSource.pitch = minEnginePitch;
+
+        while (_enginePitchFactor > 0f)
+        {
+            _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minEnginePitch) +
+                                 minEnginePitch;
+
+            _enginePitchFactor -= Time.deltaTime * 0.5f;
+
+            yield return null;
+        }
+        
+        gearShiftAudio.clip = engineStopClip;
+        gearShiftAudio.pitch = 1f;
+        gearShiftAudio.Play();
+
         _engineStarting = false;
     }
 

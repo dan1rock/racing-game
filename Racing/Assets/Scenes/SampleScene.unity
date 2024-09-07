@@ -6015,6 +6015,7 @@ MonoBehaviour:
   gearShiftAudio: {fileID: 1124129324}
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
+  engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183
@@ -9445,7 +9446,8 @@ AudioSource:
   m_GameObject: {fileID: 1688363377}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 51093d8847ac0844e840e129108165b4,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -11569,6 +11571,7 @@ MonoBehaviour:
   gearShiftAudio: {fileID: 0}
   gearShiftClip: {fileID: 0}
   engineStartClip: {fileID: 0}
+  engineStopClip: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -12537,6 +12540,7 @@ MonoBehaviour:
   gearShiftAudio: {fileID: 1688363379}
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
+  engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183
@@ -13067,6 +13071,7 @@ MonoBehaviour:
   gearShiftAudio: {fileID: 389160454}
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
+  engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183

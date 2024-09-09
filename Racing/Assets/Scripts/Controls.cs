@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum ControlKey
@@ -15,14 +16,7 @@ public enum ControlKey
 
 public class Controls : MonoBehaviour
 {
-    [SerializeField] public KeyCode accelerateKey = KeyCode.W;
-    [SerializeField] public KeyCode breakKey = KeyCode.S;
-    [SerializeField] public KeyCode rightKey = KeyCode.D;
-    [SerializeField] public KeyCode leftKey = KeyCode.A;
-    [SerializeField] public KeyCode handBreakKey = KeyCode.Space;
-    [SerializeField] public KeyCode resetCarKey = KeyCode.R;
-    [SerializeField] public KeyCode cycleCarsKey = KeyCode.T;
-    [SerializeField] public KeyCode stopEngineKey = KeyCode.Y;
+    [SerializeField] public List<KeyCode> keys;
 
     private static Controls _instance;
 
@@ -48,14 +42,10 @@ public class Controls : MonoBehaviour
 
     private void Update()
     {
-        ProcessKey(accelerateKey, 0);
-        ProcessKey(breakKey, 1);
-        ProcessKey(rightKey, 2);
-        ProcessKey(leftKey, 3);
-        ProcessKey(handBreakKey, 4);
-        ProcessKey(resetCarKey, 5);
-        ProcessKey(cycleCarsKey, 6);
-        ProcessKey(stopEngineKey, 7);
+        for (int i = 0; i < keys.Count; i++)
+        {
+            ProcessKey(keys[i], i);
+        }
     }
 
     private void LateUpdate()

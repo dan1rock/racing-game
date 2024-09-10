@@ -42,17 +42,14 @@ public class Controls : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < keys.Count; i++)
-        {
-            ProcessKey(keys[i], i);
-        }
-    }
-
-    private void LateUpdate()
-    {
         for (int i = 0; i < _keysNum; i++)
         {
             _keysDown[i] = false;
+        }
+        
+        for (int i = 0; i < keys.Count; i++)
+        {
+            ProcessKey(keys[i], i);
         }
     }
 

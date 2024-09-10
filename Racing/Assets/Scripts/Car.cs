@@ -107,10 +107,19 @@ public class Car : MonoBehaviour
     private bool _torqueWheelContact = false;
     private bool _wheelContact = false;
 
+    private bool _breakLight = false;
+    private bool _reverseLight = false;
+
     private Controls _controls;
     private DriftCounter _driftCounter;
     private AudioSource _audioSource;
     private Rigidbody _rb;
+
+    private Material _breakLightMat;
+    private Color _breakEmissionColor;
+    
+    private Material _reverseLightMat;
+    private Color _reverseEmissionColor;
     
     private void Awake()
     {
@@ -127,6 +136,26 @@ public class Car : MonoBehaviour
         _wheel_rl = wheel_rl.GetComponentInChildren<Wheel>();
 
         _speedSteeringRatio = 1f / speedSteeringDampening;
+        
+        Renderer renderer = GetComponentInChildren<Renderer>();
+
+        if (renderer != null)
+        {
+            foreach (Material mat in renderer.materials)
+            {
+                if (mat.name.Contains("Break Light"))
+                {
+                    _breakLightMat = mat;
+                    _breakEmissionColor = _breakLightMat.GetColor(EmissionColor);
+                }
+                
+                if (mat.name.Contains("Reverse Light"))
+                {
+                    _reverseLightMat = mat;
+                    _reverseEmissionColor = _reverseLightMat.GetColor(EmissionColor);
+                }
+            }
+        }
     }
 
     private void Update()
@@ -210,6 +239,9 @@ public class Car : MonoBehaviour
 
     private void FixedUpdate()
     {
+        _breakLight = false;
+        _reverseLight = false;
+        
         if (_pendingReset)
         {
             _rb.MovePosition(transform.position + Vector3.up);
@@ -228,6 +260,7 @@ public class Car : MonoBehaviour
         HandleCarPhysics();
         HandleEngineSound();
         HandleDrift();
+        HandleLights();
     }
 
     private void HandleCarPhysics()
@@ -335,6 +368,7 @@ public class Car : MonoBehaviour
             if (applyTorque && (!isRear || !_handbrake) && _engineOn)
             {
                 _rb.AddForceAtPosition(accelerationDir * availableTorque, tire.position);
+                if (availableTorque < 0f) _reverseLight = true;
             }
             
             float accelerationVelocity = Vector3.Dot(accelerationDir, wheelVelocity);
@@ -347,6 +381,7 @@ public class Car : MonoBehaviour
             if (isBreaking && (!isRear || !_handbrake) && !(_handbrake && speed < 0.5f))
             {
                 _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), tire.position);
+                _breakLight = true;
             }
             else
             {
@@ -360,6 +395,7 @@ public class Car : MonoBehaviour
                 if (!isBreaking)
                 {
                     _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(_carSpeed)), tire.position);
+                    _breakLight = true;
                 }
 
                 grip *= handbrakeGripMultiplier;
@@ -394,6 +430,8 @@ public class Car : MonoBehaviour
 
     private float _enginePitchFactor = 0f;
     private float _engineVolume = 0f;
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+
     private void HandleEngineSound()
     {
         if (!_audioSource) return;
@@ -460,6 +498,14 @@ public class Car : MonoBehaviour
         if (tiresOnTrack < 3) return;
         
         _driftCounter.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
+    }
+
+    private void HandleLights()
+    {
+        if (speed < 1f) _breakLight = true;
+        
+        _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : Color.black);
+        _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
     }
 
     private IEnumerator StartEngine()

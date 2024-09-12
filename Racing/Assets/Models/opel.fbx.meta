@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Bottom
+    second: {fileID: 2100000, guid: 659ddf4740233aa44ae6fc105a22404a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Break Light
     second: {fileID: 2100000, guid: 494213157f66a4c4db5beb7c24cad5f8, type: 2}
   - first:
@@ -52,6 +57,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Metal
+    second: {fileID: 2100000, guid: 70f9d075292aaa740bbb2165dcbdf3bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Radiator
     second: {fileID: 2100000, guid: 15d813f831effa645bb5b34a3b1ee6ff, type: 2}
   - first:
@@ -69,6 +79,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Turn Light
     second: {fileID: 2100000, guid: 0b9125a11b8f42042b30eb3306a8ab2c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window Outline
+    second: {fileID: 2100000, guid: 798947b84a52f024fa5cf27477f28e15, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

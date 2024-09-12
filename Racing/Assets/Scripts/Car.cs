@@ -120,6 +120,9 @@ public class Car : MonoBehaviour
     
     private Material _reverseLightMat;
     private Color _reverseEmissionColor;
+
+    private Material _frontLightMat;
+    private Color _frontEmissionColor;
     
     private void Awake()
     {
@@ -153,6 +156,12 @@ public class Car : MonoBehaviour
                 {
                     _reverseLightMat = mat;
                     _reverseEmissionColor = _reverseLightMat.GetColor(EmissionColor);
+                }
+                
+                if (mat.name.Contains("Frontlights"))
+                {
+                    _frontLightMat = mat;
+                    _frontEmissionColor = _frontLightMat.GetColor(EmissionColor);
                 }
             }
         }
@@ -504,8 +513,12 @@ public class Car : MonoBehaviour
     {
         if (speed < 1f) _breakLight = true;
         
+        _breakLight = _breakLight && (_engineOn || _engineStarting);
+        _reverseLight = _reverseLight && (_engineOn || _engineStarting);
+        
         _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : Color.black);
         _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
+        _frontLightMat?.SetColor(EmissionColor, _engineOn || _engineStarting ? _frontEmissionColor : Color.black);
     }
 
     private IEnumerator StartEngine()

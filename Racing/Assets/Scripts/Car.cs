@@ -251,6 +251,11 @@ public class Car : MonoBehaviour
         _breakLight = false;
         _reverseLight = false;
         
+        HandleCarPhysics();
+        HandleEngineSound();
+        HandleDrift();
+        HandleLights();
+        
         if (_pendingReset)
         {
             _rb.MovePosition(transform.position + Vector3.up);
@@ -265,11 +270,6 @@ public class Car : MonoBehaviour
 
             _pendingReset = false;
         }
-        
-        HandleCarPhysics();
-        HandleEngineSound();
-        HandleDrift();
-        HandleLights();
     }
 
     private void HandleCarPhysics()

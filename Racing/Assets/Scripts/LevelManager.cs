@@ -18,7 +18,11 @@ public class LevelManager : MonoBehaviour
         _controls = Controls.Get();
 
         Application.targetFrameRate = 60;
-        
+
+        foreach (Car car in cars)
+        {
+            car.playerControlled = false;
+        }
         UpdateTargetCar();
     }
 

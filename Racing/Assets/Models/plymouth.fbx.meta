@@ -52,6 +52,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Reverse Light
+    second: {fileID: 2100000, guid: 80016c9929ccf5949a5e263db4ec8245, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Tires
     second: {fileID: 2100000, guid: 995d0824af99cd440a103db7dd3b1eee, type: 2}
   - first:

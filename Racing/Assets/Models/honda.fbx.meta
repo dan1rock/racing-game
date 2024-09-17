@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2ce01bd649a82104ab375fb574a2df7f
+guid: 2e260f34d7833e048ba40c789f66397a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -37,8 +37,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Main3
-    second: {fileID: 2100000, guid: 4a72064d664517342b84f9b1473369eb, type: 2}
+      name: Main6
+    second: {fileID: 2100000, guid: a0594344fbdb737418047201d3b79ede, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -59,6 +59,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Tires
     second: {fileID: 2100000, guid: 995d0824af99cd440a103db7dd3b1eee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Turn Light
+    second: {fileID: 2100000, guid: 0b9125a11b8f42042b30eb3306a8ab2c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

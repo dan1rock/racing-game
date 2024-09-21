@@ -367,7 +367,8 @@ public class Car : MonoBehaviour
 
             Vector3 accelerationDir = tire.forward;
 
-            bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration);
+            float movingDir = Mathf.Sign(_carSpeed);
+            bool accelerate = movingDir == Mathf.Sign(_acceleration);
             float curveValue = _acceleration < 0f ? normalizedReverse : normalizedSpeed;
             float speedFactor = accelerate ? accelerationCurve.Evaluate(curveValue) : 0f;
             float availableTorque = torque * _acceleration * speedFactor;
@@ -380,8 +381,8 @@ public class Car : MonoBehaviour
                 if (availableTorque < 0f) _reverseLight = true;
             }
             
-            float accelerationVelocity = Vector3.Dot(accelerationDir, wheelVelocity);
-            wheel.SetRotationSpeed(accelerationVelocity);
+            float accelerationVelocity = Vector3.Dot(tire.forward, wheelVelocity);
+            wheel.SetRotationSpeed(isRear ? wheelVelocity.magnitude * movingDir : accelerationVelocity);
             
             // Breaks
 

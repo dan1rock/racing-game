@@ -34,7 +34,7 @@ public class WheelTrail : MonoBehaviour
         ParticleSystem.EmissionModule emission = _particleSystem.emission;
         emission.enabled = emitTrail;
 
-        float volume = Mathf.Clamp01(wheelSpeed / 100f) * 0.8f + 0.2f;
+        float volume = Mathf.Clamp01(wheelSpeed / 50f) * 0.8f + 0.2f;
         float to = emitTrail ? volume * maxVolume : 0f;
         float rate = emitTrail ? 2f : 5f;
         _driftVolume = Mathf.Lerp(_driftVolume, to, Time.deltaTime * rate);

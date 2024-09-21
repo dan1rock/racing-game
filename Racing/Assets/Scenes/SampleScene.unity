@@ -1878,7 +1878,7 @@ MonoBehaviour:
   speedSteeringDampening: 3
   frontTireGrip: 0.8
   rearTireGrip: 0.8
-  tireMass: 0.05
+  tireMass: 0.1
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -1973,7 +1973,7 @@ MonoBehaviour:
   isDriftCar: 0
   driftCounterSteering: 30
   drivetrain: 0
-  torque: 10
+  torque: 15
   topSpeed: 100
   topReverse: 20
   accelerationCurve:
@@ -2001,8 +2001,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
-  breakForce: 7
-  handbrakeForce: 2
+  breakForce: 10
+  handbrakeForce: 4
   handbrakeGripMultiplier: 0.8
   minEnginePitch: 0.2
   maxEnginePitch: 1.6
@@ -10631,7 +10631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1022032316
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24801,6 +24801,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 15d813f831effa645bb5b34a3b1ee6ff, type: 2}
   - {fileID: 2100000, guid: bc9de8bec22d00447b963ebea98a06bd, type: 2}
   - {fileID: 2100000, guid: 0bf83c24bfe54b14ca66a7030be0cabb, type: 2}
+  - {fileID: 2100000, guid: 70f9d075292aaa740bbb2165dcbdf3bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

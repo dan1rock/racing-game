@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trail: {fileID: 1048158877037759571}
-  groundOffset: 0.05
-  maxVolume: 0.5
+  groundOffset: 0.01
+  maxVolume: 0.3
   layerMask:
     serializedVersion: 2
     m_Bits: 129

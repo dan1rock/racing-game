@@ -382,7 +382,7 @@ public class Car : MonoBehaviour
             }
             
             float accelerationVelocity = Vector3.Dot(tire.forward, wheelVelocity);
-            wheel.SetRotationSpeed(isRear ? wheelVelocity.magnitude * movingDir : accelerationVelocity);
+            wheel.SetRotationSpeed(isRear && _acceleration != 0f ? wheelVelocity.magnitude * movingDir : accelerationVelocity);
             
             // Breaks
 
@@ -425,9 +425,18 @@ public class Car : MonoBehaviour
 
             float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
             float desiredVelocityChange = -steeringVelocity * grip;
+            float absSteeringVelocity = Mathf.Abs(steeringVelocity);
+
+            float absoluteGripVelocity = isRear ? 0.3f : 0.5f;
+            
+            if (absSteeringVelocity < absoluteGripVelocity) desiredVelocityChange = -steeringVelocity;
             float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;
             
-            _rb.AddForceAtPosition(steeringDir * (tireMass * desiredAcceleration), tire.position);
+            float mass = tireMass;
+            float massInterpolation = absSteeringVelocity / absoluteGripVelocity;
+            massInterpolation *= massInterpolation;
+            if (absSteeringVelocity < absoluteGripVelocity) mass = Mathf.Lerp(_rb.mass * 0.25f, mass, massInterpolation);
+            _rb.AddForceAtPosition(steeringDir * (mass * desiredAcceleration), tire.position);
         }
         else
         {

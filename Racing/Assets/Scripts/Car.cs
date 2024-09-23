@@ -301,9 +301,17 @@ public class Car : MonoBehaviour
         if (isDriftCar)
         {
             float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
-            _driftCounterSteering = Mathf.Abs(angle) < 90f && speed > 1f && _wheelContact
-                ? angle * Mathf.Deg2Rad * driftCounterSteering 
-                : 0f;
+            if (Mathf.Abs(angle) < 90f && speed > 1f && _wheelContact)
+            {
+                float angleRatio = angle * Mathf.Deg2Rad;
+                if (angleRatio > 1f) angleRatio *= Mathf.Abs(angleRatio);
+                
+                _driftCounterSteering = angleRatio * driftCounterSteering;
+            }
+            else
+            {
+                _driftCounterSteering = 0f;
+            }
         }
     }
 

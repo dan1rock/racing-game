@@ -619,7 +619,7 @@ public class Car : MonoBehaviour
         {
             if (other.impulse.magnitude > 0.5f && other.gameObject.layer != 7)
             {
-                _driftCounter.DriftFailed();
+                _driftCounter.OnDriftFail();
             }
         }
     }

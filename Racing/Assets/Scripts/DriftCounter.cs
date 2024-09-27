@@ -50,7 +50,27 @@ public class DriftCounter : MonoBehaviour
         overallDriftScore.text = "0";
         scoreMultiplier.text = "x1";
         
+        InitMultiplierSystem();
+        
         _nextMultiplierRaiseDistance = multiplierRaiseTime[0];
+    }
+
+    private void InitMultiplierSystem()
+    {
+        List<float> newList = new();
+
+        float lengthRatio = 0.5f;
+        int numPerElement = 2;
+
+        foreach (float length in multiplierRaiseTime)
+        {
+            for (int i = 0; i < numPerElement; i++)
+            {
+                newList.Add(length * lengthRatio);
+            }
+        }
+
+        multiplierRaiseTime = newList;
     }
 
     private void Update()
@@ -67,7 +87,7 @@ public class DriftCounter : MonoBehaviour
 
     private void HandleMultiplier()
     {
-        if (_multiplier >= 25) return;
+        if (_multiplier >= 50) return;
         
         if (_driftDistance > _nextMultiplierRaiseDistance)
         {

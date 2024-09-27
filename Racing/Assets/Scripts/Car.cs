@@ -340,7 +340,10 @@ public class Car : MonoBehaviour
             
             float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
-            if (isRear) _rearSlipAngle = slipAngle;
+            if (isRear)
+            {
+                _rearSlipAngle = slipAngle;
+            }
             slipAngle = Mathf.Clamp01(slipAngle);
 
             if (speed < 0.5f) slipAngle = 0f;
@@ -350,7 +353,8 @@ public class Car : MonoBehaviour
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
 
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
-            
+            emitTrail = emitTrail || isRear && isDriftCar && _acceleration > 0f && _carSpeed < 0f;
+
             wheel.SetTrailState(emitTrail, Mathf.Abs(Vector3.Dot(wheelVelocity, tire.right)));
 
             if (applyTorque) _torqueWheelContact = true;
@@ -390,7 +394,14 @@ public class Car : MonoBehaviour
             }
             
             float accelerationVelocity = Vector3.Dot(tire.forward, wheelVelocity);
-            wheel.SetRotationSpeed(isRear && _acceleration != 0f ? wheelVelocity.magnitude * movingDir : accelerationVelocity);
+
+            float rotationSpeed = isRear && _acceleration != 0f
+                ? wheelVelocity.magnitude * movingDir
+                : accelerationVelocity;
+
+            if (isRear && isDriftCar && _acceleration > 0f && _carSpeed < 0f) rotationSpeed = 10f;
+            
+            wheel.SetRotationSpeed(rotationSpeed);
             
             // Breaks
 
@@ -471,8 +482,13 @@ public class Car : MonoBehaviour
         float gearPitch = (relativeSpeed - bottomBoundary) / (topBoundary - bottomBoundary);
         
         float to = accelerate 
-            ? gearPitch + (drivetrain == Drivetrain.FWD || !_wheelContact || speed < 1f ? 0f : _rearSlipAngle) 
+            ? gearPitch + (drivetrain == Drivetrain.FWD || !_wheelContact ? 0f : _rearSlipAngle) 
             : gearPitch - 0.3f;
+
+        if (isDriftCar && _acceleration > 0f && _carSpeed < 0f)
+        {
+            to = maxEnginePitch;
+        }
 
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
 

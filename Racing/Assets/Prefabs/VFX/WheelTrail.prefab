@@ -51,7 +51,7 @@ MonoBehaviour:
   maxVolume: 0.3
   layerMask:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 128
   emitTrail: 0
   wheelSpeed: 0
 --- !u!82 &542818791151850605

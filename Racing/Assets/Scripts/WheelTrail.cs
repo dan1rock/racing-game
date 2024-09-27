@@ -30,17 +30,6 @@ public class WheelTrail : MonoBehaviour
 
     private void Update()
     {
-        _trailRenderer.emitting = emitTrail;
-        ParticleSystem.EmissionModule emission = _particleSystem.emission;
-        emission.enabled = emitTrail;
-
-        float volume = Mathf.Clamp01(wheelSpeed / 50f) * 0.8f + 0.2f;
-        float to = emitTrail ? volume * maxVolume : 0f;
-        float rate = emitTrail ? 2f : 5f;
-        _driftVolume = Mathf.Lerp(_driftVolume, to, Time.deltaTime * rate);
-        
-        _audioSource.volume = _driftVolume;
-        
         Ray ray = new()
         {
             origin = transform.position + transform.up * 0.1f,
@@ -60,7 +49,23 @@ public class WheelTrail : MonoBehaviour
         else
         {
             trail.up = _trailLastNormal;
-            trail.position = _trailLastPosition;
+
+            Vector3 pos = transform.position;
+
+            pos.y = _trailLastPosition.y;
+            
+            trail.position = pos;
         }
+        
+        _trailRenderer.emitting = emitTrail && hit;
+        ParticleSystem.EmissionModule emission = _particleSystem.emission;
+        emission.enabled = emitTrail && hit;
+
+        float volume = Mathf.Clamp01(wheelSpeed / 50f) * 0.8f + 0.2f;
+        float to = emitTrail && hit ? volume * maxVolume : 0f;
+        float rate = emitTrail && hit ? 2f : 5f;
+        _driftVolume = Mathf.Lerp(_driftVolume, to, Time.deltaTime * rate);
+        
+        _audioSource.volume = _driftVolume;
     }
 }

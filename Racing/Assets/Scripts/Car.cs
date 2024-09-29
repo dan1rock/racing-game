@@ -433,9 +433,17 @@ public class Car : MonoBehaviour
             // Drag
 
             float drag = Mathf.Abs(_carSpeed);
-            if (drag > 1f) drag = 1f;
-            drag *= Mathf.Sign(_carSpeed);
             drag *= 0.5f;
+            if (drag > 0.5f)
+            {
+                drag = 1f;
+                drag *= Mathf.Sign(_carSpeed);
+                drag *= 0.5f;
+            }
+            else if (_acceleration == 0f)
+            {
+                drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
+            }
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
             
             // Steering

@@ -24,6 +24,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Roadlines
     second: {fileID: 2100000, guid: c9b7b01bf76d50145b6bbab15a7175e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Terrain
+    second: {fileID: 2100000, guid: a1df3afecc4d1e54096a3139fa304bb8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -52,7 +57,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1

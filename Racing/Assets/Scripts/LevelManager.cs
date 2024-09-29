@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private List<Car> cars;
     [SerializeField] private GameObject driftUI;
+    [SerializeField] private Transform activeCarMarker;
 
     private int _activeCar = 0;
 
@@ -29,6 +30,8 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         HandleInput();
+
+        activeCarMarker.position = cars[_activeCar].transform.position;
     }
 
     private void HandleInput()

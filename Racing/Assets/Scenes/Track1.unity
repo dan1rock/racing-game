@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 941013320}
-  m_IndirectSpecularColor: {r: 0.18388486, g: 0.22895432, b: 0.30266744, a: 1}
+  m_IndirectSpecularColor: {r: 0.18378247, g: 0.22884192, b: 0.30255044, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1491,7 +1491,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
+  m_LocalRotation: {x: 0.1393637, y: -0.6932372, z: 0.13936372, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -13.499999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7469,7 +7469,7 @@ MonoBehaviour:
   cachedWeatherSphere: {fileID: 544163633}
   cachedSystem: {fileID: 0}
   satellites:
-  - {fileID: 11400000, guid: 6c5237c919631d043a73040c63874662, type: 2}
+  - {fileID: 11400000, guid: bbc336605004243b784c9716ed52d651, type: 2}
   satHolder: {fileID: 0}
   hideInHierarchy: 1
   mainMoon: 0
@@ -7493,7 +7493,7 @@ MonoBehaviour:
   biomes: []
   weight: 1
   ambienceProfiles:
-  - {fileID: 11400000, guid: e1524d194ad97f34ebbaddeea31a44ca, type: 2}
+  - {fileID: 11400000, guid: 591e951f3a99d4e1d92eee6e1a611a45, type: 2}
   weightedAmbience: []
   currentAmbienceProfile: {fileID: 11400000, guid: e1524d194ad97f34ebbaddeea31a44ca,
     type: 2}
@@ -7739,7 +7739,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cachedWeatherSphere: {fileID: 544163633}
   cachedSystem: {fileID: 0}
-  defaultWindProfile: {fileID: 11400000, guid: 94bed43d2a7d48f428f62cb4dcb20a81, type: 2}
+  defaultWindProfile: {fileID: 11400000, guid: 9aeae147da6ae481a93377440ac9aa72, type: 2}
   windZone: {fileID: 1968516926}
   windSpeed: 1.117
   windChangeSpeed: 2.2
@@ -7764,7 +7764,7 @@ MonoBehaviour:
   cachedSystem: {fileID: 0}
   biomes: []
   weight: 1
-  atmosphereProfile: {fileID: 11400000, guid: 8cc0487e978305c49a20079f78f36ba0, type: 2}
+  atmosphereProfile: {fileID: 11400000, guid: bd269163a75044d6c945dcca5c0803a3, type: 2}
   transitioningAtmosphere: 0
 --- !u!114 &505563090
 MonoBehaviour:
@@ -7781,7 +7781,7 @@ MonoBehaviour:
   cachedWeatherSphere: {fileID: 544163633}
   cachedSystem: {fileID: 0}
   transit: {fileID: 505563086}
-  perennialProfile: {fileID: 11400000, guid: 8ce0d8458b4495b4593c1e03027a0ce5, type: 2}
+  perennialProfile: {fileID: 11400000, guid: dbceca48cdfba4f4685862ce34935935, type: 2}
   overrideDate: {fileID: 0}
   m_DayPercentage: 0.71103835
   yearPercentage: 0.49397996
@@ -7835,11 +7835,11 @@ MonoBehaviour:
       type: 2}
     weightedWeatherProfiles:
     - weight: 1
-      profile: {fileID: 11400000, guid: f161b3af7360fc043927736dde8f5c42, type: 2}
+      profile: {fileID: 11400000, guid: 4ef5a87214dcf4abdb41a77f5d5a9716, type: 2}
       transitioning: 1
   currentWeatherProfiles:
   - weight: 1
-    profile: {fileID: 11400000, guid: f161b3af7360fc043927736dde8f5c42, type: 2}
+    profile: {fileID: 11400000, guid: 4ef5a87214dcf4abdb41a77f5d5a9716, type: 2}
     transitioning: 1
   defaultFilter: {fileID: 11400000, guid: b3b90f04f4696264c9aab62e9c3c68a5, type: 2}
   defaultClouds: {fileID: 11400000, guid: 40c748033998bf243ae542ca195124b7, type: 2}
@@ -7859,7 +7859,7 @@ MonoBehaviour:
   cachedSystem: {fileID: 0}
   biomes: []
   weight: 1
-  climateProfile: {fileID: 11400000, guid: e1a4bf0206b48d4428e0e961e057af39, type: 2}
+  climateProfile: {fileID: 11400000, guid: 2b8378c9560774f6bbe3edf02281fac2, type: 2}
   controlMethod: 1
   localTemperatureFilter: 0
   localPrecipitationFilter: 0
@@ -7867,10 +7867,10 @@ MonoBehaviour:
   currentPrecipitation: 50.521576
   snowAmount: 0
   m_SnowMeltSpeed: 0.35
-  wetness: 0.64187235
+  wetness: 0.8015255
   m_DryingSpeed: 0.5
   snowSpeed: 0
-  rainSpeed: 0.025
+  rainSpeed: 0
 --- !u!1 &530453568
 GameObject:
   m_ObjectHideFlags: 0
@@ -8060,10 +8060,10 @@ MonoBehaviour:
   lightScatteringColor: {r: 0, g: 0, b: 0, a: 0}
   rainbowPosition: 20
   rainbowWidth: 2.7
-  fogStart1: 10
-  fogStart2: 20
-  fogStart3: 50
-  fogStart4: 100
+  fogStart1: 5
+  fogStart2: 12
+  fogStart3: 20
+  fogStart4: 35
   fogHeight: 1
   fogDensityMultiplier: 1
   fogLightFlareIntensity: 0.996818
@@ -8129,7 +8129,7 @@ MonoBehaviour:
   highNimbusLuxuryClouds: {fileID: 2800000, guid: cf1e011d4126f5b45af1e0c5c8162509,
     type: 3}
   luxuryVariation: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01, type: 3}
-  rainbowIntensity: 0.64187235
+  rainbowIntensity: 0.8015255
   useRainbow: 1
   separateSunLightAndTransform: 0
   sunAngle: 0.5
@@ -17291,7 +17291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
+  m_LocalRotation: {x: 0.1393637, y: -0.6932372, z: 0.13936372, w: 0.6932371}
   m_LocalPosition: {x: 12.335999, y: 4.19, z: -13.499999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -23355,7 +23355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9586945, z: -0, w: -0.28443778}
+  m_LocalRotation: {x: -0, y: 0.33932155, z: -0, w: 0.9406705}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

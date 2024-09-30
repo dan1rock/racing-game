@@ -62,7 +62,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   driftUI: {fileID: 4040685514823863}
+  mobileUI: {fileID: 1162258596122569578}
   activeCarMarker: {fileID: 3382913086122023323}
+  nightMode: 0
 --- !u!114 &6374711817727101306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,6 +290,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1162258596122569578 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4044935980877184589, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1412011108048478692 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4295074231328470211, guid: a243a5871f1f22c4d923847db2f67edd,

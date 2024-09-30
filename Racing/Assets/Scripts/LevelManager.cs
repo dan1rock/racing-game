@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private List<Car> cars;
     [SerializeField] private GameObject driftUI;
+    [SerializeField] private GameObject mobileUI;
     [SerializeField] private Transform activeCarMarker;
 
     [SerializeField] public bool nightMode = false;
@@ -27,6 +28,11 @@ public class LevelManager : MonoBehaviour
             car.playerControlled = false;
         }
         UpdateTargetCar();
+
+        if (Application.isMobilePlatform)
+        {
+            mobileUI.SetActive(true);
+        }
     }
 
     private void Update()

@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject driftUI;
     [SerializeField] private Transform activeCarMarker;
 
+    [SerializeField] public bool nightMode = false;
+
     private int _activeCar = 0;
 
     private Controls _controls;

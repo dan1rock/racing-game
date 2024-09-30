@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 941013320}
-  m_IndirectSpecularColor: {r: 0.18378247, g: 0.22884192, b: 0.30255044, a: 1}
+  m_IndirectSpecularColor: {r: 0.18388486, g: 0.22895432, b: 0.30266744, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7867,10 +7867,10 @@ MonoBehaviour:
   currentPrecipitation: 50.521576
   snowAmount: 0
   m_SnowMeltSpeed: 0.35
-  wetness: 0.8015255
+  wetness: 0.13392922
   m_DryingSpeed: 0.5
   snowSpeed: 0
-  rainSpeed: 0
+  rainSpeed: 0.025
 --- !u!1 &530453568
 GameObject:
   m_ObjectHideFlags: 0
@@ -8129,7 +8129,7 @@ MonoBehaviour:
   highNimbusLuxuryClouds: {fileID: 2800000, guid: cf1e011d4126f5b45af1e0c5c8162509,
     type: 3}
   luxuryVariation: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01, type: 3}
-  rainbowIntensity: 0.8015255
+  rainbowIntensity: 0.13392922
   useRainbow: 1
   separateSunLightAndTransform: 0
   sunAngle: 0.5
@@ -23355,7 +23355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.33932155, z: -0, w: 0.9406705}
+  m_LocalRotation: {x: -0, y: 0.91723776, z: -0, w: 0.39834026}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24651,6 +24651,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+        type: 3}
+      propertyPath: nightMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}

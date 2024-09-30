@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Drivetrain
@@ -110,13 +108,18 @@ public class Car : MonoBehaviour
     private bool _breakLight = false;
     private bool _reverseLight = false;
 
+    private GameObject _frontLightSource;
+
+    private LevelManager _levelManager;
     private Controls _controls;
     private DriftCounter _driftCounter;
     private AudioSource _audioSource;
     private Rigidbody _rb;
 
     private Material _breakLightMat;
+    private Color _redLightEmissionColor;
     private Color _breakEmissionColor;
+    private Color _breakBaseEmission = Color.black;
     
     private Material _reverseLightMat;
     private Color _reverseEmissionColor;
@@ -130,6 +133,7 @@ public class Car : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _audioSource.volume = 0f;
         _driftCounter = FindObjectOfType<DriftCounter>();
+        _levelManager = FindObjectOfType<LevelManager>();
         
         _controls = Controls.Get();
 
@@ -149,7 +153,9 @@ public class Car : MonoBehaviour
                 if (mat.name.Contains("Break Light"))
                 {
                     _breakLightMat = mat;
-                    _breakEmissionColor = _breakLightMat.GetColor(EmissionColor);
+                    _redLightEmissionColor = _breakLightMat.GetColor(EmissionColor);
+                    _breakEmissionColor = _redLightEmissionColor * 2f;
+                    _redLightEmissionColor *= 0.5f;
                 }
                 
                 if (mat.name.Contains("Reverse Light"))
@@ -162,9 +168,13 @@ public class Car : MonoBehaviour
                 {
                     _frontLightMat = mat;
                     _frontEmissionColor = _frontLightMat.GetColor(EmissionColor);
+                    _frontLightMat.SetColor(EmissionColor, Color.black);
                 }
             }
         }
+
+        _frontLightSource = GetComponentInChildren<Light>()?.transform.parent.gameObject;
+        _frontLightSource?.SetActive(false);
     }
 
     private void Update()
@@ -558,14 +568,20 @@ public class Car : MonoBehaviour
         _breakLight = _breakLight && (_engineOn || _engineStarting);
         _reverseLight = _reverseLight && (_engineOn || _engineStarting);
         
-        _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : Color.black);
+        _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : _breakBaseEmission);
         _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
-        _frontLightMat?.SetColor(EmissionColor, _engineOn || _engineStarting ? _frontEmissionColor : Color.black);
     }
 
     private IEnumerator StartEngine()
     {
         if (_engineStarting) yield break;
+        
+        if (_levelManager.nightMode)
+        {
+            _frontLightSource?.SetActive(true);
+            _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
+            _breakBaseEmission = _redLightEmissionColor;
+        }
         
         _engineStarting = true;
         
@@ -614,6 +630,13 @@ public class Car : MonoBehaviour
     private IEnumerator StopEngine()
     {
         if (_engineStarting) yield break;
+        
+        if (_levelManager.nightMode)
+        {
+            _frontLightSource?.SetActive(false);
+            _frontLightMat?.SetColor(EmissionColor, Color.black);
+            _breakBaseEmission = Color.black;
+        }
         
         _engineStarting = true;
         _engineOn = false;

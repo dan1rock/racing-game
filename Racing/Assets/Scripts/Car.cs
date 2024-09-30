@@ -117,9 +117,10 @@ public class Car : MonoBehaviour
     private Rigidbody _rb;
 
     private Material _breakLightMat;
+    private Material _breakFlareMat;
     private Color _redLightEmissionColor;
     private Color _breakEmissionColor;
-    private Color _breakBaseEmission = Color.black;
+    private Color _breakFlareEmissionColor = Color.black;
     
     private Material _reverseLightMat;
     private Color _reverseEmissionColor;
@@ -153,11 +154,16 @@ public class Car : MonoBehaviour
                 if (mat.name.Contains("Break Light"))
                 {
                     _breakLightMat = mat;
-                    _redLightEmissionColor = _breakLightMat.GetColor(EmissionColor);
+                }
+
+                if (mat.name.Contains("Break Flare"))
+                {
+                    _breakFlareMat = mat;
+                    _redLightEmissionColor = _breakFlareMat.GetColor(EmissionColor);
                     _breakEmissionColor = _redLightEmissionColor * 2f;
                     _redLightEmissionColor *= 0.5f;
                 }
-                
+
                 if (mat.name.Contains("Reverse Light"))
                 {
                     _reverseLightMat = mat;
@@ -443,14 +449,13 @@ public class Car : MonoBehaviour
             // Drag
 
             float drag = Mathf.Abs(_carSpeed);
-            drag *= 0.5f;
             if (drag > 0.5f)
             {
                 drag = 1f;
                 drag *= Mathf.Sign(_carSpeed);
                 drag *= 0.5f;
             }
-            else if (_acceleration == 0f)
+            else if (_acceleration == 0f && _rb.velocity.magnitude < 0.5f)
             {
                 drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
             }
@@ -568,7 +573,8 @@ public class Car : MonoBehaviour
         _breakLight = _breakLight && (_engineOn || _engineStarting);
         _reverseLight = _reverseLight && (_engineOn || _engineStarting);
         
-        _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : _breakBaseEmission);
+        _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : Color.black);
+        _breakFlareMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : _breakFlareEmissionColor);
         _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
     }
 
@@ -580,7 +586,7 @@ public class Car : MonoBehaviour
         {
             _frontLightSource?.SetActive(true);
             _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
-            _breakBaseEmission = _redLightEmissionColor;
+            _breakFlareEmissionColor = _redLightEmissionColor;
         }
         
         _engineStarting = true;
@@ -635,7 +641,7 @@ public class Car : MonoBehaviour
         {
             _frontLightSource?.SetActive(false);
             _frontLightMat?.SetColor(EmissionColor, Color.black);
-            _breakBaseEmission = Color.black;
+            _breakFlareEmissionColor = Color.black;
         }
         
         _engineStarting = true;

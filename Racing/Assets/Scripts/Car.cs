@@ -88,6 +88,7 @@ public class Car : MonoBehaviour
     [SerializeField] [ReadOnly] private float relativeSpeed;
 
     [SerializeField] public bool playerControlled = false;
+    [SerializeField] private bool menuMode = false;
 
     private float _carSpeed;
     private float _acceleration = 0f;
@@ -98,6 +99,7 @@ public class Car : MonoBehaviour
 
     private int _currentGear = 1;
 
+    private bool _nightMode = false;
     private bool _engineOn = false;
     private bool _engineStarting = false;
     private bool _pendingReset = false;
@@ -135,6 +137,7 @@ public class Car : MonoBehaviour
         _audioSource.volume = 0f;
         _driftCounter = FindObjectOfType<DriftCounter>();
         _levelManager = FindObjectOfType<LevelManager>();
+        if (_levelManager) _nightMode = _levelManager.nightMode;
         
         _controls = Controls.Get();
 
@@ -181,6 +184,11 @@ public class Car : MonoBehaviour
 
         _frontLightSource = GetComponentInChildren<Light>()?.transform.parent.gameObject;
         _frontLightSource?.SetActive(false);
+
+        if (menuMode)
+        {
+            SetMenuMode();
+        }
     }
 
     private void Update()
@@ -553,6 +561,7 @@ public class Car : MonoBehaviour
     {
         if (!isDriftCar) return;
         if (!_wheelContact) return;
+        if (!_driftCounter) return;
 
         int tiresOnTrack = 0;
 
@@ -582,7 +591,7 @@ public class Car : MonoBehaviour
     {
         if (_engineStarting) yield break;
         
-        if (_levelManager.nightMode)
+        if (_nightMode)
         {
             _frontLightSource?.SetActive(true);
             _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
@@ -633,11 +642,23 @@ public class Car : MonoBehaviour
         _engineStarting = false;
     }
 
+    private void StartEngineImmediate()
+    {
+        if (_nightMode)
+        {
+            _frontLightSource?.SetActive(true);
+            _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
+            _breakFlareEmissionColor = _redLightEmissionColor;
+        }
+
+        _engineOn = true;
+    }
+
     private IEnumerator StopEngine()
     {
         if (_engineStarting) yield break;
         
-        if (_levelManager.nightMode)
+        if (_nightMode)
         {
             _frontLightSource?.SetActive(false);
             _frontLightMat?.SetColor(EmissionColor, Color.black);
@@ -664,6 +685,23 @@ public class Car : MonoBehaviour
         gearShiftAudio.Play();
 
         _engineStarting = false;
+    }
+
+    public void SetMenuMode()
+    {
+        menuMode = true;
+        
+        _steering = -0.5f;
+        _acceleration = 1f;
+        _nightMode = true;
+            
+        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
+                         _driftCounterSteering;
+
+        tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
+        tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);
+            
+        StartEngineImmediate();
     }
 
     private void OnCollisionEnter(Collision other)

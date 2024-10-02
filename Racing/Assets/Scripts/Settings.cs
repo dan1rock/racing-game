@@ -25,6 +25,8 @@ public class Settings : MonoBehaviour
 
         _instance = this;
         
+        DontDestroyOnLoad(gameObject);
+        
         ApplySettings();
     }
 

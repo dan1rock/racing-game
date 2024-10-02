@@ -26,8 +26,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject pickedCar;
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
-    
-    [Header("Technical")]
+
+    [Header("Technical")] 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private GameObject driftUI;
     [SerializeField] private GameObject mobileUI;
@@ -47,8 +47,19 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        if (GameManager.Get())
+        {
+            GameManager gameManager = GameManager.Get();
+            pickedCar = gameManager.car;
+            weather = gameManager.weather;
+            dayTime = gameManager.dayTime;
+        }
+        
         _controls = Controls.Get();
         _cozyWeather = FindObjectOfType<CozyWeather>();
+
+        if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
+        if (dayTime == DayTime.Night) nightMode = true;
 
         Application.targetFrameRate = 60;
 
@@ -72,7 +83,9 @@ public class LevelManager : MonoBehaviour
     
     private void UpdateWeather()
     {
-        _cozyWeather.timeModule.currentTime = new MeridiemTime(dayTimes[(int)dayTime], 0);
+        int time = dayTimes[(int)dayTime];
+        if (weather is Weather.Rainy or Weather.Snowy && dayTime == DayTime.Night) time += 1;
+        _cozyWeather.timeModule.currentTime = new MeridiemTime(time, 0);
         
         CozyWeather.instance.weatherModule.ecosystem.SetWeather(weathers[(int) weather]);
     }

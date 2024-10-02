@@ -430,6 +430,7 @@ MonoBehaviour:
   speed: 0.007582225
   relativeSpeed: 0.00007582225
   playerControlled: 0
+  menuMode: 0
 --- !u!82 &8564210923210522564
 AudioSource:
   m_ObjectHideFlags: 0
@@ -439,7 +440,8 @@ AudioSource:
   m_GameObject: {fileID: 824886591927594260}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
@@ -873,7 +875,7 @@ AudioSource:
   m_GameObject: {fileID: 3671475936314310930}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 51093d8847ac0844e840e129108165b4,
+  OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   m_PlayOnAwake: 0

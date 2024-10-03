@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Drivetrain
@@ -14,17 +13,16 @@ public enum Drivetrain
 
 public class Car : MonoBehaviour
 {
-    [Header("Wheel physics")]
-    [SerializeField] private Transform tire_fr;
-    [SerializeField] private Transform tire_fl;
-    [SerializeField] private Transform tire_rr;
-    [SerializeField] private Transform tire_rl;
+    private Transform _tireFr;
+    private Transform _tireFl;
+    private Transform _tireRr;
+    private Transform _tireRl;
     
-    [Header("Wheel visuals")]
-    [SerializeField] private Transform wheel_fr;
-    [SerializeField] private Transform wheel_fl;
-    [SerializeField] private Transform wheel_rr;
-    [SerializeField] private Transform wheel_rl;
+    private Transform _wheelFr;
+    private Transform _wheelFl;
+    private Transform _wheelRr;
+    private Transform _wheelRl;
+    
     [SerializeField] private float wheelOffset = 0f;
 
     private Wheel _wheel_fr;
@@ -77,7 +75,9 @@ public class Car : MonoBehaviour
     [SerializeField] private AnimationCurve enginePitchCurve;
     [SerializeField] private List<float> relativeGears;
     [SerializeField] private List<float> gearMinPitch;
-    [SerializeField] private AudioSource gearShiftAudio;
+
+    private AudioSource _gearShiftSource;
+    
     [SerializeField] private AudioClip gearShiftClip;
     [SerializeField] private AudioClip engineStartClip;
     [SerializeField] private AudioClip engineStopClip;
@@ -144,13 +144,35 @@ public class Car : MonoBehaviour
         
         _controls = Controls.Get();
 
-        _wheel_fr = wheel_fr.GetComponentInChildren<Wheel>();
-        _wheel_fl = wheel_fl.GetComponentInChildren<Wheel>();
-        _wheel_rr = wheel_rr.GetComponentInChildren<Wheel>();
-        _wheel_rl = wheel_rl.GetComponentInChildren<Wheel>();
+        _gearShiftSource = transform.Find("SFX").GetComponent<AudioSource>();
+        
+        _tireFr = transform.Find("wheel_fr");
+        _tireFl = transform.Find("wheel_fl");
+        _tireRr = transform.Find("wheel_br");
+        _tireRl = transform.Find("wheel_bl");
+
+        _wheelFr = _tireFr.Find("wheel_holder_fr");
+        _wheelFl = _tireFl.Find("wheel_holder_fl");
+        _wheelRr = _tireRr.Find("wheel_holder_br");
+        _wheelRl = _tireRl.Find("wheel_holder_bl");
+        
+        _wheel_fr = _wheelFr.GetComponentInChildren<Wheel>();
+        _wheel_fl = _wheelFl.GetComponentInChildren<Wheel>();
+        _wheel_rr = _wheelRr.GetComponentInChildren<Wheel>();
+        _wheel_rl = _wheelRl.GetComponentInChildren<Wheel>();
 
         _speedSteeringRatio = 1f / speedSteeringDampening;
+
+        SetUpLights();
         
+        if (menuMode)
+        {
+            SetMenuMode();
+        }
+    }
+
+    private void SetUpLights()
+    {
         Renderer renderer = GetComponentInChildren<Renderer>();
 
         if (renderer != null)
@@ -187,11 +209,6 @@ public class Car : MonoBehaviour
 
         _frontLightSource = GetComponentInChildren<Light>()?.transform.parent.gameObject;
         _frontLightSource?.SetActive(false);
-
-        if (menuMode)
-        {
-            SetMenuMode();
-        }
     }
 
     private void Update()
@@ -269,8 +286,8 @@ public class Car : MonoBehaviour
         float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
                          _driftCounterSteering;
 
-        tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
-        tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);
+        _tireFr.localRotation = Quaternion.Euler(0f, steering, 0f);
+        _tireFl.localRotation = Quaternion.Euler(0f, steering, 0f);
     }
 
     private void FixedUpdate()
@@ -310,11 +327,11 @@ public class Car : MonoBehaviour
 
         // Process wheels
         
-        ProcessWheel(tire_fr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
-        ProcessWheel(tire_fl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
+        ProcessWheel(_tireFr, _wheel_fr, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
+        ProcessWheel(_tireFl, _wheel_fl, drivetrain is Drivetrain.FWD or Drivetrain.AWD, false);
 
-        ProcessWheel(tire_rr, _wheel_rr, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
-        ProcessWheel(tire_rl, _wheel_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
+        ProcessWheel(_tireRr, _wheel_rr, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
+        ProcessWheel(_tireRl, _wheel_rl, drivetrain is Drivetrain.RWD or Drivetrain.AWD, true);
         
         // Downforce
         
@@ -340,6 +357,14 @@ public class Car : MonoBehaviour
                 _driftCounterSteering = 0f;
             }
         }
+        
+        // Rear free torque
+
+        if (!_wheel_rl.surfaceContact && !_wheel_rr.surfaceContact && _acceleration != 0f)
+        {
+            _wheel_rr.SetRotationSpeed(20f * _acceleration);
+            _wheel_rl.SetRotationSpeed(20f * _acceleration);
+        }
     }
 
     private void ProcessWheel(Transform tire, Wheel wheel, bool applyTorque, bool isRear)
@@ -356,6 +381,8 @@ public class Car : MonoBehaviour
         float normalizedSpeed = Mathf.Clamp01(speed / topSpeed);
         float normalizedReverse = Mathf.Clamp01(speed / topReverse);
         relativeSpeed = normalizedSpeed;
+
+        wheel.surfaceContact = hit;
         
         if (hit)
         {
@@ -413,6 +440,7 @@ public class Car : MonoBehaviour
             float availableTorque = torque * _acceleration * speedFactor;
             if (useGripInAcceleration) availableTorque *= grip;
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
+            if (_rb.velocity.magnitude < 10f) availableTorque *= 0.5f;
             
             if (applyTorque && (!isRear || !_handbrake) && _engineOn)
             {
@@ -543,9 +571,9 @@ public class Car : MonoBehaviour
         
         if (relativeGears[_currentGear - 1] > relativeSpeed)
         {
-            gearShiftAudio.clip = gearShiftClip;
-            gearShiftAudio.pitch = Random.Range(0.8f, 1.2f);
-            gearShiftAudio.Play();
+            _gearShiftSource.clip = gearShiftClip;
+            _gearShiftSource.pitch = Random.Range(0.8f, 1.2f);
+            _gearShiftSource.Play();
             _currentGear--;
         }
         
@@ -553,9 +581,9 @@ public class Car : MonoBehaviour
         
         if (relativeGears[_currentGear] < relativeSpeed)
         {
-            gearShiftAudio.clip = gearShiftClip;
-            gearShiftAudio.pitch = Random.Range(0.8f, 1.2f);
-            gearShiftAudio.Play();
+            _gearShiftSource.clip = gearShiftClip;
+            _gearShiftSource.pitch = Random.Range(0.8f, 1.2f);
+            _gearShiftSource.Play();
             _currentGear++;
         }
     }
@@ -603,9 +631,9 @@ public class Car : MonoBehaviour
         
         _engineStarting = true;
         
-        gearShiftAudio.clip = engineStartClip;
-        gearShiftAudio.pitch = 1f;
-        gearShiftAudio.Play();
+        _gearShiftSource.clip = engineStartClip;
+        _gearShiftSource.pitch = 1f;
+        _gearShiftSource.Play();
 
         yield return new WaitForSeconds(0.4f);
 
@@ -683,9 +711,9 @@ public class Car : MonoBehaviour
             yield return null;
         }
         
-        gearShiftAudio.clip = engineStopClip;
-        gearShiftAudio.pitch = 1f;
-        gearShiftAudio.Play();
+        _gearShiftSource.clip = engineStopClip;
+        _gearShiftSource.pitch = 1f;
+        _gearShiftSource.Play();
 
         _engineStarting = false;
     }
@@ -701,8 +729,8 @@ public class Car : MonoBehaviour
         float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
                          _driftCounterSteering;
 
-        tire_fr.localRotation = Quaternion.Euler(0f, steering, 0f);
-        tire_fl.localRotation = Quaternion.Euler(0f, steering, 0f);
+        _tireFr.localRotation = Quaternion.Euler(0f, steering, 0f);
+        _tireFl.localRotation = Quaternion.Euler(0f, steering, 0f);
             
         StartEngineImmediate();
     }

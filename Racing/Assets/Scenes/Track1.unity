@@ -891,7 +891,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1037204682}
@@ -1385,8 +1385,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19709001, y: 0.000000017000545, z: -0.000000003417673, w: 0.9803854}
-  m_LocalPosition: {x: 0, y: 4.19, z: -10}
+  m_LocalRotation: {x: 0.15477811, y: -0.6069507, z: 0.122017235, w: 0.76991326}
+  m_LocalPosition: {x: 26.0137, y: 4.19, z: -13.784452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7761,7 +7761,7 @@ MonoBehaviour:
   currentPrecipitation: 51.26192
   snowAmount: 0
   m_SnowMeltSpeed: 0.35
-  wetness: 0.654752
+  wetness: 0
   m_DryingSpeed: 0.5
   snowSpeed: 0
   rainSpeed: 0
@@ -8023,7 +8023,7 @@ MonoBehaviour:
   highNimbusLuxuryClouds: {fileID: 2800000, guid: cf1e011d4126f5b45af1e0c5c8162509,
     type: 3}
   luxuryVariation: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01, type: 3}
-  rainbowIntensity: 0.36562642
+  rainbowIntensity: 0
   useRainbow: 1
   separateSunLightAndTransform: 0
   sunAngle: 0.5
@@ -8175,7 +8175,7 @@ Transform:
   m_GameObject: {fileID: 544163632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -104.88465, y: -2.1401174, z: -8.195889}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17137,8 +17137,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19709001, y: 0.000000017000545, z: -0.000000003417673, w: 0.9803854}
-  m_LocalPosition: {x: 0, y: 4.19, z: -10}
+  m_LocalRotation: {x: 0.15477811, y: -0.6069507, z: 0.122017235, w: 0.76991326}
+  m_LocalPosition: {x: 26.0137, y: 4.19, z: -13.784452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23232,7 +23232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.13561061, z: -0, w: 0.99076223}
+  m_LocalRotation: {x: -0, y: 0.8904902, z: -0, w: 0.45500246}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24082,14 +24082,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2cb94db5cad84caaa4a8388be7bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tire_fr: {fileID: 1515937643}
-  tire_fl: {fileID: 573196708}
-  tire_rr: {fileID: 1132096772}
-  tire_rl: {fileID: 1883061409}
-  wheel_fr: {fileID: 0}
-  wheel_fl: {fileID: 0}
-  wheel_rr: {fileID: 0}
-  wheel_rl: {fileID: 0}
   wheelOffset: 0
   suspensionLength: 1
   suspensionRest: 0.5
@@ -24194,7 +24186,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   relativeGears: []
   gearMinPitch: []
-  gearShiftAudio: {fileID: 0}
   gearShiftClip: {fileID: 0}
   engineStartClip: {fileID: 0}
   engineStopClip: {fileID: 0}
@@ -24205,6 +24196,7 @@ MonoBehaviour:
   relativeSpeed: 0
   playerControlled: 0
   menuMode: 0
+  wheelContact: 0
 --- !u!54 &2091110692
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24327,6 +24319,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3752979577396554047, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 16.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752979577396554047, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752979577396554047, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.785317
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752979577396554047, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.61909395
+      objectReference: {fileID: 0}
     - target: {fileID: 4062183722033025656, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
       propertyPath: m_Name
@@ -24385,7 +24397,7 @@ PrefabInstance:
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
       propertyPath: dayTime
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
@@ -24401,7 +24413,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pickedCar
       value: 
-      objectReference: {fileID: 3100610531351138962, guid: 58f80efbee265a244b67159cab86fb49,
+      objectReference: {fileID: 6163590660213028120, guid: 39a37c994eadef747beda4f36c338329,
         type: 3}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}

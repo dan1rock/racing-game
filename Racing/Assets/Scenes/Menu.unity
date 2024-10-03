@@ -5746,6 +5746,8 @@ MonoBehaviour:
   - {fileID: 2432378102501418048, guid: 3929cca30d27f1c4d85cbf59b28d0498, type: 3}
   - {fileID: 606048505122496486, guid: 77f5e171b0319d9478176bd6719be4f4, type: 3}
   - {fileID: 6163590660213028120, guid: 39a37c994eadef747beda4f36c338329, type: 3}
+  - {fileID: 824886591927594260, guid: fe0b26127aff11443bf234a6734fb6f9, type: 3}
+  - {fileID: 609299808251279683, guid: 5b7279f604223104ab549a18f280ddd4, type: 3}
   carSpawn: {fileID: 654558932}
   stageDropdown: {fileID: 1487482921}
   carDropdown: {fileID: 1620406172}
@@ -7166,7 +7168,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.5908595, z: -0, w: 0.8067745}
+  m_LocalRotation: {x: -0, y: -0.06816509, z: -0, w: 0.99767405}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Wheel : MonoBehaviour
@@ -6,6 +5,7 @@ public class Wheel : MonoBehaviour
     [SerializeField] private float velocityRatio = 50f;
 
     public bool isContactingTrack = false;
+    public bool surfaceContact = false;
 
     private WheelTrail _wheelTrail;
 
@@ -41,9 +41,20 @@ public class Wheel : MonoBehaviour
         _currentRotationSpeed -= _currentRotationSpeed * 0.3f * Time.deltaTime;
     }
 
-    public void SetRotationSpeed(float speed)
+    public void SetRotationSpeed(float targetSpeed)
     {
-        _currentRotationSpeed = speed * velocityRatio;
+        float target = targetSpeed * velocityRatio;
+        float diff = target - _currentRotationSpeed;
+        
+        if (Mathf.Abs(diff) > 1f * velocityRatio)
+        {
+            _currentRotationSpeed += Mathf.Sign(diff) * Mathf.Min(Mathf.Abs(diff), velocityRatio);
+        }
+        else
+        {
+            _currentRotationSpeed = target;
+        }
+
         _velocityUpdated = Time.time;
     }
 

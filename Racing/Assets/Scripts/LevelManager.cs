@@ -28,10 +28,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private DayTime dayTime;
 
     [Header("Technical")] 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private GameObject driftUI;
     [SerializeField] private GameObject mobileUI;
     [SerializeField] private Transform activeCarMarker;
+    [SerializeField] private Transform cameraTarget;
     [SerializeField] private List<int> dayTimes;
     [SerializeField] private List<WeatherProfile> weathers;
 
@@ -93,8 +93,7 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         HandleInput();
-
-        activeCarMarker.position = _cars[_activeCar].transform.position;
+        HandleCarMarkers();
     }
 
     private void HandleInput()
@@ -108,11 +107,28 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private float _lerpSpeed = 0f;
+    private void HandleCarMarkers()
+    {
+        activeCarMarker.position = _cars[_activeCar].transform.position;
+
+        cameraTarget.position = _cars[_activeCar].transform.position;
+        if (_cars[_activeCar].wheelContact)
+        {
+            _lerpSpeed = Mathf.Clamp01(_lerpSpeed + Time.deltaTime);
+            
+            cameraTarget.rotation = Quaternion.Lerp(cameraTarget.rotation,
+                _cars[_activeCar].transform.rotation, _lerpSpeed * Time.deltaTime * 10f);
+        }
+        else
+        {
+            _lerpSpeed = 0f;
+        }
+    }
+
     private void UpdateTargetCar()
     {
         _cars[_activeCar].playerControlled = true;
-        virtualCamera.Follow = _cars[_activeCar].transform;
-        virtualCamera.LookAt = _cars[_activeCar].transform;
         driftUI.SetActive(_cars[_activeCar].isDriftCar);
     }
 }

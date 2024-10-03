@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Drivetrain
@@ -105,7 +106,9 @@ public class Car : MonoBehaviour
     private bool _pendingReset = false;
     private bool _handbrake = false;
     private bool _torqueWheelContact = false;
-    private bool _wheelContact = false;
+    
+    [HideInInspector]
+    public bool wheelContact = false;
 
     private bool _breakLight = false;
     private bool _reverseLight = false;
@@ -299,7 +302,7 @@ public class Car : MonoBehaviour
     private void HandleCarPhysics()
     {
         _torqueWheelContact = false;
-        _wheelContact = false;
+        wheelContact = false;
         
         // Process gears
 
@@ -315,7 +318,7 @@ public class Car : MonoBehaviour
         
         // Downforce
         
-        if (_wheelContact)
+        if (wheelContact)
         {
             _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
         }
@@ -325,7 +328,7 @@ public class Car : MonoBehaviour
         if (isDriftCar)
         {
             float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
-            if (Mathf.Abs(angle) < 90f && speed > 1f && _wheelContact)
+            if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
             {
                 float angleRatio = angle * Mathf.Deg2Rad;
                 if (angleRatio > 1f) angleRatio *= Mathf.Abs(angleRatio);
@@ -377,12 +380,12 @@ public class Car : MonoBehaviour
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
 
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
-            emitTrail = emitTrail || isRear && isDriftCar && _acceleration > 0f && _carSpeed < 0f;
+            emitTrail = emitTrail || _engineOn && isRear && _acceleration > 0f && _currentGear == 1;
 
             wheel.SetTrailState(emitTrail, Mathf.Abs(Vector3.Dot(wheelVelocity, tire.right)));
 
             if (applyTorque) _torqueWheelContact = true;
-            _wheelContact = true;
+            wheelContact = true;
 
             wheel.isContactingTrack = wheelRay.transform.gameObject.layer == 7;
             
@@ -423,7 +426,7 @@ public class Car : MonoBehaviour
                 ? wheelVelocity.magnitude * movingDir
                 : accelerationVelocity;
 
-            if (isRear && isDriftCar && _acceleration > 0f && _carSpeed < 0f) rotationSpeed = 10f;
+            if (isRear && _acceleration > 0f && _currentGear == 1) rotationSpeed = 10f;
             
             wheel.SetRotationSpeed(rotationSpeed);
             
@@ -513,10 +516,10 @@ public class Car : MonoBehaviour
         float gearPitch = (relativeSpeed - bottomBoundary) / (topBoundary - bottomBoundary);
         
         float to = accelerate 
-            ? gearPitch + (drivetrain == Drivetrain.FWD || !_wheelContact ? 0f : _rearSlipAngle) 
+            ? gearPitch + (drivetrain == Drivetrain.FWD || !wheelContact ? 0f : _rearSlipAngle) 
             : gearPitch - 0.3f;
 
-        if (isDriftCar && _acceleration > 0f && _carSpeed < 0f)
+        if (_acceleration > 0f && _carSpeed < 10f)
         {
             to = maxEnginePitch;
         }
@@ -560,7 +563,7 @@ public class Car : MonoBehaviour
     private void HandleDrift()
     {
         if (!isDriftCar) return;
-        if (!_wheelContact) return;
+        if (!wheelContact) return;
         if (!_driftCounter) return;
 
         int tiresOnTrack = 0;

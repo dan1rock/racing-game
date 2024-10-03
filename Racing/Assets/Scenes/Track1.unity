@@ -1385,8 +1385,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
-  m_LocalPosition: {x: 12.335999, y: 4.19, z: -13.499999}
+  m_LocalRotation: {x: 0.19709001, y: 0.000000017000545, z: -0.000000003417673, w: 0.9803854}
+  m_LocalPosition: {x: 0, y: 4.19, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7761,7 +7761,7 @@ MonoBehaviour:
   currentPrecipitation: 51.26192
   snowAmount: 0
   m_SnowMeltSpeed: 0.35
-  wetness: 0.67025274
+  wetness: 0.654752
   m_DryingSpeed: 0.5
   snowSpeed: 0
   rainSpeed: 0
@@ -8023,7 +8023,7 @@ MonoBehaviour:
   highNimbusLuxuryClouds: {fileID: 2800000, guid: cf1e011d4126f5b45af1e0c5c8162509,
     type: 3}
   luxuryVariation: {fileID: 2800000, guid: c4666b12d12d34d45b89ea8d2fe52b01, type: 3}
-  rainbowIntensity: 0.37428233
+  rainbowIntensity: 0.36562642
   useRainbow: 1
   separateSunLightAndTransform: 0
   sunAngle: 0.5
@@ -17108,8 +17108,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_LookAt: {fileID: 1080195786684430706}
+  m_Follow: {fileID: 1080195786684430706}
   m_Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
@@ -17137,8 +17137,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706315811}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13936369, y: -0.6932372, z: 0.1393637, w: 0.6932371}
-  m_LocalPosition: {x: 12.335999, y: 4.19, z: -13.499999}
+  m_LocalRotation: {x: 0.19709001, y: 0.000000017000545, z: -0.000000003417673, w: 0.9803854}
+  m_LocalPosition: {x: 0, y: 4.19, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23232,7 +23232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.87677944, z: -0, w: 0.48089275}
+  m_LocalRotation: {x: -0, y: 0.13561061, z: -0, w: 0.99076223}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24476,6 +24476,12 @@ PrefabInstance:
 --- !u!4 &1080195786684430705 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3382913086122023323, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1080195786684430704}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1080195786684430706 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3752979577396554047, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
     type: 3}
   m_PrefabInstance: {fileID: 1080195786684430704}
   m_PrefabAsset: {fileID: 0}

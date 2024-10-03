@@ -132,6 +132,8 @@ public class Car : MonoBehaviour
 
     private Material _frontLightMat;
     private Color _frontEmissionColor;
+
+    private readonly float _maxEngineVolume = 0.3f;
     
     private void Awake()
     {
@@ -215,7 +217,7 @@ public class Car : MonoBehaviour
     {
         if (!_engineStarting)
         {
-            _engineVolume = Mathf.Lerp(_engineVolume, _engineOn ? 0.7f : 0f, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, _engineOn ? _maxEngineVolume : 0f, Time.deltaTime * 3f);
         }
         _audioSource.volume = _engineVolume;
         
@@ -640,9 +642,9 @@ public class Car : MonoBehaviour
         _enginePitchFactor = 0f;
         _audioSource.pitch = minEnginePitch;
 
-        while (_engineVolume < 0.4f)
+        while (_engineVolume < _maxEngineVolume * 0.6f)
         {
-            _engineVolume = Mathf.Lerp(_engineVolume, 0.7f, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, _maxEngineVolume, Time.deltaTime * 3f);
 
             yield return null;
         }
@@ -651,7 +653,7 @@ public class Car : MonoBehaviour
         {
             _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minEnginePitch) +
                                  minEnginePitch;
-            _engineVolume = Mathf.Lerp(_engineVolume, 0.7f, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, _maxEngineVolume, Time.deltaTime * 3f);
 
             _enginePitchFactor += Time.deltaTime * 0.5f;
 
@@ -660,8 +662,8 @@ public class Car : MonoBehaviour
         
         while (_enginePitchFactor > 0f)
         {
-            _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - 0.2f) + 0.2f;
-            _engineVolume = Mathf.Lerp(_engineVolume, 0.7f, Time.deltaTime * 3f);
+            _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minEnginePitch) + minEnginePitch;
+            _engineVolume = Mathf.Lerp(_engineVolume, _maxEngineVolume, Time.deltaTime * 3f);
 
             _enginePitchFactor -= Time.deltaTime * 0.3f;
             _enginePitchFactor = Mathf.Clamp01(_enginePitchFactor);

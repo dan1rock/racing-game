@@ -1360,8 +1360,8 @@ MonoBehaviour:
   breakForce: 7
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.8
-  minEnginePitch: 0.2
-  maxEnginePitch: 1.6
+  minEnginePitch: 0.3
+  maxEnginePitch: 1.2
   enginePitchCurve:
     serializedVersion: 2
     m_Curve:
@@ -1392,10 +1392,10 @@ MonoBehaviour:
   - 0.5
   - 0.7
   gearMinPitch:
-  - 0.2
+  - 0.3
+  - 0.3
   - 0.3
   - 0.5
-  - 0.7
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
@@ -1418,7 +1418,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2e2951eb1adf41f43b26df4052a5509d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 0.2

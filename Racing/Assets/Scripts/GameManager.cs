@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -10,6 +12,7 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private List<GameObject> cars;
     [SerializeField] private AudioMixer audioMixer;
     
     public GameState gameState;
@@ -18,6 +21,7 @@ public class GameManager : MonoBehaviour
     public Weather weather;
     public int stageId;
     public GameObject car;
+    public int carId;
 
     private static GameManager _instance;
     
@@ -30,6 +34,8 @@ public class GameManager : MonoBehaviour
         }
         
         DontDestroyOnLoad(gameObject);
+        
+        LoadSave();
 
         Application.targetFrameRate = 60;
         
@@ -48,10 +54,12 @@ public class GameManager : MonoBehaviour
         dayTime = menuManager.selectedDayTime;
         weather = menuManager.selectedWeather;
         stageId = menuManager.selectedStage;
-        car = menuManager.selectedCar;
+        carId = menuManager.selectedCarId;
+        car = cars[carId];
         
         gameState = GameState.Stage;
 
+        SaveSystem.SavePlayer(this);
         SceneManager.LoadScene(stageId + 1);
     }
 
@@ -59,6 +67,25 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.Menu;
         SceneManager.LoadScene(0);
+    }
+
+    private void LoadSave()
+    {
+        try
+        {
+            PlayerData playerData = SaveSystem.LoadPlayer();
+            
+            if (playerData == null) return;
+
+            dayTime = playerData.menuSelectedDayTime;
+            weather = playerData.menuSelectedWeather;
+            stageId = playerData.menuSelectedStageId;
+            carId = playerData.menuSelectedCarId;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning(e);
+        }
     }
     
     public void SetCarVolume(float volume)

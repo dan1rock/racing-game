@@ -5723,7 +5723,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8826305119087474455}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &236923336
@@ -5738,15 +5739,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08a8b52ed7374d41bbd4ee08c0d30e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cars:
-  - {fileID: 2958380551315826844, guid: 16ffd132556c67d448ac3e6f79fce71c, type: 3}
-  - {fileID: 3653705434308271851, guid: e1fe414d63196bc45bb0cd48e5ca849a, type: 3}
-  - {fileID: 609299808251279683, guid: 5b7279f604223104ab549a18f280ddd4, type: 3}
-  - {fileID: 3100610531351138962, guid: 58f80efbee265a244b67159cab86fb49, type: 3}
-  - {fileID: 2432378102501418048, guid: 3929cca30d27f1c4d85cbf59b28d0498, type: 3}
-  - {fileID: 606048505122496486, guid: 77f5e171b0319d9478176bd6719be4f4, type: 3}
-  - {fileID: 824886591927594260, guid: fe0b26127aff11443bf234a6734fb6f9, type: 3}
-  - {fileID: 6163590660213028120, guid: 39a37c994eadef747beda4f36c338329, type: 3}
   menuCars:
   - {fileID: 2958380551315826844, guid: 16ffd132556c67d448ac3e6f79fce71c, type: 3}
   - {fileID: 3653705434308271851, guid: e1fe414d63196bc45bb0cd48e5ca849a, type: 3}
@@ -5755,8 +5747,12 @@ MonoBehaviour:
   - {fileID: 606048505122496486, guid: 77f5e171b0319d9478176bd6719be4f4, type: 3}
   - {fileID: 6163590660213028120, guid: 39a37c994eadef747beda4f36c338329, type: 3}
   carSpawn: {fileID: 654558932}
+  stageDropdown: {fileID: 1487482921}
+  carDropdown: {fileID: 1620406172}
+  timeDropdown: {fileID: 463943537}
+  weatherDropdown: {fileID: 2103476361}
   selectedStage: 0
-  selectedCar: {fileID: 0}
+  selectedCarId: 0
   selectedDayTime: 0
   selectedWeather: 0
 --- !u!1 &254103712
@@ -7005,7 +7001,7 @@ GameObject:
   - component: {fileID: 463943538}
   - component: {fileID: 463943537}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: TimeDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7170,7 +7166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7678303, z: -0, w: 0.6406533}
+  m_LocalRotation: {x: -0, y: 0.5908595, z: -0, w: 0.8067745}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8656,12 +8652,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921178057abb09d47b62747000be7112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cars:
+  - {fileID: 2958380551315826844, guid: 16ffd132556c67d448ac3e6f79fce71c, type: 3}
+  - {fileID: 3653705434308271851, guid: e1fe414d63196bc45bb0cd48e5ca849a, type: 3}
+  - {fileID: 609299808251279683, guid: 5b7279f604223104ab549a18f280ddd4, type: 3}
+  - {fileID: 3100610531351138962, guid: 58f80efbee265a244b67159cab86fb49, type: 3}
+  - {fileID: 2432378102501418048, guid: 3929cca30d27f1c4d85cbf59b28d0498, type: 3}
+  - {fileID: 606048505122496486, guid: 77f5e171b0319d9478176bd6719be4f4, type: 3}
+  - {fileID: 824886591927594260, guid: fe0b26127aff11443bf234a6734fb6f9, type: 3}
+  - {fileID: 6163590660213028120, guid: 39a37c994eadef747beda4f36c338329, type: 3}
   audioMixer: {fileID: 24100000, guid: 92e1f831bfa680b4780f42dc5f93fd05, type: 2}
   gameState: 0
   dayTime: 0
   weather: 0
   stageId: 0
   car: {fileID: 0}
+  carId: 0
 --- !u!4 &993180599
 Transform:
   m_ObjectHideFlags: 0
@@ -16721,7 +16727,7 @@ GameObject:
   - component: {fileID: 1487482922}
   - component: {fileID: 1487482921}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: MapDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17236,7 +17242,7 @@ GameObject:
   - component: {fileID: 1620406173}
   - component: {fileID: 1620406172}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: CarDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24239,7 +24245,7 @@ GameObject:
   - component: {fileID: 2103476362}
   - component: {fileID: 2103476361}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: WeatherDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25692,7 +25698,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8968807404887933673}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 236923335}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -25818,7 +25824,6 @@ SceneRoots:
   - {fileID: 1108502143}
   - {fileID: 218925046}
   - {fileID: 236923335}
-  - {fileID: 8826305119087474455}
   - {fileID: 1137486850}
   - {fileID: 363002537}
   - {fileID: 856495969}

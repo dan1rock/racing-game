@@ -376,8 +376,8 @@ MonoBehaviour:
   breakForce: 5
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.8
-  minEnginePitch: 0.2
-  maxEnginePitch: 1.6
+  minEnginePitch: 0.3
+  maxEnginePitch: 1.3
   enginePitchCurve:
     serializedVersion: 2
     m_Curve:
@@ -408,10 +408,10 @@ MonoBehaviour:
   - 0.5
   - 0.7
   gearMinPitch:
-  - 0.2
   - 0.3
+  - 0.4
   - 0.5
-  - 0.7
+  - 0.6
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
@@ -423,6 +423,7 @@ MonoBehaviour:
   playerControlled: 0
   menuMode: 0
   wheelContact: 1
+  rbVelocity: {x: 0, y: 0, z: 0}
 --- !u!82 &8564210923210522564
 AudioSource:
   m_ObjectHideFlags: 0
@@ -550,7 +551,7 @@ GameObject:
   - component: {fileID: 5468089930722393938}
   - component: {fileID: 6747996249971685671}
   - component: {fileID: 2193670611622667519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_fl_plymouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -651,7 +652,7 @@ GameObject:
   - component: {fileID: 2707140562453019694}
   - component: {fileID: 8733744180410553862}
   - component: {fileID: 2357564724441872852}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_br_plymouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1051,7 +1052,7 @@ GameObject:
   - component: {fileID: 2469027893875540170}
   - component: {fileID: 8336103485567108228}
   - component: {fileID: 2566433008525960272}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: car_plymouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1168,7 +1169,7 @@ GameObject:
   - component: {fileID: 5933454202951240836}
   - component: {fileID: 5930209602720799080}
   - component: {fileID: 2421436236998251254}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_fr_plymouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1325,7 +1326,7 @@ GameObject:
   - component: {fileID: 2196118381429809954}
   - component: {fileID: 7259727757541876847}
   - component: {fileID: 4978396524589447088}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_bl_plymouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}

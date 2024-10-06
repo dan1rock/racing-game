@@ -22,6 +22,7 @@ public class DriftCounter : MonoBehaviour
     private GameObject _addedScore;
     private Animator _scoreAnimator;
     private Animator _multiplierAnimator;
+    private LevelManager _levelManager;
     
     private float _minAngleRads;
     private float _score = 0f;
@@ -41,6 +42,7 @@ public class DriftCounter : MonoBehaviour
         _addedScore = addedDriftScore.gameObject;
         _scoreAnimator = overallDriftScore.transform.GetComponent<Animator>();
         _multiplierAnimator = scoreMultiplier.transform.parent.GetComponent<Animator>();
+        _levelManager = GetComponent<LevelManager>();
         
         _singleScore.SetActive(false);
         _addedScore.SetActive(false);
@@ -128,6 +130,8 @@ public class DriftCounter : MonoBehaviour
 
     public void ProcessDrift(float speed, float angle)
     {
+        if (_levelManager.wrongDirection) return;
+        
         angle = Mathf.Abs(angle);
         if (angle < _minAngleRads) return;
         if (speed < minSpeed) return;

@@ -107,8 +107,8 @@ public class Car : MonoBehaviour
     private bool _handbrake = false;
     private bool _torqueWheelContact = false;
     
-    [HideInInspector]
-    public bool wheelContact = false;
+    [HideInInspector] public bool wheelContact = false;
+    [HideInInspector] public Vector3 rbVelocity;
 
     private bool _breakLight = false;
     private bool _reverseLight = false;
@@ -301,21 +301,9 @@ public class Car : MonoBehaviour
         HandleEngineSound();
         HandleDrift();
         HandleLights();
-        
-        if (_pendingReset)
-        {
-            _rb.MovePosition(transform.position + Vector3.up);
-            _rb.velocity = Vector3.zero;
-            _rb.angularVelocity = Vector3.zero;
-            
-            Vector3 rotation = transform.rotation.eulerAngles;
-            rotation.x = 0f;
-            rotation.z = 0f;
-            
-            transform.rotation = Quaternion.Euler(rotation);
+        HandleReset();
 
-            _pendingReset = false;
-        }
+        rbVelocity = _rb.velocity;
     }
 
     private void HandleCarPhysics()
@@ -620,6 +608,34 @@ public class Car : MonoBehaviour
         _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
     }
 
+    private void HandleReset()
+    {
+        if (!_pendingReset) return;
+        
+        Ray ray = new()
+        {
+            origin = _levelManager.lastCheckPoint.position + Vector3.up * 10f,
+            direction = Vector3.down
+        };
+
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  20f, layerMask, QueryTriggerInteraction.Ignore);
+
+        if (hit)
+        {
+            _rb.MovePosition(raycastHit.point);
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            
+            Vector3 rotation = _levelManager.lastCheckPoint.eulerAngles;
+            rotation.x = 0f;
+            rotation.z = 0f;
+            
+            transform.rotation = Quaternion.Euler(rotation);
+        }
+            
+        _pendingReset = false;
+    }
+
     private IEnumerator StartEngine()
     {
         if (_engineStarting) yield break;
@@ -735,6 +751,11 @@ public class Car : MonoBehaviour
         _tireFl.localRotation = Quaternion.Euler(0f, steering, 0f);
             
         StartEngineImmediate();
+    }
+
+    public void InvokeReset()
+    {
+        _pendingReset = true;
     }
 
     private void OnCollisionEnter(Collision other)

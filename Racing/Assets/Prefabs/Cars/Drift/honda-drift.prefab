@@ -796,6 +796,7 @@ MonoBehaviour:
   playerControlled: 0
   menuMode: 0
   wheelContact: 1
+  rbVelocity: {x: 0, y: 0, z: 0}
 --- !u!82 &6478999227987454479
 AudioSource:
   m_ObjectHideFlags: 0

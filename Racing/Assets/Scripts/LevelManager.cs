@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
     [Header("Technical")] 
     [SerializeField] private GameObject driftUI;
     [SerializeField] private GameObject mobileUI;
+    [SerializeField] private GameObject wrongDirectionSign;
     [SerializeField] private Transform activeCarMarker;
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private List<int> dayTimes;
@@ -41,6 +42,10 @@ public class LevelManager : MonoBehaviour
     private List<Car> _cars = new();
 
     private int _activeCar = 0;
+
+    public bool wrongDirection = false;
+
+    public Transform lastCheckPoint;
 
     private Controls _controls;
     private CozyWeather _cozyWeather;
@@ -130,5 +135,16 @@ public class LevelManager : MonoBehaviour
     {
         _cars[_activeCar].playerControlled = true;
         driftUI.SetActive(_cars[_activeCar].isDriftCar);
+    }
+
+    public Car GetActiveCar()
+    {
+        return _cars[_activeCar];
+    }
+
+    public void WrongDirection(bool state)
+    {
+        wrongDirectionSign.SetActive(state);
+        wrongDirection = state;
     }
 }

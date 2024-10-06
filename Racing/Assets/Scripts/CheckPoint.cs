@@ -89,7 +89,9 @@ public class CheckPoint : MonoBehaviour
         
         if (other.transform.parent.GetComponent<Car>().playerControlled)
         {
-            _levelManager.lastCheckPoint = transform;
+            if (_levelManager.wrongDirection) _levelManager.WrongDirection(false);
+            
+            _levelManager.OnCheckpoint(transform);
             Activate(false);
             next.Activate(true);
         }

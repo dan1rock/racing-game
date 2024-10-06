@@ -4,6 +4,7 @@ using Cinemachine;
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum Weather
 {
@@ -47,6 +48,7 @@ public class LevelManager : MonoBehaviour
 
     public Transform lastCheckPoint;
 
+    private AudioSource _audioSource;
     private Controls _controls;
     private CozyWeather _cozyWeather;
 
@@ -62,6 +64,7 @@ public class LevelManager : MonoBehaviour
         
         _controls = Controls.Get();
         _cozyWeather = FindObjectOfType<CozyWeather>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
         if (dayTime == DayTime.Night) nightMode = true;
@@ -146,5 +149,12 @@ public class LevelManager : MonoBehaviour
     {
         wrongDirectionSign.SetActive(state);
         wrongDirection = state;
+    }
+
+    public void OnCheckpoint(Transform checkpoint)
+    {
+        lastCheckPoint = checkpoint;
+        _audioSource.pitch = Random.Range(1.1f, 1.2f);
+        _audioSource.Play();
     }
 }

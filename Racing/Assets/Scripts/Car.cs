@@ -372,8 +372,17 @@ public class Car : MonoBehaviour
             origin = tire.position + tire.up * 0.5f,
             direction = -tire.up
         };
-        bool hit = Physics.SphereCast(ray, wheelOffset, out RaycastHit wheelRay, 
-            suspensionLength + 0.5f - wheelOffset, layerMask);
+
+        float castOffset = wheelOffset;
+        
+        bool hit = Physics.SphereCast(ray, castOffset, out RaycastHit wheelHit, 
+            suspensionLength + 0.5f - castOffset, layerMask);
+
+        if (Mathf.Abs(Vector3.Dot(wheelHit.point - tire.position, tire.right)) > 0.2f)
+        {
+            hit = Physics.Raycast(ray, out wheelHit, suspensionLength + 0.5f, layerMask);
+            castOffset = 0f;
+        }
 
         _carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
         speed = Mathf.Abs(_carSpeed);
@@ -413,20 +422,20 @@ public class Car : MonoBehaviour
             if (applyTorque) _torqueWheelContact = true;
             wheelContact = true;
 
-            wheel.isContactingTrack = wheelRay.transform.gameObject.layer == 7;
+            wheel.isContactingTrack = wheelHit.transform.gameObject.layer == 7;
             
             // Suspension
             
             Vector3 springDir = tire.up;
 
-            float offset = suspensionRest - (wheelRay.distance - 0.5f + wheelOffset);
+            float offset = suspensionRest - (wheelHit.distance - 0.5f + castOffset);
             float velocity = Vector3.Dot(springDir, wheelVelocity);
             float force = offset * springStrength - velocity * springDamper;
 
             if (force < 0f) force = 0f;
             _rb.AddForceAtPosition(springDir * force, tire.position);
 
-            wheel.transform.position = tire.position + springDir * (-(wheelRay.distance - 0.5f + wheelOffset) + wheelOffset);
+            wheel.transform.position = tire.position + springDir * (-(wheelHit.distance - 0.5f + castOffset) + wheelOffset);
             
             // Acceleration
 
@@ -563,7 +572,7 @@ public class Car : MonoBehaviour
 
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
 
-        float lerpSpeed = _enginePitchFactor < to ? 1f : 5f;
+        float lerpSpeed = _enginePitchFactor < to || !wheelContact ? 1f : 5f;
         _enginePitchFactor = Mathf.Lerp(_enginePitchFactor, to, Time.deltaTime * lerpSpeed);
 
         _enginePitchFactor = Mathf.Clamp01(_enginePitchFactor);

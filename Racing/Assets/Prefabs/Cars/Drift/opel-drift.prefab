@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2cb94db5cad84caaa4a8388be7bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelOffset: -0.06
+  wheelOffset: 0.329
   suspensionLength: 0.5
   suspensionRest: 0.4
   springStrength: 150
@@ -459,7 +459,7 @@ MonoBehaviour:
   speedSteeringDampening: 3
   frontTireGrip: 0.8
   rearTireGrip: 0.8
-  tireMass: 0.05
+  tireMass: 0.02
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -552,9 +552,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   driftTrailTrigger: 0.2
   isDriftCar: 1
-  driftCounterSteering: 30
-  drivetrain: 0
-  torque: 10
+  driftCounterSteering: 35
+  drivetrain: 1
+  torque: 6
   topSpeed: 100
   topReverse: 20
   accelerationCurve:
@@ -581,7 +581,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  useGripInAcceleration: 1
+  useGripInAcceleration: 0
   breakForce: 5
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.8
@@ -627,12 +627,12 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 183
-  speed: 0.007582225
-  relativeSpeed: 0.00007582225
-  playerControlled: 0
+  speed: 0.007848755
+  relativeSpeed: 0.00007848755
+  playerControlled: 1
   menuMode: 0
-  wheelContact: 0
-  rbVelocity: {x: 0, y: 0, z: 0}
+  wheelContact: 1
+  rbVelocity: {x: -0.011271694, y: -0.0017007738, z: -0.0017653608}
 --- !u!82 &6638434925155447995
 AudioSource:
   m_ObjectHideFlags: 0

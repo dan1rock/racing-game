@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2cb94db5cad84caaa4a8388be7bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelOffset: -0.03
+  wheelOffset: 0.364
   suspensionLength: 0.45
   suspensionRest: 0.4
   springStrength: 150

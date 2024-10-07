@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityRatio: 150
   isContactingTrack: 0
+  surfaceContact: 0
 --- !u!1 &1677435656560502832
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityRatio: 150
   isContactingTrack: 0
+  surfaceContact: 0
 --- !u!1 &2481235014634654257
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,15 +401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2cb94db5cad84caaa4a8388be7bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tire_fr: {fileID: 5334413481857343734}
-  tire_fl: {fileID: 6333810491326565832}
-  tire_rr: {fileID: 3584071913960023733}
-  tire_rl: {fileID: 6451266364342977269}
-  wheel_fr: {fileID: 4793613675365441611}
-  wheel_fl: {fileID: 8999382696833953656}
-  wheel_rr: {fileID: 1934420016033387041}
-  wheel_rl: {fileID: 6864910926270455914}
-  wheelOffset: -0.06
+  wheelOffset: 0.329
   suspensionLength: 0.5
   suspensionRest: 0.4
   springStrength: 150
@@ -627,7 +621,6 @@ MonoBehaviour:
   - 0.3
   - 0.5
   - 0.7
-  gearShiftAudio: {fileID: 4982912722152293112}
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
@@ -638,6 +631,8 @@ MonoBehaviour:
   relativeSpeed: 0.00007582225
   playerControlled: 0
   menuMode: 0
+  wheelContact: 0
+  rbVelocity: {x: 0, y: 0, z: 0}
 --- !u!82 &6638434925155447995
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1206,6 +1201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityRatio: 150
   isContactingTrack: 0
+  surfaceContact: 0
 --- !u!1 &5125590184240019107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocityRatio: 150
   isContactingTrack: 0
+  surfaceContact: 0
 --- !u!1 &5734618119236109920
 GameObject:
   m_ObjectHideFlags: 0

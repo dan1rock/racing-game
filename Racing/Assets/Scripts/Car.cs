@@ -97,6 +97,7 @@ public class Car : MonoBehaviour
     private float _steering;
     private float _speedSteeringRatio;
     private float _rearSlipAngle;
+    private float _carAngle;
 
     private int _currentGear = 1;
 
@@ -311,6 +312,12 @@ public class Car : MonoBehaviour
         _torqueWheelContact = false;
         wheelContact = false;
         
+        Vector3 forward = transform.forward;
+            
+        Vector3 forwardFlat = new Vector3(forward.x, 0, forward.z).normalized;
+            
+        _carAngle = Vector3.Angle(transform.forward, forwardFlat);
+        
         // Process gears
 
         HandleGears();
@@ -327,7 +334,7 @@ public class Car : MonoBehaviour
         
         if (wheelContact)
         {
-            _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed)));
+            _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed) * (1f - _carAngle / 90f)));
         }
         
         // Drift counter steering
@@ -417,7 +424,7 @@ public class Car : MonoBehaviour
             if (force < 0f) force = 0f;
             _rb.AddForceAtPosition(springDir * force, tire.position);
 
-            wheel.transform.position = tire.position + springDir * (offset + wheelOffset);
+            wheel.transform.position = tire.position + springDir * (-wheelRay.distance + 0.5f + wheelOffset);
             
             // Acceleration
 
@@ -444,7 +451,7 @@ public class Car : MonoBehaviour
                 ? wheelVelocity.magnitude * movingDir
                 : accelerationVelocity;
 
-            if (isRear && _acceleration > 0f && _currentGear == 1) rotationSpeed = 10f;
+            if (isRear && _acceleration > 0f && _currentGear == 1 && _engineOn) rotationSpeed = 10f;
             
             wheel.SetRotationSpeed(rotationSpeed);
             
@@ -476,7 +483,7 @@ public class Car : MonoBehaviour
             }
             
             // Drag
-
+            
             float drag = Mathf.Abs(_carSpeed);
             if (drag > 0.5f)
             {
@@ -484,8 +491,9 @@ public class Car : MonoBehaviour
                 drag *= Mathf.Sign(_carSpeed);
                 drag *= 0.5f;
             }
-            else if (_acceleration == 0f && _rb.velocity.magnitude < 0.5f)
+            else if (_acceleration == 0f && _rb.velocity.magnitude < 0.5f && _carAngle < 5f)
             {
+                Debug.Log(_carAngle);
                 drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
             }
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
@@ -511,7 +519,7 @@ public class Car : MonoBehaviour
         }
         else
         {
-            wheel.transform.position = tire.position + tire.up * (suspensionRest - suspensionLength + wheelOffset);
+            wheel.transform.position = tire.position + tire.up * (-suspensionLength + wheelOffset);
 
             wheel.SetTrailState(false, 0f);
             wheel.isContactingTrack = false;
@@ -544,7 +552,7 @@ public class Car : MonoBehaviour
 
         if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
 
-        float lerpSpeed = _enginePitchFactor < to ? 1f : 2f;
+        float lerpSpeed = _enginePitchFactor < to ? 1f : 5f;
         _enginePitchFactor = Mathf.Lerp(_enginePitchFactor, to, Time.deltaTime * lerpSpeed);
 
         _enginePitchFactor = Mathf.Clamp01(_enginePitchFactor);

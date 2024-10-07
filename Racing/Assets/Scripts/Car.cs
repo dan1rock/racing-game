@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -371,7 +372,8 @@ public class Car : MonoBehaviour
             origin = tire.position + tire.up * 0.5f,
             direction = -tire.up
         };
-        bool hit = Physics.Raycast(ray, out RaycastHit wheelRay, suspensionLength + 0.5f, layerMask);
+        bool hit = Physics.SphereCast(ray, wheelOffset, out RaycastHit wheelRay, 
+            suspensionLength + 0.5f - wheelOffset, layerMask);
 
         _carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
         speed = Mathf.Abs(_carSpeed);
@@ -417,14 +419,14 @@ public class Car : MonoBehaviour
             
             Vector3 springDir = tire.up;
 
-            float offset = suspensionRest - wheelRay.distance + 0.5f;
+            float offset = suspensionRest - (wheelRay.distance - 0.5f + wheelOffset);
             float velocity = Vector3.Dot(springDir, wheelVelocity);
             float force = offset * springStrength - velocity * springDamper;
 
             if (force < 0f) force = 0f;
             _rb.AddForceAtPosition(springDir * force, tire.position);
 
-            wheel.transform.position = tire.position + springDir * (-wheelRay.distance + 0.5f + wheelOffset);
+            wheel.transform.position = tire.position + springDir * (-(wheelRay.distance - 0.5f + wheelOffset) + wheelOffset);
             
             // Acceleration
 
@@ -493,7 +495,6 @@ public class Car : MonoBehaviour
             }
             else if (_acceleration == 0f && _rb.velocity.magnitude < 0.5f && _carAngle < 5f)
             {
-                Debug.Log(_carAngle);
                 drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
             }
             _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
@@ -523,6 +524,16 @@ public class Car : MonoBehaviour
 
             wheel.SetTrailState(false, 0f);
             wheel.isContactingTrack = false;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Wheel[] wheels = { _wheel_fl, _wheel_fr, _wheel_rl, _wheel_rr };
+        
+        foreach (Wheel wheel in wheels)
+        {
+            Gizmos.DrawSphere(wheel.transform.position, wheelOffset);
         }
     }
 

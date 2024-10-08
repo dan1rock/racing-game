@@ -629,7 +629,7 @@ MonoBehaviour:
     m_Bits: 183
   speed: 0.007848755
   relativeSpeed: 0.00007848755
-  playerControlled: 1
+  playerControlled: 0
   menuMode: 0
   wheelContact: 1
   rbVelocity: {x: -0.011271694, y: -0.0017007738, z: -0.0017653608}

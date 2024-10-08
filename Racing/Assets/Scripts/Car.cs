@@ -94,6 +94,7 @@ public class Car : MonoBehaviour
 
     private float _carSpeed;
     private float _acceleration = 0f;
+    private bool _burnout = false;
     private float _driftCounterSteering;
     private float _steering;
     private float _speedSteeringRatio;
@@ -285,6 +286,8 @@ public class Car : MonoBehaviour
             }
         }
 
+        _burnout = _controls.GetKey(ControlKey.Accelerate) && _controls.GetKey(ControlKey.Break); 
+
         _steering = Mathf.Clamp(_steering, -steeringLimit, steeringLimit);
 
         float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
@@ -411,11 +414,13 @@ public class Car : MonoBehaviour
             if (speed < 0.5f) slipAngle = 0f;
 
             float tireGrip = isRear ? rearTireGrip : frontTireGrip;
-            if (isDriftCar && isRear && _acceleration != 0f) tireGrip *= 0.6f;
+            if (isDriftCar && isRear && (_acceleration != 0f || (_burnout && speed < 2f))) tireGrip *= 0.6f;
             float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
 
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
-            emitTrail = emitTrail || _engineOn && isRear && _acceleration > 0f && _currentGear == 1;
+            emitTrail = emitTrail 
+                        || (_engineOn && applyTorque && _acceleration > 0f && _currentGear == 1)
+                        || (_burnout && speed < 2f && _engineOn && applyTorque);
 
             wheel.SetTrailState(emitTrail, Mathf.Abs(Vector3.Dot(wheelVelocity, tire.right)));
 
@@ -439,7 +444,7 @@ public class Car : MonoBehaviour
             
             // Acceleration
 
-            Vector3 accelerationDir = tire.forward;
+            Vector3 accelerationDir = Vector3.ProjectOnPlane(tire.forward, wheelHit.normal);
 
             float movingDir = Mathf.Sign(_carSpeed);
             bool accelerate = movingDir == Mathf.Sign(_acceleration);
@@ -452,7 +457,7 @@ public class Car : MonoBehaviour
             
             if (applyTorque && (!isRear || !_handbrake) && _engineOn)
             {
-                _rb.AddForceAtPosition(accelerationDir * availableTorque, tire.position);
+                _rb.AddForceAtPosition(accelerationDir * availableTorque, wheel.transform.position);
                 if (availableTorque < 0f) _reverseLight = true;
             }
             
@@ -462,7 +467,7 @@ public class Car : MonoBehaviour
                 ? wheelVelocity.magnitude * movingDir
                 : accelerationVelocity;
 
-            if (isRear && _acceleration > 0f && _currentGear == 1 && _engineOn) rotationSpeed = 10f;
+            if (((_acceleration > 0f && _currentGear == 1) || (_burnout && speed < 2f)) && _engineOn && applyTorque) rotationSpeed = 10f;
             
             wheel.SetRotationSpeed(rotationSpeed);
             
@@ -472,7 +477,7 @@ public class Car : MonoBehaviour
             
             if (isBreaking && (!isRear || !_handbrake) && !(_handbrake && speed < 0.5f))
             {
-                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), tire.position);
+                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), wheel.transform.position);
                 _breakLight = true;
             }
             else
@@ -486,7 +491,7 @@ public class Car : MonoBehaviour
             {
                 if (!isBreaking)
                 {
-                    _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(_carSpeed)), tire.position);
+                    _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(_carSpeed)), wheel.transform.position);
                     _breakLight = true;
                 }
 
@@ -506,11 +511,11 @@ public class Car : MonoBehaviour
             {
                 drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
             }
-            _rb.AddForceAtPosition(-accelerationDir * drag, tire.position);
+            _rb.AddForceAtPosition(-accelerationDir * drag, wheel.transform.position);
             
             // Steering
 
-            Vector3 steeringDir = tire.right;
+            Vector3 steeringDir = Vector3.ProjectOnPlane(tire.right, wheelHit.normal);
 
             float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
             float desiredVelocityChange = -steeringVelocity * grip;
@@ -525,7 +530,7 @@ public class Car : MonoBehaviour
             float massInterpolation = absSteeringVelocity / absoluteGripVelocity;
             massInterpolation *= massInterpolation;
             if (absSteeringVelocity < absoluteGripVelocity) mass = Mathf.Lerp(_rb.mass * 0.25f, mass, massInterpolation);
-            _rb.AddForceAtPosition(steeringDir * (mass * desiredAcceleration), tire.position);
+            _rb.AddForceAtPosition(steeringDir * (mass * desiredAcceleration), wheel.transform.position);
         }
         else
         {
@@ -565,7 +570,7 @@ public class Car : MonoBehaviour
             ? gearPitch + (drivetrain == Drivetrain.FWD || !wheelContact ? 0f : _rearSlipAngle) 
             : gearPitch - 0.3f;
 
-        if (_acceleration > 0f && _carSpeed < 10f)
+        if ((_acceleration > 0f && _carSpeed < 10f) || (_burnout && speed < 2f))
         {
             to = maxEnginePitch;
         }

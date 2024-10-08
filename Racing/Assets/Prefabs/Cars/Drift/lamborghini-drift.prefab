@@ -183,9 +183,9 @@ MonoBehaviour:
   wheelOffset: 0.35
   suspensionLength: 0.45
   suspensionRest: 0.4
-  springStrength: 200
-  springDamper: 5
-  downForce: 50
+  springStrength: 150
+  springDamper: 4
+  downForce: 15
   downforceCurve:
     serializedVersion: 2
     m_Curve:

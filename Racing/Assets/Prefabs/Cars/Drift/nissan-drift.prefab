@@ -201,29 +201,29 @@ MonoBehaviour:
   wheelOffset: 0.345
   suspensionLength: 0.45
   suspensionRest: 0.4
-  springStrength: 150
+  springStrength: 100
   springDamper: 4
-  downForce: 50
+  downForce: 10
   downforceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0.16036987
-      inSlope: 2.36494
-      outSlope: 2.36494
+      inSlope: 3.471938
+      outSlope: 3.471938
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.04687499
+      outWeight: 0.031249993
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.14375551
-      outSlope: 0.14375551
+      inSlope: 0.44229838
+      outSlope: 0.44229838
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.2625
+      inWeight: 0.07465297
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -424,12 +424,12 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 183
-  speed: 0
-  relativeSpeed: 0
+  speed: 0.0061524813
+  relativeSpeed: 0.0000683609
   playerControlled: 0
   menuMode: 0
-  wheelContact: 0
-  rbVelocity: {x: 0, y: 0, z: 0}
+  wheelContact: 1
+  rbVelocity: {x: 0.006249981, y: -0.00023424625, z: -0.00052884273}
 --- !u!82 &4631194817209409230
 AudioSource:
   m_ObjectHideFlags: 0

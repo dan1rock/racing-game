@@ -5,6 +5,7 @@ public class PlayerData
     public Weather menuSelectedWeather;
     public int menuSelectedStageId;
     public int menuSelectedCarId;
+    public RaceMode menuSelectedRaceMode;
 
     public PlayerData(GameManager player)
     {
@@ -12,5 +13,6 @@ public class PlayerData
         menuSelectedWeather = player.weather;
         menuSelectedStageId = player.stageId;
         menuSelectedCarId = player.carId;
+        menuSelectedRaceMode = player.raceMode;
     }
 }

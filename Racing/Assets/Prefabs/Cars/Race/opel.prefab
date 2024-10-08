@@ -532,29 +532,29 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.45283127
+      outSlope: -0.45283127
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0.54716873
+      inSlope: -0.45283127
+      outSlope: -0.45283127
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   driftTrailTrigger: 0.2
   isDriftCar: 0
-  driftCounterSteering: 30
-  drivetrain: 0
-  torque: 10
+  driftCounterSteering: 35
+  drivetrain: 1
+  torque: 6
   topSpeed: 100
   topReverse: 20
   accelerationCurve:
@@ -627,12 +627,12 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 183
-  speed: 0.007582225
-  relativeSpeed: 0.00007582225
+  speed: 0.007848755
+  relativeSpeed: 0.00007848755
   playerControlled: 0
   menuMode: 0
-  wheelContact: 0
-  rbVelocity: {x: 0, y: 0, z: 0}
+  wheelContact: 1
+  rbVelocity: {x: -0.011271694, y: -0.0017007738, z: -0.0017653608}
 --- !u!82 &6638434925155447995
 AudioSource:
   m_ObjectHideFlags: 0

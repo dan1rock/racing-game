@@ -118,9 +118,9 @@ public class LevelManager : MonoBehaviour
     private float _lerpSpeed = 0f;
     private void HandleCarMarkers()
     {
-        activeCarMarker.position = _cars[_activeCar].transform.position;
+        activeCarMarker.position = _cars[_activeCar].transform.position + _cars[_activeCar].transform.up;
 
-        cameraTarget.position = _cars[_activeCar].transform.position;
+        cameraTarget.position = activeCarMarker.position;
         if (_cars[_activeCar].wheelContact)
         {
             _lerpSpeed = Mathf.Clamp01(_lerpSpeed + Time.deltaTime);

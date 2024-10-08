@@ -184,7 +184,7 @@ MonoBehaviour:
   suspensionLength: 0.45
   suspensionRest: 0.4
   springStrength: 200
-  springDamper: 5
+  springDamper: 4
   downForce: 50
   downforceCurve:
     serializedVersion: 2
@@ -237,8 +237,8 @@ MonoBehaviour:
   steeringMaxAngle: 25
   speedSteeringDampening: 3
   frontTireGrip: 0.8
-  rearTireGrip: 0.8
-  tireMass: 0.1
+  rearTireGrip: 1
+  tireMass: 0.05
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -252,8 +252,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.19085577
     - serializedVersion: 3
-      time: 0.092487246
-      value: 0.4214788
+      time: 0.12026587
+      value: 0.47808892
       inSlope: -3.6365716
       outSlope: -3.6365716
       tangentMode: 0
@@ -261,17 +261,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.17827791
     - serializedVersion: 3
-      time: 0.25148666
-      value: 0.114878565
-      inSlope: -0.4760971
-      outSlope: -0.4760971
+      time: 0.28099376
+      value: 0.19506149
+      inSlope: -0.72577864
+      outSlope: -0.72577864
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.412634
       outWeight: 0.24293916
     - serializedVersion: 3
       time: 1.0000143
-      value: 0.015658706
+      value: 0.025088638
       inSlope: -0.07659869
       outSlope: -0.07659869
       tangentMode: 0
@@ -311,28 +311,28 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.49528503
+      outSlope: -0.49528503
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0.50471497
+      inSlope: -0.49528503
+      outSlope: -0.49528503
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   driftTrailTrigger: 0.2
   isDriftCar: 0
-  driftCounterSteering: 30
-  drivetrain: 0
+  driftCounterSteering: 35
+  drivetrain: 1
   torque: 15
   topSpeed: 100
   topReverse: 20
@@ -361,11 +361,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
-  breakForce: 10
+  breakForce: 15
   handbrakeForce: 4
   handbrakeGripMultiplier: 0.8
-  minEnginePitch: 0.2
-  maxEnginePitch: 1.6
+  minEnginePitch: 0.3
+  maxEnginePitch: 1.2
   enginePitchCurve:
     serializedVersion: 2
     m_Curve:
@@ -396,22 +396,22 @@ MonoBehaviour:
   - 0.5
   - 0.7
   gearMinPitch:
-  - 0.2
+  - 0.3
+  - 0.3
   - 0.3
   - 0.5
-  - 0.7
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 183
-  speed: 0.007582225
-  relativeSpeed: 0.00007582225
-  playerControlled: 0
+  speed: 0.020087745
+  relativeSpeed: 0.00020087745
+  playerControlled: 1
   menuMode: 0
-  wheelContact: 0
-  rbVelocity: {x: 0, y: 0, z: 0}
+  wheelContact: 1
+  rbVelocity: {x: 0.022036161, y: -0.012658238, z: -0.0053454367}
 --- !u!82 &5354783316689544444
 AudioSource:
   m_ObjectHideFlags: 0
@@ -423,7 +423,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1c8209a7ab907ba4ca4bcff6a328231c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 0.2

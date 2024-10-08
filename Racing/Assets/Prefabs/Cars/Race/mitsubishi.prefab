@@ -662,7 +662,7 @@ MonoBehaviour:
   speedSteeringDampening: 3
   frontTireGrip: 0.8
   rearTireGrip: 0.8
-  tireMass: 0.02
+  tireMass: 0.05
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -735,30 +735,30 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.45283127
+      outSlope: -0.45283127
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0.54716873
+      inSlope: -0.45283127
+      outSlope: -0.45283127
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  driftTrailTrigger: 0.1
-  isDriftCar: 1
-  driftCounterSteering: 35
+  driftTrailTrigger: 0.2
+  isDriftCar: 0
+  driftCounterSteering: 30
   drivetrain: 1
   torque: 7
-  topSpeed: 100
+  topSpeed: 80
   topReverse: 20
   accelerationCurve:
     serializedVersion: 2
@@ -784,12 +784,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  useGripInAcceleration: 0
+  useGripInAcceleration: 1
   breakForce: 7
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.8
   minEnginePitch: 0.2
-  maxEnginePitch: 1.6
+  maxEnginePitch: 1.2
   enginePitchCurve:
     serializedVersion: 2
     m_Curve:
@@ -847,7 +847,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 163b8588470107b4fa7968132673c7ab, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 0.2

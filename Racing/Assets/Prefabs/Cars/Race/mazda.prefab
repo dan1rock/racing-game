@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5141298338213997400}
   - component: {fileID: 1569459177825826476}
   - component: {fileID: 353116455527885220}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_fl_mazda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,8 +357,8 @@ MonoBehaviour:
   steeringMaxAngle: 25
   speedSteeringDampening: 3
   frontTireGrip: 0.8
-  rearTireGrip: 0.8
-  tireMass: 0.02
+  rearTireGrip: 1
+  tireMass: 0.05
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -431,30 +431,30 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.45283127
+      outSlope: -0.45283127
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0.54716873
+      inSlope: -0.45283127
+      outSlope: -0.45283127
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  driftTrailTrigger: 0.1
-  isDriftCar: 1
+  driftTrailTrigger: 0.2
+  isDriftCar: 0
   driftCounterSteering: 35
   drivetrain: 1
   torque: 7
-  topSpeed: 100
+  topSpeed: 60
   topReverse: 20
   accelerationCurve:
     serializedVersion: 2
@@ -480,7 +480,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  useGripInAcceleration: 0
+  useGripInAcceleration: 1
   breakForce: 7
   handbrakeForce: 2
   handbrakeGripMultiplier: 0.8
@@ -526,11 +526,11 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 183
-  speed: 0
-  relativeSpeed: 0
+  speed: 0.0009439192
+  relativeSpeed: 0.000015731986
   playerControlled: 0
   menuMode: 0
-  wheelContact: 0
+  wheelContact: 1
   rbVelocity: {x: 0, y: 0, z: 0}
 --- !u!82 &4796331922089906643
 AudioSource:
@@ -543,7 +543,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d552546868acf9a49994ca5bbfa60387, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 05f4add2a221bac4ba8765e44d430031, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 0.2
@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 8751093401971749311}
   - component: {fileID: 7425109180788410862}
   - component: {fileID: 3166138419240806742}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_br_mazda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1239,7 +1239,7 @@ GameObject:
   - component: {fileID: 5885164736224457623}
   - component: {fileID: 616170484949046864}
   - component: {fileID: 3429911806802226226}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_bl_mazda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1507,7 +1507,7 @@ GameObject:
   - component: {fileID: 3029292903193031549}
   - component: {fileID: 8549995237740360602}
   - component: {fileID: 798523266185774058}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wheel_fr_mazda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1607,7 +1607,7 @@ GameObject:
   - component: {fileID: 7395356159610489514}
   - component: {fileID: 5858373122232952806}
   - component: {fileID: 4181118028140960897}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: car_mazda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1726,6 +1726,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheelTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 2706097026996463217, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2986401234417388024, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1775,6 +1780,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250133413675715815, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984560689986815412, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982979049008429214, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989590406282201272, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1800,6 +1825,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheelTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 2706097026996463217, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2986401234417388024, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1849,6 +1879,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250133413675715815, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984560689986815412, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982979049008429214, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989590406282201272, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1874,6 +1924,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheelTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 2706097026996463217, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2986401234417388024, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1923,6 +1978,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250133413675715815, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984560689986815412, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982979049008429214, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989590406282201272, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1948,6 +2023,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheelTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 2706097026996463217, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2986401234417388024, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1997,6 +2077,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250133413675715815, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984560689986815412, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5982979049008429214, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989590406282201272, guid: 006cbd7b77f5c944ab91a331dd5ebb5a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

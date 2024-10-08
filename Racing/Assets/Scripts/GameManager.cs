@@ -10,9 +10,16 @@ public enum GameState
     Stage
 }
 
+public enum RaceMode
+{
+    Drift,
+    Race
+}
+
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> cars;
+    [SerializeField] private List<GameObject> driftCars;
+    [SerializeField] private List<GameObject> raceCars;
     [SerializeField] private AudioMixer audioMixer;
     
     public GameState gameState;
@@ -22,6 +29,7 @@ public class GameManager : MonoBehaviour
     public int stageId;
     public GameObject car;
     public int carId;
+    public RaceMode raceMode;
 
     private static GameManager _instance;
     
@@ -55,8 +63,15 @@ public class GameManager : MonoBehaviour
         weather = menuManager.selectedWeather;
         stageId = menuManager.selectedStage;
         carId = menuManager.selectedCarId;
-        car = cars[carId];
-        
+        raceMode = menuManager.selectedRaceMode;
+
+        car = raceMode switch
+        {
+            RaceMode.Drift => driftCars[carId],
+            RaceMode.Race => raceCars[carId],
+            _ => car
+        };
+
         gameState = GameState.Stage;
 
         SaveSystem.SavePlayer(this);
@@ -81,6 +96,7 @@ public class GameManager : MonoBehaviour
             weather = playerData.menuSelectedWeather;
             stageId = playerData.menuSelectedStageId;
             carId = playerData.menuSelectedCarId;
+            raceMode = playerData.menuSelectedRaceMode;
         }
         catch (Exception e)
         {

@@ -584,7 +584,7 @@ MonoBehaviour:
   useGripInAcceleration: 1
   breakForce: 5
   handbrakeForce: 2
-  handbrakeGripMultiplier: 0.8
+  handbrakeGripMultiplier: 0.6
   minEnginePitch: 0.2
   maxEnginePitch: 1.6
   enginePitchCurve:

@@ -491,7 +491,8 @@ public class Car : MonoBehaviour
             {
                 if (!isBreaking)
                 {
-                    _rb.AddForceAtPosition(-accelerationDir * (handbrakeForce * Mathf.Sign(_carSpeed)), wheel.transform.position);
+                    Vector3 direction = _rb.GetPointVelocity(wheel.transform.position).normalized;
+                    _rb.AddForceAtPosition(-direction * handbrakeForce, wheel.transform.position);
                     _breakLight = true;
                 }
 

@@ -27,8 +27,15 @@ public class Settings : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
 
-        GameManager.Get().settings = this;
-        graphicsPreset = GameManager.Get().graphicsQuality;
+        if (GameManager.Get())
+        {
+            GameManager.Get().settings = this;
+            graphicsPreset = GameManager.Get().graphicsQuality;
+        }
+        else
+        {
+            ApplySettings();
+        }
     }
 
     public static Settings Get()

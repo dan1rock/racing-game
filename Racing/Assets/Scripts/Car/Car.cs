@@ -569,7 +569,7 @@ public class Car : MonoBehaviour
         
         float to = accelerate 
             ? gearPitch + (drivetrain == Drivetrain.FWD || !wheelContact ? 0f : _rearSlipAngle) 
-            : gearPitch - 0.3f;
+            : gearPitch - 0.1f;
 
         if ((_acceleration > 0f && _carSpeed < 10f) || (_burnout && speed < 2f))
         {

@@ -12,7 +12,6 @@ public class UISettings : MonoBehaviour
 
     public void SetQualityLevel(int index)
     {
-        Settings.Get().graphicsPreset = (QualityLevel) index;
-        Settings.Get().ApplySettings();
+        GameManager.Get().SetGraphicsQuality((QualityLevel)index);
     }
 }

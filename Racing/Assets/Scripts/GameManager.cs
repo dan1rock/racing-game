@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     
     public GameState gameState;
 
+    public QualityLevel graphicsQuality;
     public DayTime dayTime;
     public Weather weather;
     public int stageId;
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     public int carId;
     public RaceMode raceMode;
 
+    public Settings settings;
+    
     private static GameManager _instance;
     
     private void Awake()
@@ -107,5 +110,12 @@ public class GameManager : MonoBehaviour
     public void SetCarVolume(float volume)
     {
         audioMixer.SetFloat("CarVolume", Mathf.Lerp(-80.0f, 0.0f, Mathf.Clamp01(volume)));
+    }
+
+    public void SetGraphicsQuality(QualityLevel qualityLevel)
+    {
+        graphicsQuality = qualityLevel;
+        settings.graphicsPreset = qualityLevel;
+        settings.ApplySettings();
     }
 }

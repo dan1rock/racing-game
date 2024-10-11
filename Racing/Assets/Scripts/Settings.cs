@@ -26,8 +26,9 @@ public class Settings : MonoBehaviour
         _instance = this;
         
         DontDestroyOnLoad(gameObject);
-        
-        ApplySettings();
+
+        GameManager.Get().settings = this;
+        graphicsPreset = GameManager.Get().graphicsQuality;
     }
 
     public static Settings Get()
@@ -35,7 +36,7 @@ public class Settings : MonoBehaviour
         return _instance;
     }
 
-    public void SetQuality(QualityLevel qualityLevel)
+    private void SetQuality(QualityLevel qualityLevel)
     {
         QualitySettings.SetQualityLevel((int) qualityLevel, false);
     }

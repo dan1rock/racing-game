@@ -1,6 +1,7 @@
 [System.Serializable]
 public class PlayerData
 {
+    public QualityLevel menuSelectedQuality;
     public DayTime menuSelectedDayTime;
     public Weather menuSelectedWeather;
     public int menuSelectedStageId;
@@ -9,6 +10,7 @@ public class PlayerData
 
     public PlayerData(GameManager player)
     {
+        menuSelectedQuality = player.graphicsQuality;
         menuSelectedDayTime = player.dayTime;
         menuSelectedWeather = player.weather;
         menuSelectedStageId = player.stageId;

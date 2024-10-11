@@ -28,6 +28,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
 
+    [Header("Graphics")] 
+    [SerializeField] private GameObject grass;
+
     [Header("Technical")] 
     [SerializeField] private GameObject driftUI;
     [SerializeField] private GameObject mobileUI;
@@ -60,6 +63,11 @@ public class LevelManager : MonoBehaviour
             pickedCar = gameManager.car;
             weather = gameManager.weather;
             dayTime = gameManager.dayTime;
+
+            if (gameManager.graphicsQuality == QualityLevel.High && grass)
+            {
+                grass.SetActive(true);
+            }
         }
         
         _controls = Controls.Get();

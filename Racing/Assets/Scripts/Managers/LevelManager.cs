@@ -35,6 +35,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject driftUI;
     [SerializeField] private GameObject mobileUI;
     [SerializeField] private GameObject wrongDirectionSign;
+    [SerializeField] private GameObject resetCarUI;
     [SerializeField] private Transform activeCarMarker;
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private List<int> dayTimes;
@@ -48,6 +49,7 @@ public class LevelManager : MonoBehaviour
     private int _activeCar = 0;
 
     public bool wrongDirection = false;
+    public bool resetCar = false;
 
     public Transform lastCheckPoint;
 
@@ -157,6 +159,14 @@ public class LevelManager : MonoBehaviour
     {
         wrongDirectionSign.SetActive(state);
         wrongDirection = state;
+    }
+
+    public void ResetCar(bool state)
+    {
+        if (resetCar == state) return;
+        
+        resetCarUI.SetActive(state);
+        resetCar = state;
     }
 
     public void OnCheckpoint(Transform checkpoint)

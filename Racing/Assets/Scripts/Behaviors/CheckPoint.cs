@@ -16,6 +16,8 @@ public class CheckPoint : MonoBehaviour
 
     private float _lastDistanceRecorded;
 
+    private float _wrongDirectionTime = 0f;
+
     private LevelManager _levelManager;
 
     private void Awake()
@@ -64,15 +66,25 @@ public class CheckPoint : MonoBehaviour
         playerVelocity.y = 0f;
 
         if (playerVelocity.magnitude < 2f) return;
+
+        bool wrongDirection = Vector3.Dot(direction, playerVelocity) < 0f;
+
+        if (wrongDirection)
+        {
+            _wrongDirectionTime += Time.deltaTime;
+        }
+        else
+        {
+            _wrongDirectionTime = 0f;
+        }
         
-        if (Vector3.Dot(direction, playerVelocity) < 0f && !_levelManager.wrongDirection)
+        if (wrongDirection && !_levelManager.wrongDirection && _wrongDirectionTime > 0.5f)
         {
             _lastDistanceRecorded = direction.magnitude;
             _levelManager.WrongDirection(true);
         }
 
-        if (Vector3.Dot(direction, playerVelocity) > 0f && _levelManager.wrongDirection &&
-            _lastDistanceRecorded > direction.magnitude)
+        if (!wrongDirection && _levelManager.wrongDirection && _lastDistanceRecorded > direction.magnitude)
         {
             _levelManager.WrongDirection(false);
         }

@@ -642,9 +642,28 @@ public class Car : MonoBehaviour
         _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
     }
 
+    private float _stuckTimer = 0f;
     private void HandleReset()
     {
+        if (_engineOn && _rb.velocity.magnitude < 2f)
+        {
+            _stuckTimer += Time.fixedDeltaTime;
+
+            float targetTime = _torqueWheelContact ? 5f : 2f;
+            
+            if (_stuckTimer > targetTime) _levelManager.ResetCar(true);
+        }
+        else
+        {
+            _stuckTimer = 0f;
+            _levelManager.ResetCar(false);
+        }
+        
         if (!_pendingReset) return;
+
+        _pendingReset = false;
+        
+        if (!_levelManager.resetCar) return;
         
         Ray ray = new()
         {
@@ -665,9 +684,10 @@ public class Car : MonoBehaviour
             rotation.z = 0f;
             
             transform.rotation = Quaternion.Euler(rotation);
-        }
             
-        _pendingReset = false;
+            _levelManager.ResetCar(false);
+            _stuckTimer = 0f;
+        }
     }
 
     private IEnumerator StartEngine()

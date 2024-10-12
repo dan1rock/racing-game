@@ -83,9 +83,11 @@ MonoBehaviour:
   pickedCar: {fileID: 0}
   weather: 0
   dayTime: 0
+  grass: {fileID: 0}
   driftUI: {fileID: 4040685514823863}
   mobileUI: {fileID: 1162258596122569578}
   wrongDirectionSign: {fileID: 8395451499988830251}
+  resetCarUI: {fileID: 8079365011860223830}
   activeCarMarker: {fileID: 3382913086122023323}
   cameraTarget: {fileID: 3752979577396554047}
   dayTimes: 080000000d0000001200000002000000
@@ -95,6 +97,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ac3bcaecae4264ceb9a03f629d3b52d0, type: 2}
   nightMode: 0
   wrongDirection: 0
+  resetCar: 0
   lastCheckPoint: {fileID: 0}
 --- !u!114 &6374711817727101306
 MonoBehaviour:
@@ -463,6 +466,12 @@ MonoBehaviour:
 --- !u!224 &6368560084777024377 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8098308280146423390, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8079365011860223830 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6349222747335500401, guid: a243a5871f1f22c4d923847db2f67edd,
     type: 3}
   m_PrefabInstance: {fileID: 2883240403428365607}
   m_PrefabAsset: {fileID: 0}

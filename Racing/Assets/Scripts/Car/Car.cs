@@ -645,6 +645,8 @@ public class Car : MonoBehaviour
     private float _stuckTimer = 0f;
     private void HandleReset()
     {
+        if (!_levelManager) return;
+        
         if (_engineOn && _rb.velocity.magnitude < 2f)
         {
             _stuckTimer += Time.fixedDeltaTime;

@@ -1,4 +1,6 @@
-using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
@@ -7,6 +9,7 @@ public class CheckPoint : MonoBehaviour
     [SerializeField] private Transform bar1;
     [SerializeField] private Transform bar2;
     [SerializeField] private CheckPoint next;
+    private CheckPoint prev;
 
     [SerializeField] private LayerMask layerMask;
 
@@ -24,6 +27,8 @@ public class CheckPoint : MonoBehaviour
     private void Awake()
     {
         _levelManager = FindObjectOfType<LevelManager>();
+
+        next.prev = this;
         
         Vector3 newScale = bar1.localScale;
         _maxHeight = newScale.y;
@@ -34,11 +39,22 @@ public class CheckPoint : MonoBehaviour
         bar2.localScale = newScale;
         
         Activate(isActive);
+    }
 
+    private void Start()
+    {
         if (isStart)
         {
             _levelManager.lastCheckPoint = transform;
-            next.Activate(true);
+            
+            if (_levelManager.reverse)
+            {
+                prev.Activate(true);
+            }
+            else
+            {
+                next.Activate(true);
+            }
         }
     }
 
@@ -106,7 +122,15 @@ public class CheckPoint : MonoBehaviour
             
             _levelManager.OnCheckpoint(transform);
             Activate(false);
-            next.Activate(true);
+            
+            if (_levelManager.reverse)
+            {
+                prev.Activate(true);
+            }
+            else
+            {
+                next.Activate(true);
+            }
         }
     }
     
@@ -119,6 +143,23 @@ public class CheckPoint : MonoBehaviour
 
         UpdateBar(bar1, wideness * 0.5f);
         UpdateBar(bar2, -wideness * 0.5f);
+        
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(transform);
+        EditorUtility.SetDirty(bar1.transform);
+        EditorUtility.SetDirty(bar2.transform);
+        EditorUtility.SetDirty(boxCollider);
+#endif
+    }
+
+    public void UpdateAllCheckpoints()
+    {
+        CheckPoint[] checkPoints = FindObjectsOfType<CheckPoint>();
+
+        foreach (CheckPoint checkPoint in checkPoints)
+        {
+            checkPoint.SetWideness();
+        }
     }
 
     private void UpdateBar(Transform bar, float posX)
@@ -130,11 +171,11 @@ public class CheckPoint : MonoBehaviour
         
         Ray ray = new()
         {
-            origin = bar.position + 5f * Vector3.up,
+            origin = bar.position + 15f * Vector3.up,
             direction = Vector3.down
         };
 
-        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit, 20f, layerMask, QueryTriggerInteraction.Ignore);
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit, 30f, layerMask, QueryTriggerInteraction.Ignore);
         
         if (hit)
         {

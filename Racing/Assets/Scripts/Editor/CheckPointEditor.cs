@@ -14,5 +14,10 @@ public class CheckPointEditor : Editor
         {
             script.SetWideness();
         }
+        
+        if (GUILayout.Button("Update All"))
+        {
+            script.UpdateAllCheckpoints();
+        }
     }
 }

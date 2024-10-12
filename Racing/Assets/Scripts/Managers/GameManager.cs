@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public DayTime dayTime;
     public Weather weather;
     public int stageId;
+    public bool stageReverse;
     public GameObject car;
     public int carId;
     public RaceMode raceMode;
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
         dayTime = menuManager.selectedDayTime;
         weather = menuManager.selectedWeather;
         stageId = menuManager.selectedStage;
+        stageReverse = menuManager.reverseToggled;
         carId = menuManager.selectedCarId;
         raceMode = menuManager.selectedRaceMode;
 
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
             dayTime = playerData.menuSelectedDayTime;
             weather = playerData.menuSelectedWeather;
             stageId = playerData.menuSelectedStageId;
+            stageReverse = playerData.menuSelectedStageReverse;
             carId = playerData.menuSelectedCarId;
             raceMode = playerData.menuSelectedRaceMode;
         }

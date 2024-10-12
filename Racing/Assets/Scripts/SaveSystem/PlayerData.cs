@@ -5,6 +5,7 @@ public class PlayerData
     public DayTime menuSelectedDayTime;
     public Weather menuSelectedWeather;
     public int menuSelectedStageId;
+    public bool menuSelectedStageReverse;
     public int menuSelectedCarId;
     public RaceMode menuSelectedRaceMode;
 
@@ -14,6 +15,7 @@ public class PlayerData
         menuSelectedDayTime = player.dayTime;
         menuSelectedWeather = player.weather;
         menuSelectedStageId = player.stageId;
+        menuSelectedStageReverse = player.stageReverse;
         menuSelectedCarId = player.carId;
         menuSelectedRaceMode = player.raceMode;
     }

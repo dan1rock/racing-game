@@ -694,7 +694,9 @@ public class Car : MonoBehaviour
             Vector3 rotation = _levelManager.lastCheckPoint.eulerAngles;
             rotation.x = 0f;
             rotation.z = 0f;
-            
+
+            if (_levelManager.reverse) rotation.y += 180;
+
             transform.rotation = Quaternion.Euler(rotation);
             
             _levelManager.ResetCar(false);

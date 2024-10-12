@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject pickedCar;
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
+    [SerializeField] public bool reverse;
 
     [Header("Graphics")] 
     [SerializeField] private GameObject grass;
@@ -65,6 +66,7 @@ public class LevelManager : MonoBehaviour
             pickedCar = gameManager.car;
             weather = gameManager.weather;
             dayTime = gameManager.dayTime;
+            reverse = gameManager.stageReverse;
 
             if (gameManager.graphicsQuality == QualityLevel.High && grass)
             {
@@ -82,8 +84,15 @@ public class LevelManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         _startPosition = GameObject.FindWithTag("Respawn").transform;
+
+        if (reverse) _startPosition.forward = -_startPosition.forward;
+        
         GameObject playerCar = Instantiate(pickedCar, _startPosition.position, _startPosition.rotation);
         _cars.Add(playerCar.GetComponent<Car>());
+        
+        activeCarMarker.position = playerCar.transform.position + playerCar.transform.up;
+        cameraTarget.position = playerCar.transform.position;
+        cameraTarget.rotation = playerCar.transform.rotation;
         
         foreach (Car car in _cars)
         {

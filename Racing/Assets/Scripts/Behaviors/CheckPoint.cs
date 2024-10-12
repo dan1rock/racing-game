@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
@@ -139,5 +140,11 @@ public class CheckPoint : MonoBehaviour
         {
             bar.position = raycastHit.point + Vector3.down;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 3f);
+        Gizmos.DrawSphere(transform.position, 0.5f);
     }
 }

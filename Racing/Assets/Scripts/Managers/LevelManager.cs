@@ -128,15 +128,27 @@ public class LevelManager : MonoBehaviour
     private float _lerpSpeed = 0f;
     private void HandleCarMarkers()
     {
-        activeCarMarker.position = _cars[_activeCar].transform.position + _cars[_activeCar].transform.up;
+        Car activeCar = _cars[_activeCar];
+        
+        activeCarMarker.position = activeCar.transform.position + activeCar.transform.up;
 
         cameraTarget.position = activeCarMarker.position;
         if (_cars[_activeCar].wheelContact)
         {
             _lerpSpeed = Mathf.Clamp01(_lerpSpeed + Time.deltaTime);
+
+            Vector3 targetRotation = Quaternion.LookRotation(activeCar.rbVelocity).eulerAngles;
+            if (_cars[_activeCar].rbVelocity.magnitude < 2f)
+            {
+                targetRotation = activeCar.transform.rotation.eulerAngles;
+            }
+            else
+            {
+                targetRotation.y =activeCar.transform.rotation.eulerAngles.y;
+            }
             
             cameraTarget.rotation = Quaternion.Lerp(cameraTarget.rotation,
-                _cars[_activeCar].transform.rotation, _lerpSpeed * Time.deltaTime * 10f);
+                Quaternion.Euler(targetRotation), _lerpSpeed * Time.deltaTime * 10f);
         }
         else
         {

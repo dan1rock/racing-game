@@ -107,6 +107,7 @@ public class Car : MonoBehaviour
     private bool _engineOn = false;
     private bool _engineStarting = false;
     private bool _pendingReset = false;
+    private bool _forceReset = false;
     private bool _handbrake = false;
     private bool _torqueWheelContact = false;
     
@@ -665,7 +666,9 @@ public class Car : MonoBehaviour
 
         _pendingReset = false;
         
-        if (!_levelManager.resetCar) return;
+        if (!_levelManager.resetCar && !_forceReset) return;
+
+        _forceReset = false;
         
         Ray ray = new()
         {
@@ -812,6 +815,7 @@ public class Car : MonoBehaviour
     public void InvokeReset()
     {
         _pendingReset = true;
+        _forceReset = true;
     }
 
     private void OnCollisionEnter(Collision other)

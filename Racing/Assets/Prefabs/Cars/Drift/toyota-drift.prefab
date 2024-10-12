@@ -1181,7 +1181,7 @@ MonoBehaviour:
   suspensionRest: 0.37
   springStrength: 100
   springDamper: 4
-  downForce: 10
+  downForce: 20
   downforceCurve:
     serializedVersion: 2
     m_Curve:

@@ -1,3 +1,6 @@
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class PropFix : MonoBehaviour
@@ -26,6 +29,10 @@ public class PropFix : MonoBehaviour
             
             transform.rotation = Quaternion.Euler(currentRotation.eulerAngles.x, currentRotation.eulerAngles.y, targetRotation.eulerAngles.z);
         }
+        
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(transform);
+#endif
     }
 
     [ContextMenu("Fix All")]

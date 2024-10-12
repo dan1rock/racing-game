@@ -7636,7 +7636,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9203805, z: -0, w: 0.39102402}
+  m_LocalRotation: {x: -0, y: 0.81038433, z: -0, w: 0.58589864}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9683,12 +9683,14 @@ MonoBehaviour:
   - {fileID: 6163590660213028120, guid: c687d529517887748959fa762e35ffcf, type: 3}
   audioMixer: {fileID: 24100000, guid: 92e1f831bfa680b4780f42dc5f93fd05, type: 2}
   gameState: 0
+  graphicsQuality: 0
   dayTime: 0
   weather: 0
   stageId: 0
   car: {fileID: 0}
   carId: 0
   raceMode: 0
+  settings: {fileID: 0}
 --- !u!4 &993180599
 Transform:
   m_ObjectHideFlags: 0
@@ -17990,7 +17992,9 @@ MonoBehaviour:
     m_Options:
     - m_Text: Forest Valley
       m_Image: {fileID: 0}
-    - m_Text: Lake
+    - m_Text: Cozy Lake
+      m_Image: {fileID: 0}
+    - m_Text: Arctic Tundra
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20075,7 +20079,7 @@ Transform:
   m_GameObject: {fileID: 1856002615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: -10}
+  m_LocalPosition: {x: 53.934696, y: 26.778568, z: 153.89795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25368,7 +25372,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 642951711}

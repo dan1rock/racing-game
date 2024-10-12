@@ -648,7 +648,14 @@ public class Car : MonoBehaviour
     {
         if (!_levelManager) return;
         
-        if (_engineOn && _rb.velocity.magnitude < 2f)
+        int tiresOnSurface = 0;
+
+        if (_wheel_fl.isContactingTrack) tiresOnSurface++;
+        if (_wheel_fr.isContactingTrack) tiresOnSurface++;
+        if (_wheel_rl.isContactingTrack) tiresOnSurface++;
+        if (_wheel_rr.isContactingTrack) tiresOnSurface++;
+        
+        if (_engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface == 0))
         {
             _stuckTimer += Time.fixedDeltaTime;
 

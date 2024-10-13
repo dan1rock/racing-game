@@ -128,6 +128,7 @@ public class CheckPoint : MonoBehaviour
             if (_levelManager.wrongDirection) _levelManager.WrongDirection(false);
             
             _levelManager.OnCheckpoint(transform);
+            if (isStart) _levelManager.OnLapFinish();
             Activate(false);
             
             if (_levelManager.reverse)

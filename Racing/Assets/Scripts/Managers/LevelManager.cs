@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject pickedCar;
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
+    [SerializeField] public RaceMode raceMode;
     [SerializeField] public bool reverse;
 
     [Header("Graphics")] 
@@ -34,6 +35,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Technical")] 
     [SerializeField] private GameObject driftUI;
+    [SerializeField] private GameObject timeAttackUI;
     [SerializeField] private GameObject mobileUI;
     [SerializeField] private GameObject wrongDirectionSign;
     [SerializeField] private GameObject resetCarUI;
@@ -51,11 +53,13 @@ public class LevelManager : MonoBehaviour
 
     public bool wrongDirection = false;
     public bool resetCar = false;
+    public bool carStarted = false;
 
     public Transform lastCheckPoint;
 
     private AudioSource _audioSource;
     private Controls _controls;
+    private TimeAttackManager _timeAttackManager;
     private CozyWeather _cozyWeather;
 
     private void Awake()
@@ -66,6 +70,7 @@ public class LevelManager : MonoBehaviour
             pickedCar = gameManager.car;
             weather = gameManager.weather;
             dayTime = gameManager.dayTime;
+            raceMode = gameManager.raceMode;
             reverse = gameManager.stageReverse;
 
             if (gameManager.graphicsQuality == QualityLevel.High && grass)
@@ -77,6 +82,7 @@ public class LevelManager : MonoBehaviour
         _controls = Controls.Get();
         _cozyWeather = FindObjectOfType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
+        _timeAttackManager = GetComponent<TimeAttackManager>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
         if (dayTime == DayTime.Night) nightMode = true;
@@ -99,6 +105,16 @@ public class LevelManager : MonoBehaviour
             car.playerControlled = false;
         }
         UpdateTargetCar();
+
+        switch (raceMode)
+        {
+            case RaceMode.Race:
+                timeAttackUI.SetActive(true);
+                break;
+            case RaceMode.Drift:
+                driftUI.SetActive(true);
+                break;
+        }
 
         if (Application.isMobilePlatform)
         {
@@ -168,7 +184,6 @@ public class LevelManager : MonoBehaviour
     private void UpdateTargetCar()
     {
         _cars[_activeCar].playerControlled = true;
-        driftUI.SetActive(_cars[_activeCar].isDriftCar);
     }
 
     public Car GetActiveCar()
@@ -195,5 +210,15 @@ public class LevelManager : MonoBehaviour
         lastCheckPoint = checkpoint;
         _audioSource.pitch = Random.Range(1.1f, 1.2f);
         _audioSource.Play();
+    }
+
+    public void OnLapFinish()
+    {
+        _timeAttackManager.OnLapFinish();
+    }
+
+    public void OnCarStarted()
+    {
+        carStarted = true;
     }
 }

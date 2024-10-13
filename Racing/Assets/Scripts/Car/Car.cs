@@ -757,6 +757,8 @@ public class Car : MonoBehaviour
 
         _engineOn = true;
         _engineStarting = false;
+        
+        _levelManager.OnCarStarted();
     }
 
     private void StartEngineImmediate()

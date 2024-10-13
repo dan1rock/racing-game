@@ -361,7 +361,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useGripInAcceleration: 1
-  breakForce: 15
+  breakForce: 7
   handbrakeForce: 4
   handbrakeGripMultiplier: 0.6
   minEnginePitch: 0.3

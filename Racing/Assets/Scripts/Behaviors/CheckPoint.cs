@@ -46,7 +46,6 @@ public class CheckPoint : MonoBehaviour
         if (isStart)
         {
             _levelManager.lastCheckPoint = transform;
-            
             if (_levelManager.reverse)
             {
                 prev.Activate(true);
@@ -54,6 +53,14 @@ public class CheckPoint : MonoBehaviour
             else
             {
                 next.Activate(true);
+            }
+
+            MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+            
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                meshRenderer.material.SetColor("_BaseColor", Color.red);
+                meshRenderer.material.SetColor("_EmissionColor", Color.red * 2f);
             }
         }
     }

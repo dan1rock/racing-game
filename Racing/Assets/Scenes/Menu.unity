@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1144320324}
-  m_IndirectSpecularColor: {r: 0.15572324, g: 0.17809024, b: 0.19133365, a: 1}
+  m_IndirectSpecularColor: {r: 0.15577994, g: 0.17813264, b: 0.19130321, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6483,7 +6483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254103712}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.28365442, y: 0.7160964, z: 0.43966934, w: 0.46199244}
+  m_LocalRotation: {x: -0.28365433, y: 0.7160965, z: 0.43966934, w: 0.46199232}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7736,7 +7736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9006247, z: -0, w: 0.4345978}
+  m_LocalRotation: {x: -0, y: 0.15931837, z: -0, w: 0.98722726}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -20074,7 +20074,7 @@ MonoBehaviour:
   usePhysicalSunHeight: 1
   sunDirection: 107
   sunPitch: 0
-  moonDirection: {x: -0.41223398, y: -0.89178365, z: 0.18650782}
+  moonDirection: {x: -0.41223395, y: -0.8917836, z: 0.18650807}
   skyZenithColor: {r: 0.026301896, g: 0.111920215, b: 0.18995814, a: 1}
   skyHorizonColor: {r: 0.22944732, g: 0.42148164, b: 0.5118976, a: 1}
   cloudColor: {r: 0.77473915, g: 0.46648303, b: 0.47074655, a: 1}

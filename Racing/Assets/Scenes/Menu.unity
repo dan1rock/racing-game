@@ -7736,7 +7736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.15931837, z: -0, w: 0.98722726}
+  m_LocalRotation: {x: -0, y: -0.49969807, z: -0, w: 0.8661997}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -18247,6 +18247,8 @@ MonoBehaviour:
     - m_Text: Cozy Lake
       m_Image: {fileID: 0}
     - m_Text: Arctic Tundra
+      m_Image: {fileID: 0}
+    - m_Text: Sandy Dunes
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

@@ -502,17 +502,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.4268875
-      outSlope: -0.4268875
+      inSlope: -0.12264252
+      outSlope: -0.12264252
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0.5731125
-      inSlope: -0.4268875
-      outSlope: -0.4268875
+      value: 0.8773575
+      inSlope: -0.12264252
+      outSlope: -0.12264252
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -522,7 +522,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   driftTrailTrigger: 0.1
   isDriftCar: 1
-  driftCounterSteering: 35
+  driftCounterSteering: 40
   drivetrain: 1
   torque: 10
   topSpeed: 100
@@ -594,15 +594,16 @@ MonoBehaviour:
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
+  carName: Thunderclaw S
   layerMask:
     serializedVersion: 2
     m_Bits: 183
-  speed: 0.00625503
-  relativeSpeed: 0.0000625503
+  speed: 0.49550086
+  relativeSpeed: 0.0049550086
   playerControlled: 0
   menuMode: 0
   wheelContact: 1
-  rbVelocity: {x: 0, y: 0, z: 0}
+  rbVelocity: {x: 0.012937263, y: -0.019380063, z: 0.61652744}
 --- !u!82 &8622551070679672228
 AudioSource:
   m_ObjectHideFlags: 0

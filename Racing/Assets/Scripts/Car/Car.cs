@@ -83,7 +83,8 @@ public class Car : MonoBehaviour
     [SerializeField] private AudioClip engineStartClip;
     [SerializeField] private AudioClip engineStopClip;
 
-    [Header("Misc")]
+    [Header("Misc")] 
+    [SerializeField] public string carName = "Car";
     [SerializeField] private LayerMask layerMask;
 
     [SerializeField] [ReadOnly] private float speed;
@@ -545,6 +546,8 @@ public class Car : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!_wheel_fl) return;
+        
         Wheel[] wheels = { _wheel_fl, _wheel_fr, _wheel_rl, _wheel_rr };
         
         foreach (Wheel wheel in wheels)
@@ -758,7 +761,7 @@ public class Car : MonoBehaviour
         _engineOn = true;
         _engineStarting = false;
         
-        _levelManager.OnCarStarted();
+        _levelManager?.OnCarStarted();
     }
 
     private void StartEngineImmediate()
@@ -806,21 +809,27 @@ public class Car : MonoBehaviour
         _engineStarting = false;
     }
 
-    public void SetMenuMode()
+    public void SetMenuMode(bool carSelect = false)
     {
         menuMode = true;
-        
-        _steering = -0.5f;
-        _acceleration = 1f;
         _nightMode = true;
             
-        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
-                         _driftCounterSteering;
-
-        _tireFr.localRotation = Quaternion.Euler(0f, steering, 0f);
-        _tireFl.localRotation = Quaternion.Euler(0f, steering, 0f);
+        if (!carSelect)
+        {
+            _steering = -0.5f;
+            _acceleration = 1f;
+            float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
+                             _driftCounterSteering;
             
-        StartEngineImmediate();
+            _tireFr.localRotation = Quaternion.Euler(0f, steering, 0f);
+            _tireFl.localRotation = Quaternion.Euler(0f, steering, 0f);
+            
+            StartEngineImmediate();
+        }
+        else
+        {
+            StartCoroutine(StartEngine());
+        }
     }
 
     public void InvokeReset()

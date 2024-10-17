@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Stage Settings")]
     [SerializeField] private GameObject pickedCar;
+    [SerializeField] private int pickedCarColor;
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
     [SerializeField] public RaceMode raceMode;
@@ -68,6 +69,7 @@ public class LevelManager : MonoBehaviour
         {
             GameManager gameManager = GameManager.Get();
             pickedCar = gameManager.car;
+            pickedCarColor = gameManager.carColorId;
             weather = gameManager.weather;
             dayTime = gameManager.dayTime;
             raceMode = gameManager.raceMode;
@@ -95,6 +97,11 @@ public class LevelManager : MonoBehaviour
         
         GameObject playerCar = Instantiate(pickedCar, _startPosition.position, _startPosition.rotation);
         _cars.Add(playerCar.GetComponent<Car>());
+        
+        if (GameManager.Get())
+        {
+            _cars[_activeCar].SetColor(GameManager.Get().carColors[pickedCarColor]);
+        }
         
         activeCarMarker.position = playerCar.transform.position + playerCar.transform.up;
         cameraTarget.position = playerCar.transform.position;

@@ -31,6 +31,7 @@ public class MenuManager : MonoBehaviour
     public int selectedStage;
     public bool reverseToggled;
     public int selectedCarId;
+    public int selectedCarColorId;
     public DayTime selectedDayTime;
     public Weather selectedWeather;
     public RaceMode selectedRaceMode;
@@ -44,6 +45,7 @@ public class MenuManager : MonoBehaviour
         car.GetComponent<Car>().SetMenuMode();
 
         selectedCarId = GameManager.Get().carId;
+        selectedCarColorId = GameManager.Get().carColorId;
         selectedStage = GameManager.Get().stageId;
         reverseToggled = GameManager.Get().stageReverse;
         selectedDayTime = GameManager.Get().dayTime;
@@ -87,6 +89,13 @@ public class MenuManager : MonoBehaviour
         reverseToggled = state;
     }
 
+    public void SetCarColor(int id)
+    {
+        selectedCarColorId = id;
+        
+        _selectedCar.GetComponent<Car>().SetColor(GameManager.Get().carColors[selectedCarColorId]);
+    }
+
     public void LoadStage()
     {
         GameManager.Get().LoadStage(this);
@@ -127,6 +136,7 @@ public class MenuManager : MonoBehaviour
         Car car = _selectedCar.GetComponent<Car>();
         
         car.SetMenuMode(true);
+        car.SetColor(GameManager.Get().carColors[selectedCarColorId]);
 
         selectedCarName.text = car.carName;
     }

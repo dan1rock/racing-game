@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> driftCars;
     [SerializeField] private List<GameObject> raceCars;
+    [SerializeField] public List<Material> carColors;
     [SerializeField] private AudioMixer audioMixer;
     
     public GameState gameState;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     public bool stageReverse;
     public GameObject car;
     public int carId;
+    public int carColorId;
     public RaceMode raceMode;
 
     public Settings settings;
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         stageId = menuManager.selectedStage;
         stageReverse = menuManager.reverseToggled;
         carId = menuManager.selectedCarId;
+        carColorId = menuManager.selectedCarColorId;
         raceMode = menuManager.selectedRaceMode;
 
         car = raceMode switch
@@ -102,6 +105,7 @@ public class GameManager : MonoBehaviour
             stageId = playerData.menuSelectedStageId;
             stageReverse = playerData.menuSelectedStageReverse;
             carId = playerData.menuSelectedCarId;
+            carColorId = playerData.menuSelectedCarColorId;
             raceMode = playerData.menuSelectedRaceMode;
         }
         catch (Exception e)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -216,6 +215,29 @@ public class Car : MonoBehaviour
 
         _frontLightSource = GetComponentInChildren<Light>()?.transform.parent.gameObject;
         _frontLightSource?.SetActive(false);
+    }
+
+    private int _mainColorMatId = -1;
+    public void SetColor(Material material)
+    {
+        Renderer carRenderer = GetComponentInChildren<Renderer>();
+
+        if (_mainColorMatId == -1)
+        {
+            for (int i = 0; i < carRenderer.materials.Length; i++)
+            {
+                if (!carRenderer.materials[i].name.Contains("Main")) continue;
+
+                _mainColorMatId = i;
+                break;
+            }
+        }
+
+        Material newMaterialInstance = new(material);
+
+        Material[] materials = carRenderer.materials;
+        materials[_mainColorMatId] = newMaterialInstance;
+        carRenderer.materials = materials;
     }
 
     private void Update()

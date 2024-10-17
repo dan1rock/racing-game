@@ -7,6 +7,7 @@ public class PlayerData
     public int menuSelectedStageId;
     public bool menuSelectedStageReverse;
     public int menuSelectedCarId;
+    public int menuSelectedCarColorId;
     public RaceMode menuSelectedRaceMode;
 
     public PlayerData(GameManager player)
@@ -17,6 +18,7 @@ public class PlayerData
         menuSelectedStageId = player.stageId;
         menuSelectedStageReverse = player.stageReverse;
         menuSelectedCarId = player.carId;
+        menuSelectedCarColorId = player.carColorId;
         menuSelectedRaceMode = player.raceMode;
     }
 }

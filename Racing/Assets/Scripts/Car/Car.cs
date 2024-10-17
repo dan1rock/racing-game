@@ -851,6 +851,7 @@ public class Car : MonoBehaviour
         else
         {
             StartCoroutine(StartEngine());
+            _frontLightSource?.SetActive(false);
         }
     }
 

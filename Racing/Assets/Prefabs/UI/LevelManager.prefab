@@ -426,6 +426,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelUI
       objectReference: {fileID: 0}
+    - target: {fileID: 9140749651618782084, guid: a243a5871f1f22c4d923847db2f67edd,
+        type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 3382913086122023323}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

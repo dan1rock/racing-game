@@ -8087,6 +8087,7 @@ MonoBehaviour:
   stageSettings: {fileID: 5900718367286015397}
   reverseToggle: {fileID: 1403129225}
   mapPreview: {fileID: 1842038492}
+  mapLayout: {fileID: 1764468383}
   mapName: {fileID: 241054186}
   modeName: {fileID: 741246200}
   weatherName: {fileID: 565485785}
@@ -10790,7 +10791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.20567635, z: -0, w: 0.9786201}
+  m_LocalRotation: {x: -0, y: 0.8926607, z: -0, w: -0.4507294}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15441,6 +15442,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8095d9237925cd14ea71b55b7ce16402, type: 3}
   - {fileID: 21300000, guid: f9efdb07bd852ee41b5ead446a3290fe, type: 3}
   - {fileID: 21300000, guid: 4c352152cd64f504cb581e1d7d68e5b1, type: 3}
+  mapLayouts:
+  - {fileID: 21300000, guid: 40a4e6bce1bbab5409071c964ffeedf3, type: 3}
+  - {fileID: 21300000, guid: b8dbd81fd91b467448396eba1f05477c, type: 3}
+  - {fileID: 21300000, guid: 69a82ec27508419439fa25ef18b4f2b3, type: 3}
+  - {fileID: 21300000, guid: cd3ba3c13322292499c4a3dd4594db0e, type: 3}
   mapNames:
   - Forest Valley
   - Cozy Lake
@@ -25110,6 +25116,7 @@ RectTransform:
   m_Children:
   - {fileID: 252180195}
   - {fileID: 1842038491}
+  - {fileID: 1764468381}
   - {fileID: 1403129224}
   m_Father: {fileID: 920490070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28859,6 +28866,97 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744577903}
   m_CullTransparentMesh: 1
+--- !u!1 &1764468380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1764468381}
+  - component: {fileID: 1764468384}
+  - component: {fileID: 1764468383}
+  - component: {fileID: 1764468382}
+  m_Layer: 5
+  m_Name: LayoutPreview
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1764468381
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764468380}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000059604645}
+  m_LocalScale: {x: 0.6, y: 0.59999996, z: 0.6}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1328385285}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1764468382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764468380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 10, y: -10}
+  m_UseGraphicAlpha: 1
+--- !u!114 &1764468383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764468380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 40a4e6bce1bbab5409071c964ffeedf3, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1764468384
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764468380}
+  m_CullTransparentMesh: 1
 --- !u!1 &1776512985
 GameObject:
   m_ObjectHideFlags: 0
@@ -30688,7 +30786,7 @@ Transform:
   m_GameObject: {fileID: 1856002615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.6031656, y: 4.370016, z: -9.948674}
+  m_LocalPosition: {x: 2.8035421, y: 3.8895066, z: -5.423457}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -18,6 +18,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject stageSettings;
     [SerializeField] private Toggle reverseToggle;
     [SerializeField] private Image mapPreview;
+    [SerializeField] private Image mapLayout;
     [SerializeField] private TMP_Text mapName;
     [SerializeField] private TMP_Text modeName;
     [SerializeField] private TMP_Text weatherName;
@@ -180,6 +181,7 @@ public class MenuManager : MonoBehaviour
     private void UpdateSelectedMap()
     {
         mapPreview.sprite = GameManager.Get().mapPreviews[selectedStage];
+        mapLayout.sprite = GameManager.Get().mapLayouts[selectedStage];
         mapName.text = GameManager.Get().mapNames[selectedStage];
     }
 

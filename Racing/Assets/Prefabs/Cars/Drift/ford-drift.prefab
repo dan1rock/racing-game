@@ -522,7 +522,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   driftTrailTrigger: 0.1
   isDriftCar: 1
-  driftCounterSteering: 40
+  driftCounterSteering: 38
   drivetrain: 1
   torque: 10
   topSpeed: 100

@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> driftCars;
     [SerializeField] private List<GameObject> raceCars;
     [SerializeField] public List<Material> carColors;
+    [SerializeField] public List<Sprite> mapPreviews;
+    [SerializeField] public List<string> mapNames;
     [SerializeField] private AudioMixer audioMixer;
     
     public GameState gameState;

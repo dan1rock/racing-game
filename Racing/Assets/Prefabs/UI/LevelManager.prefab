@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickedCar: {fileID: 0}
+  pickedCarColor: 0
   weather: 0
   dayTime: 0
   raceMode: 0
@@ -94,7 +95,7 @@ MonoBehaviour:
   resetCarUI: {fileID: 8079365011860223830}
   activeCarMarker: {fileID: 3382913086122023323}
   cameraTarget: {fileID: 3752979577396554047}
-  dayTimes: 080000000d0000001200000002000000
+  dayTimes: 070000000d0000001200000002000000
   weathers:
   - {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
   - {fileID: 11400000, guid: 4ef5a87214dcf4abdb41a77f5d5a9716, type: 2}
@@ -102,6 +103,7 @@ MonoBehaviour:
   nightMode: 0
   wrongDirection: 0
   resetCar: 0
+  carStarted: 0
   lastCheckPoint: {fileID: 0}
 --- !u!114 &6374711817727101306
 MonoBehaviour:

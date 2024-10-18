@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MenuManager : MonoBehaviour
 {
@@ -14,11 +16,12 @@ public class MenuManager : MonoBehaviour
     
     [Header("Stage Settings")] 
     [SerializeField] private GameObject stageSettings;
-    [SerializeField] private TMP_Dropdown stageDropdown;
     [SerializeField] private Toggle reverseToggle;
-    [SerializeField] private TMP_Dropdown timeDropdown;
-    [SerializeField] private TMP_Dropdown weatherDropdown;
-    [SerializeField] private TMP_Dropdown raceModeDropdown;
+    [SerializeField] private Image mapPreview;
+    [SerializeField] private TMP_Text mapName;
+    [SerializeField] private TMP_Text modeName;
+    [SerializeField] private TMP_Text weatherName;
+    [SerializeField] private TMP_Text dayTimeName;
 
     [Header("Car Selection")] 
     [SerializeField] private GameObject carSelection;
@@ -51,17 +54,19 @@ public class MenuManager : MonoBehaviour
         selectedDayTime = GameManager.Get().dayTime;
         selectedWeather = GameManager.Get().weather;
         selectedRaceMode = GameManager.Get().raceMode;
-
-        stageDropdown.value = selectedStage;
+        
         reverseToggle.isOn = reverseToggled;
-        timeDropdown.value = (int)selectedDayTime;
-        weatherDropdown.value = (int)selectedWeather;
-        raceModeDropdown.value = (int)selectedRaceMode;
 
         _cameras = new[] { mainView, carSelectView, stageSelectView };
         
         SetView(mainView);
+        
         SpawnSelectedCar();
+        
+        UpdateSelectedMap();
+        UpdateSelectedMode();
+        UpdateSelectedTime();
+        UpdateSelectedWeather();
     }
 
     public void SetWeather(int id)
@@ -127,6 +132,37 @@ public class MenuManager : MonoBehaviour
         
         SpawnSelectedCar();
     }
+    
+    public void ScrollMaps(bool right)
+    {
+        selectedStage += right ? 1 : -1;
+        
+        if (selectedStage >= GameManager.Get().mapNames.Count) selectedStage = 0;
+        if (selectedStage < 0) selectedStage = GameManager.Get().mapNames.Count - 1;
+        
+        UpdateSelectedMap();
+    }
+
+    public void ScrollMode(bool right)
+    {
+        selectedRaceMode = ClampEnum(selectedRaceMode, right);
+        
+        UpdateSelectedMode();
+    }
+
+    public void ScrollDayTime(bool right)
+    {
+        selectedDayTime = ClampEnum(selectedDayTime, right);
+
+        UpdateSelectedTime();
+    }
+    
+    public void ScrollWeather(bool right)
+    {
+        selectedWeather = ClampEnum(selectedWeather, right);
+
+        UpdateSelectedWeather();
+    }
 
     private void SpawnSelectedCar()
     {
@@ -141,6 +177,27 @@ public class MenuManager : MonoBehaviour
         selectedCarName.text = car.carName;
     }
 
+    private void UpdateSelectedMap()
+    {
+        mapPreview.sprite = GameManager.Get().mapPreviews[selectedStage];
+        mapName.text = GameManager.Get().mapNames[selectedStage];
+    }
+
+    private void UpdateSelectedTime()
+    {
+        dayTimeName.text = selectedDayTime.ToString();
+    }
+
+    private void UpdateSelectedWeather()
+    {
+        weatherName.text = selectedWeather.ToString();
+    }
+
+    private void UpdateSelectedMode()
+    {
+        modeName.text = selectedRaceMode.ToString();
+    }
+
     private void SetView(ICinemachineCamera targetCamera)
     {
         foreach (CinemachineVirtualCamera vCam in _cameras)
@@ -149,5 +206,24 @@ public class MenuManager : MonoBehaviour
         }
 
         targetCamera.Priority = 20;
+    }
+    
+    public static T ClampEnum<T>(T enumValue, bool increment) where T : Enum
+    {
+        int enumLength = Enum.GetValues(typeof(T)).Length;
+        int currentIndex = Convert.ToInt32(enumValue);
+        
+        currentIndex += increment ? 1 : -1;
+        
+        if (currentIndex < 0)
+        {
+            currentIndex = enumLength - 1;
+        }
+        else if (currentIndex >= enumLength)
+        {
+            currentIndex = 0;
+        }
+
+        return (T)Enum.ToObject(typeof(T), currentIndex);
     }
 }

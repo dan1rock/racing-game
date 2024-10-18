@@ -572,10 +572,14 @@ public class Car : MonoBehaviour
         
         Wheel[] wheels = { _wheel_fl, _wheel_fr, _wheel_rl, _wheel_rr };
         
+        Gizmos.color = Color.white;
         foreach (Wheel wheel in wheels)
         {
             Gizmos.DrawSphere(wheel.transform.position, wheelOffset);
         }
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_rb.worldCenterOfMass, 0.1f);
     }
 
     private float _enginePitchFactor = 0f;

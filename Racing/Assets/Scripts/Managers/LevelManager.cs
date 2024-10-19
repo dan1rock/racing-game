@@ -141,7 +141,7 @@ public class LevelManager : MonoBehaviour
         if (weather is Weather.Rainy or Weather.Snowy && dayTime == DayTime.Night) time += 1;
         _cozyWeather.timeModule.currentTime = new MeridiemTime(time, 0);
         
-        CozyWeather.instance.weatherModule.ecosystem.SetWeather(weathers[(int) weather]);
+        CozyWeather.instance.weatherModule.ecosystem.SetWeather(weathers[(int) weather], 0f);
     }
 
     private IEnumerator UpdateReflectionProbe(float delay)

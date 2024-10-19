@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using DistantLands.Cozy;
@@ -62,6 +63,7 @@ public class LevelManager : MonoBehaviour
     private Controls _controls;
     private TimeAttackManager _timeAttackManager;
     private CozyWeather _cozyWeather;
+    private ReflectionProbe _reflectionProbe;
 
     private void Awake()
     {
@@ -85,6 +87,7 @@ public class LevelManager : MonoBehaviour
         _cozyWeather = FindObjectOfType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
         _timeAttackManager = GetComponent<TimeAttackManager>();
+        _reflectionProbe = FindObjectOfType<ReflectionProbe>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
         if (dayTime == DayTime.Night) nightMode = true;
@@ -129,8 +132,9 @@ public class LevelManager : MonoBehaviour
         }
         
         UpdateWeather();
+        StartCoroutine(UpdateReflectionProbe(0.1f));
     }
-    
+
     private void UpdateWeather()
     {
         int time = dayTimes[(int)dayTime];
@@ -138,6 +142,13 @@ public class LevelManager : MonoBehaviour
         _cozyWeather.timeModule.currentTime = new MeridiemTime(time, 0);
         
         CozyWeather.instance.weatherModule.ecosystem.SetWeather(weathers[(int) weather]);
+    }
+
+    private IEnumerator UpdateReflectionProbe(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        _reflectionProbe.RenderProbe();
     }
 
     private void Update()

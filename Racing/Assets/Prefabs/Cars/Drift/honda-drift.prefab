@@ -565,6 +565,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2cb94db5cad84caaa4a8388be7bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  carName: Vortex 2K
+  maxSpeed: 0.498
+  acceleration: 0.606
+  handling: 0.901
+  difficulty: 0.146
   wheelOffset: 0.355
   suspensionLength: 0.45
   suspensionRest: 0.4
@@ -788,7 +793,6 @@ MonoBehaviour:
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
-  carName: Vortex 2K
   layerMask:
     serializedVersion: 2
     m_Bits: 183

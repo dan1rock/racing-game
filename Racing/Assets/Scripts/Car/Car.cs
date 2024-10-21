@@ -13,6 +13,13 @@ public enum Drivetrain
 
 public class Car : MonoBehaviour
 {
+    [Header("Car Info")]
+    [SerializeField] public string carName = "Car";
+    [Range(0f, 1f)] [SerializeField] public float maxSpeed = 1f;
+    [Range(0f, 1f)] [SerializeField] public float acceleration = 1f;
+    [Range(0f, 1f)] [SerializeField] public float handling = 1f;
+    [Range(0f, 1f)] [SerializeField] public float difficulty = 1f;
+    
     private Transform _tireFr;
     private Transform _tireFl;
     private Transform _tireRr;
@@ -81,9 +88,8 @@ public class Car : MonoBehaviour
     [SerializeField] private AudioClip gearShiftClip;
     [SerializeField] private AudioClip engineStartClip;
     [SerializeField] private AudioClip engineStopClip;
-
+    
     [Header("Misc")] 
-    [SerializeField] public string carName = "Car";
     [SerializeField] private LayerMask layerMask;
 
     [SerializeField] [ReadOnly] private float speed;

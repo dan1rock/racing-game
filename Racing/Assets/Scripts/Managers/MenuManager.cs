@@ -27,6 +27,7 @@ public class MenuManager : MonoBehaviour
     [Header("Car Selection")] 
     [SerializeField] private GameObject carSelection;
     [SerializeField] private TMP_Text selectedCarName;
+    [SerializeField] private UICarStats uiCarStats;
 
     [SerializeField] private CinemachineVirtualCamera mainView;
     [SerializeField] private CinemachineVirtualCamera carSelectView;
@@ -176,6 +177,7 @@ public class MenuManager : MonoBehaviour
         car.SetColor(GameManager.Get().carColors[selectedCarColorId]);
 
         selectedCarName.text = car.carName;
+        uiCarStats.SetCar(car);
     }
 
     private void UpdateSelectedMap()

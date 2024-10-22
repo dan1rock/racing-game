@@ -31,6 +31,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private DayTime dayTime;
     [SerializeField] public RaceMode raceMode;
     [SerializeField] public bool reverse;
+    [SerializeField] public int laps = 3;
 
     [Header("Graphics")] 
     [SerializeField] private GameObject grass;
@@ -56,6 +57,7 @@ public class LevelManager : MonoBehaviour
     public bool wrongDirection = false;
     public bool resetCar = false;
     public bool carStarted = false;
+    private bool _playerFinished = false;
 
     public Transform lastCheckPoint;
 
@@ -76,6 +78,7 @@ public class LevelManager : MonoBehaviour
             dayTime = gameManager.dayTime;
             raceMode = gameManager.raceMode;
             reverse = gameManager.stageReverse;
+            laps = gameManager.laps;
 
             if (gameManager.graphicsQuality == QualityLevel.High && grass)
             {
@@ -118,7 +121,7 @@ public class LevelManager : MonoBehaviour
 
         switch (raceMode)
         {
-            case RaceMode.Race:
+            case RaceMode.TimeAttack:
                 timeAttackUI.SetActive(true);
                 break;
             case RaceMode.Drift:
@@ -211,12 +214,15 @@ public class LevelManager : MonoBehaviour
 
     public void WrongDirection(bool state)
     {
+        if (_playerFinished) return;
+        
         wrongDirectionSign.SetActive(state);
         wrongDirection = state;
     }
 
     public void ResetCar(bool state)
     {
+        if (_playerFinished) return;
         if (resetCar == state) return;
         
         resetCarUI.SetActive(state);
@@ -238,5 +244,24 @@ public class LevelManager : MonoBehaviour
     public void OnCarStarted()
     {
         carStarted = true;
+    }
+
+    public void DisableControls(bool stopCar)
+    {
+        mobileUI.SetActive(false);
+
+        if (stopCar)
+        {
+            _cars[_activeCar].StopCar();
+        }
+    }
+
+    public void OnPlayerFinish()
+    {
+        DisableControls(true);
+        resetCarUI.SetActive(false);
+        wrongDirectionSign.SetActive(false);
+
+        _playerFinished = true;
     }
 }

@@ -8,6 +8,12 @@ public class TimeAttackManager : MonoBehaviour
     [SerializeField] private TMP_Text bestLapTimeText;
     [SerializeField] private TMP_Text lapsText;
 
+    [Header("End Menu")] 
+    [SerializeField] private GameObject timeAttackEndMenu;
+    [SerializeField] private TMP_Text endOverallTimeText;
+    [SerializeField] private TMP_Text endBestLapTimeText;
+
+    private bool _finished = false;
     private int _currentLap = 1;
     public float overallTime = 0f;
     private float _lapTime = 0f;
@@ -22,12 +28,12 @@ public class TimeAttackManager : MonoBehaviour
         overallTimeText.text = FormatTime(0f);
         lapTimeText.text = FormatTime(0f);
         bestLapTimeText.text = "??:??:???";
-        lapsText.text = "Lap " + _currentLap;
+        lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
     }
 
     private void Update()
     {
-        if (_levelManager.raceMode != RaceMode.Race) return;
+        if (_levelManager.raceMode != RaceMode.TimeAttack) return;
         if (!_levelManager.carStarted) return;
         
         ProcessTime();
@@ -35,6 +41,8 @@ public class TimeAttackManager : MonoBehaviour
 
     private void ProcessTime()
     {
+        if (_finished) return;
+        
         _lapTime += Time.deltaTime;
         overallTime += Time.deltaTime;
         
@@ -44,10 +52,6 @@ public class TimeAttackManager : MonoBehaviour
 
     public void OnLapFinish()
     {
-        _currentLap++;
-        
-        lapsText.text = "Lap " + _currentLap;
-
         if (_bestLapTime > _lapTime)
         {
             _bestLapTime = _lapTime;
@@ -56,6 +60,27 @@ public class TimeAttackManager : MonoBehaviour
         
         _lapTime = 0f;
         lapTimeText.text = FormatTime(_lapTime);
+        
+        if (_currentLap < _levelManager.laps)
+        {
+            _currentLap++;
+
+            lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
+        }
+        else
+        {
+            _finished = true;
+            OnStageFinish();
+        }
+    }
+
+    private void OnStageFinish()
+    {
+        timeAttackEndMenu.SetActive(true);
+        endOverallTimeText.text = overallTimeText.text;
+        endBestLapTimeText.text = bestLapTimeText.text;
+        
+        _levelManager.OnPlayerFinish();
     }
 
     private string FormatTime(float secs)

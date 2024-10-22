@@ -109,6 +109,7 @@ public class Car : MonoBehaviour
 
     private int _currentGear = 1;
 
+    private bool _forceStop = false;
     private bool _nightMode = false;
     private bool _engineOn = false;
     private bool _engineStarting = false;
@@ -254,7 +255,7 @@ public class Car : MonoBehaviour
         }
         _audioSource.volume = _engineVolume;
         
-        if (!playerControlled) return;
+        if (!playerControlled || _forceStop) return;
         HandleInput();
     }
 
@@ -869,6 +870,20 @@ public class Car : MonoBehaviour
     {
         _pendingReset = true;
         _forceReset = true;
+    }
+
+    public void StopCar()
+    {
+        if (!playerControlled) return;
+
+        _forceStop = true;
+
+        _acceleration = 0f;
+        _steering = 0f;
+        _handbrake = true;
+        
+        _tireFr.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        _tireFl.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
 
     private void OnCollisionEnter(Collision other)

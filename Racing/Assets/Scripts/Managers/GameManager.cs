@@ -13,7 +13,7 @@ public enum GameState
 public enum RaceMode
 {
     Drift,
-    Race
+    TimeAttack
 }
 
 public class GameManager : MonoBehaviour
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public DayTime dayTime;
     public Weather weather;
     public int stageId;
+    public int laps;
     public bool stageReverse;
     public GameObject car;
     public int carId;
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         dayTime = menuManager.selectedDayTime;
         weather = menuManager.selectedWeather;
         stageId = menuManager.selectedStage;
+        laps = menuManager.selectedLaps;
         stageReverse = menuManager.reverseToggled;
         carId = menuManager.selectedCarId;
         carColorId = menuManager.selectedCarColorId;
@@ -79,7 +81,7 @@ public class GameManager : MonoBehaviour
         car = raceMode switch
         {
             RaceMode.Drift => driftCars[carId],
-            RaceMode.Race => raceCars[carId],
+            RaceMode.TimeAttack => raceCars[carId],
             _ => car
         };
 
@@ -92,7 +94,13 @@ public class GameManager : MonoBehaviour
     public void LoadMenu()
     {
         gameState = GameState.Menu;
+        SaveSystem.SavePlayer(this);
         SceneManager.LoadScene(0);
+    }
+
+    public void ReloadStage()
+    {
+        SceneManager.LoadScene(stageId + 1);
     }
 
     private void LoadSave()
@@ -106,6 +114,7 @@ public class GameManager : MonoBehaviour
             dayTime = playerData.menuSelectedDayTime;
             weather = playerData.menuSelectedWeather;
             stageId = playerData.menuSelectedStageId;
+            laps = playerData.menuSelectedLaps;
             stageReverse = playerData.menuSelectedStageReverse;
             carId = playerData.menuSelectedCarId;
             carColorId = playerData.menuSelectedCarColorId;

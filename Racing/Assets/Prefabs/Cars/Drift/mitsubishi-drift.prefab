@@ -605,9 +605,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carName: Velocity R
-  maxSpeed: 0.77
+  maxSpeed: 0.596
   acceleration: 0.859
-  handling: 0.648
+  handling: 0.601
   difficulty: 0.535
   wheelOffset: 0.35
   suspensionLength: 0.45
@@ -760,9 +760,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   driftTrailTrigger: 0.1
   isDriftCar: 1
-  driftCounterSteering: 38
+  driftCounterSteering: 35
   drivetrain: 1
-  torque: 7
+  torque: 10
   topSpeed: 80
   topReverse: 20
   accelerationCurve:

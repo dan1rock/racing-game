@@ -5,6 +5,7 @@ public class PlayerData
     public DayTime menuSelectedDayTime;
     public Weather menuSelectedWeather;
     public int menuSelectedStageId;
+    public int menuSelectedLaps;
     public bool menuSelectedStageReverse;
     public int menuSelectedCarId;
     public int menuSelectedCarColorId;
@@ -16,6 +17,7 @@ public class PlayerData
         menuSelectedDayTime = player.dayTime;
         menuSelectedWeather = player.weather;
         menuSelectedStageId = player.stageId;
+        menuSelectedLaps = player.laps;
         menuSelectedStageReverse = player.stageReverse;
         menuSelectedCarId = player.carId;
         menuSelectedCarColorId = player.carColorId;

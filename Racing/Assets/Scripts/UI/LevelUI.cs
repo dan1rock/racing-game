@@ -20,4 +20,10 @@ public class LevelUI : MonoBehaviour
         GameManager.Get()?.SetCarVolume(1f);
         Time.timeScale = 1f;
     }
+
+    public void OnRestart()
+    {
+        GameManager.Get()?.ReloadStage();
+        Time.timeScale = 1f;
+    }
 }

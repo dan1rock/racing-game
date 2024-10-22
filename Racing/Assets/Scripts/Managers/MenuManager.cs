@@ -13,8 +13,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Transform selectedCarSpawn;
 
     [SerializeField] private GameObject mainMenu;
-    
+
     [Header("Stage Settings")] 
+    [SerializeField] private int maxLaps = 5;
     [SerializeField] private GameObject stageSettings;
     [SerializeField] private Toggle reverseToggle;
     [SerializeField] private Image mapPreview;
@@ -23,6 +24,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private TMP_Text modeName;
     [SerializeField] private TMP_Text weatherName;
     [SerializeField] private TMP_Text dayTimeName;
+    [SerializeField] private TMP_Text lapsName;
 
     [Header("Car Selection")] 
     [SerializeField] private GameObject carSelection;
@@ -34,6 +36,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera stageSelectView;
     
     public int selectedStage;
+    public int selectedLaps;
     public bool reverseToggled;
     public int selectedCarId;
     public int selectedCarColorId;
@@ -52,10 +55,13 @@ public class MenuManager : MonoBehaviour
         selectedCarId = GameManager.Get().carId;
         selectedCarColorId = GameManager.Get().carColorId;
         selectedStage = GameManager.Get().stageId;
+        selectedLaps = GameManager.Get().laps;
         reverseToggled = GameManager.Get().stageReverse;
         selectedDayTime = GameManager.Get().dayTime;
         selectedWeather = GameManager.Get().weather;
         selectedRaceMode = GameManager.Get().raceMode;
+
+        selectedLaps = Mathf.Clamp(selectedLaps, 1, maxLaps);
         
         reverseToggle.isOn = reverseToggled;
 
@@ -69,6 +75,7 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedMode();
         UpdateSelectedTime();
         UpdateSelectedWeather();
+        UpdateSelectedLaps();
     }
 
     public void SetWeather(int id)
@@ -165,6 +172,16 @@ public class MenuManager : MonoBehaviour
 
         UpdateSelectedWeather();
     }
+    
+    public void ScrollLaps(bool right)
+    {
+        selectedLaps += right ? 1 : -1;
+        
+        if (selectedLaps > maxLaps) selectedLaps = 1;
+        if (selectedLaps < 1) selectedLaps = maxLaps;
+
+        UpdateSelectedLaps();
+    }
 
     private void SpawnSelectedCar()
     {
@@ -200,6 +217,11 @@ public class MenuManager : MonoBehaviour
     private void UpdateSelectedMode()
     {
         modeName.text = selectedRaceMode.ToString();
+    }
+
+    private void UpdateSelectedLaps()
+    {
+        lapsName.text = selectedLaps.ToString();
     }
 
     private void SetView(ICinemachineCamera targetCamera)

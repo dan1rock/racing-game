@@ -130,7 +130,7 @@ public class DriftCounter : MonoBehaviour
 
     public void ProcessDrift(float speed, float angle)
     {
-        if (_levelManager.wrongDirection) return;
+        if (_levelManager.wrongDirectionActive) return;
         
         angle = Mathf.Abs(angle);
         if (angle < _minAngleRads) return;

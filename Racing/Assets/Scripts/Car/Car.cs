@@ -697,9 +697,9 @@ public class Car : MonoBehaviour
         if (_wheel_rl.isContactingTrack) tiresOnSurface++;
         if (_wheel_rr.isContactingTrack) tiresOnSurface++;
         
-        if (_engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface == 0))
+        if (_engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
         {
-            _stuckTimer += Time.fixedDeltaTime;
+            _stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirectionActive ? 1.5f : 1f);
 
             float targetTime = _torqueWheelContact ? 5f : 2f;
             
@@ -721,7 +721,7 @@ public class Car : MonoBehaviour
         
         Ray ray = new()
         {
-            origin = _levelManager.lastCheckPoint.position + Vector3.up * 10f,
+            origin = _levelManager.lastCheckPoint.transform.position + Vector3.up * 10f,
             direction = Vector3.down
         };
 
@@ -733,7 +733,7 @@ public class Car : MonoBehaviour
             _rb.velocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             
-            Vector3 rotation = _levelManager.lastCheckPoint.eulerAngles;
+            Vector3 rotation = _levelManager.lastCheckPoint.transform.eulerAngles;
             rotation.x = 0f;
             rotation.z = 0f;
 

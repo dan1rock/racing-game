@@ -45,7 +45,7 @@ public class CheckPoint : MonoBehaviour
     {
         if (isStart)
         {
-            _levelManager.lastCheckPoint = transform;
+            _levelManager.lastCheckPoint = this;
             if (_levelManager.reverse)
             {
                 prev.Activate(true);
@@ -92,6 +92,7 @@ public class CheckPoint : MonoBehaviour
         if (playerVelocity.magnitude < 2f) return;
 
         bool wrongDirection = Vector3.Dot(direction, playerVelocity) < 0f;
+        _levelManager.wrongDirection = wrongDirection;
 
         if (wrongDirection)
         {
@@ -102,13 +103,13 @@ public class CheckPoint : MonoBehaviour
             _wrongDirectionTime = 0f;
         }
         
-        if (wrongDirection && !_levelManager.wrongDirection && _wrongDirectionTime > 0.5f)
+        if (wrongDirection && !_levelManager.wrongDirectionActive && _wrongDirectionTime > 0.5f)
         {
             _lastDistanceRecorded = direction.magnitude;
             _levelManager.WrongDirection(true);
         }
 
-        if (!wrongDirection && _levelManager.wrongDirection && _lastDistanceRecorded > direction.magnitude)
+        if (!wrongDirection && _levelManager.wrongDirectionActive && _lastDistanceRecorded > direction.magnitude)
         {
             _levelManager.WrongDirection(false);
         }
@@ -119,26 +120,24 @@ public class CheckPoint : MonoBehaviour
         isActive = state;
     }
 
+    public CheckPoint GetNext()
+    {
+        return _levelManager.reverse ? prev : next;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!isActive) return;
         
         if (other.transform.parent.GetComponent<Car>().playerControlled)
         {
-            if (_levelManager.wrongDirection) _levelManager.WrongDirection(false);
+            if (_levelManager.wrongDirectionActive) _levelManager.WrongDirection(false);
             
-            _levelManager.OnCheckpoint(transform);
+            _levelManager.OnCheckpoint(this);
             if (isStart) _levelManager.OnLapFinish();
             Activate(false);
             
-            if (_levelManager.reverse)
-            {
-                prev.Activate(true);
-            }
-            else
-            {
-                next.Activate(true);
-            }
+            GetNext().Activate(true);
         }
     }
     

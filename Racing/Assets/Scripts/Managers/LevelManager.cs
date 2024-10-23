@@ -5,6 +5,7 @@ using Cinemachine;
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum Weather
@@ -41,6 +42,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject timeAttackUI;
     [SerializeField] private GameObject mobileUI;
     [SerializeField] private GameObject wrongDirectionSign;
+    [SerializeField] private GameObject directionArrow;
     [SerializeField] private GameObject resetCarUI;
     [SerializeField] private Transform activeCarMarker;
     [SerializeField] private Transform cameraTarget;
@@ -55,11 +57,12 @@ public class LevelManager : MonoBehaviour
     private int _activeCar = 0;
 
     public bool wrongDirection = false;
+    public bool wrongDirectionActive = false;
     public bool resetCar = false;
     public bool carStarted = false;
     private bool _playerFinished = false;
 
-    public Transform lastCheckPoint;
+    public CheckPoint lastCheckPoint;
 
     private AudioSource _audioSource;
     private Controls _controls;
@@ -217,7 +220,11 @@ public class LevelManager : MonoBehaviour
         if (_playerFinished) return;
         
         wrongDirectionSign.SetActive(state);
-        wrongDirection = state;
+        directionArrow.SetActive(state);
+
+        directionArrow.GetComponent<DirectionArrow>().SetTarget(lastCheckPoint.GetNext().transform);
+        
+        wrongDirectionActive = state;
     }
 
     public void ResetCar(bool state)
@@ -229,7 +236,7 @@ public class LevelManager : MonoBehaviour
         resetCar = state;
     }
 
-    public void OnCheckpoint(Transform checkpoint)
+    public void OnCheckpoint(CheckPoint checkpoint)
     {
         lastCheckPoint = checkpoint;
         _audioSource.pitch = Random.Range(1.1f, 1.2f);
@@ -260,7 +267,7 @@ public class LevelManager : MonoBehaviour
     {
         DisableControls(true);
         resetCarUI.SetActive(false);
-        wrongDirectionSign.SetActive(false);
+        WrongDirection(false);
 
         _playerFinished = true;
     }

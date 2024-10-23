@@ -11043,7 +11043,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.83321244, z: -0, w: 0.552953}
+  m_LocalRotation: {x: -0, y: 0.9816697, z: -0, w: -0.19059004}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -16180,6 +16180,7 @@ GameObject:
   - component: {fileID: 920490073}
   - component: {fileID: 920490072}
   - component: {fileID: 920490071}
+  - component: {fileID: 920490074}
   m_Layer: 5
   m_Name: StageSelectorWS
   m_TagString: Untagged
@@ -16273,6 +16274,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &920490074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920490069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394a75684f72da941b9068c1140a7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  lockMaxAspect: 1
 --- !u!1 &921479435
 GameObject:
   m_ObjectHideFlags: 0
@@ -16799,6 +16814,7 @@ MonoBehaviour:
   dayTime: 0
   weather: 0
   stageId: 0
+  laps: 0
   stageReverse: 0
   car: {fileID: 0}
   carId: 0
@@ -25847,6 +25863,7 @@ GameObject:
   - component: {fileID: 1229567474}
   - component: {fileID: 1229567473}
   - component: {fileID: 1229567472}
+  - component: {fileID: 1229567475}
   m_Layer: 5
   m_Name: MainMenuWS
   m_TagString: Untagged
@@ -25937,6 +25954,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1229567475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229567470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394a75684f72da941b9068c1140a7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  lockMaxAspect: 1
 --- !u!1 &1230719499
 GameObject:
   m_ObjectHideFlags: 0
@@ -25949,6 +25980,7 @@ GameObject:
   - component: {fileID: 1230719503}
   - component: {fileID: 1230719502}
   - component: {fileID: 1230719501}
+  - component: {fileID: 1230719504}
   m_Layer: 5
   m_Name: CarSelectorWS
   m_TagString: Untagged
@@ -26042,6 +26074,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1230719504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230719499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394a75684f72da941b9068c1140a7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  lockMaxAspect: 1
 --- !u!1 &1234027420
 GameObject:
   m_ObjectHideFlags: 0
@@ -27170,7 +27216,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -155.24, y: 70}
+  m_AnchoredPosition: {x: -252.15, y: 70}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1339133079
@@ -33523,7 +33569,7 @@ Transform:
   m_GameObject: {fileID: 1856002615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.3539953, y: 3.1002133, z: -9.169996}
+  m_LocalPosition: {x: 0, y: 4, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -40435,7 +40481,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 642951711}

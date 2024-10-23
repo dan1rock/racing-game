@@ -379,8 +379,12 @@ public class Car : MonoBehaviour
             float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
             if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
             {
-                float angleRatio = angle * Mathf.Deg2Rad;
+                const float expoTrigger = 1.5f;
+                
+                float angleRatio = angle * (Mathf.Deg2Rad * expoTrigger);
                 if (angleRatio > 1f) angleRatio *= Mathf.Abs(angleRatio);
+
+                angleRatio *= 1f / expoTrigger;
                 
                 _driftCounterSteering = angleRatio * driftCounterSteering;
             }
@@ -445,8 +449,10 @@ public class Car : MonoBehaviour
             if (speed < 0.5f) slipAngle = 0f;
 
             float tireGrip = isRear ? rearTireGrip : frontTireGrip;
-            if (isDriftCar && isRear && (_acceleration != 0f || (_burnout && speed < 2f))) tireGrip *= 0.6f;
-            float grip = tireGrip * gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle);
+            if (isDriftCar && isRear && (_acceleration > 0f || (_burnout && speed < 2f))) tireGrip *= 0.6f;
+            
+            float grip = tireGrip;
+            grip *= Mathf.Clamp(gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle), 0.5f, 1f);
 
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
             emitTrail = emitTrail 

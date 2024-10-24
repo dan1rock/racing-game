@@ -97,6 +97,7 @@ public class Car : MonoBehaviour
 
     [SerializeField] public bool playerControlled = false;
     [SerializeField] private bool menuMode = false;
+    [SerializeField] private bool showcaseMode = false;
 
     private float _carSpeed;
     private float _acceleration = 0f;
@@ -181,6 +182,11 @@ public class Car : MonoBehaviour
         if (menuMode)
         {
             SetMenuMode();
+        }
+
+        if (showcaseMode)
+        {
+            SetShowcaseMode();
         }
     }
 
@@ -870,6 +876,12 @@ public class Car : MonoBehaviour
             StartCoroutine(StartEngine());
             _frontLightSource?.SetActive(false);
         }
+    }
+
+    public void SetShowcaseMode()
+    {
+        _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
+        _breakFlareEmissionColor = _redLightEmissionColor;
     }
 
     public void InvokeReset()

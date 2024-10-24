@@ -13,10 +13,16 @@ public class DriftCounter : MonoBehaviour
     [SerializeField] private float speedMultiplierRatio = 50f;
     [SerializeField] private List<float> multiplierRaiseTime;
 
+    [SerializeField] private TMP_Text lapsText;
     [SerializeField] private TMP_Text singleDriftScore;
     [SerializeField] private TMP_Text overallDriftScore;
     [SerializeField] private TMP_Text addedDriftScore;
     [SerializeField] private TMP_Text scoreMultiplier;
+    
+    [Header("End Menu")]
+    [SerializeField] private GameObject driftEndMenu;
+    [SerializeField] private TMP_Text endOverallScoreText;
+    [SerializeField] private TMP_Text endBiggestSingleScoreText;
 
     private GameObject _singleScore;
     private GameObject _addedScore;
@@ -27,6 +33,8 @@ public class DriftCounter : MonoBehaviour
     private float _minAngleRads;
     private float _score = 0f;
     private float _overallScore = 0f;
+    private float _bestSingleScore = 0f;
+    
     private float _lastDriftDetected;
     private float _lastDriftFail = -100f;
     private float _driftStart;
@@ -35,6 +43,9 @@ public class DriftCounter : MonoBehaviour
     private bool _isDrifting = false;
     
     private int _multiplier = 1;
+    
+    private bool _finished = false;
+    private int _currentLap = 1;
 
     private void Awake()
     {
@@ -51,6 +62,7 @@ public class DriftCounter : MonoBehaviour
         singleDriftScore.text = "0";
         overallDriftScore.text = "0";
         scoreMultiplier.text = "x1";
+        lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
         
         InitMultiplierSystem();
         
@@ -107,13 +119,16 @@ public class DriftCounter : MonoBehaviour
 
     private IEnumerator ApplyScore()
     {
-        _overallScore += _score * _multiplier;
+        float addedScore = _score * _multiplier;
+        _overallScore += addedScore;
         
         _scoreAnimator.Play("UIPop");
         _singleScore.SetActive(false);
         overallDriftScore.text = ((int)_overallScore).ToString();
         scoreMultiplier.text = "x1";
         addedDriftScore.text = "+" + (int)(_score * _multiplier);
+
+        if (_bestSingleScore < addedScore) _bestSingleScore = addedScore;
         
         _score = 0f;
         _multiplier = 1;
@@ -130,6 +145,7 @@ public class DriftCounter : MonoBehaviour
 
     public void ProcessDrift(float speed, float angle)
     {
+        if (_finished) return;
         if (_levelManager.wrongDirectionActive) return;
         
         angle = Mathf.Abs(angle);
@@ -169,6 +185,32 @@ public class DriftCounter : MonoBehaviour
         _lastDriftFail = Time.time;
 
         StartCoroutine(DriftFailAnimation());
+    }
+    
+    public void OnLapFinish()
+    {
+        if (_currentLap < _levelManager.laps)
+        {
+            _currentLap++;
+
+            lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
+        }
+        else
+        {
+            _finished = true;
+            OnStageFinish();
+        }
+    }
+
+    private void OnStageFinish()
+    {
+        StartCoroutine(ApplyScore());
+        
+        driftEndMenu.SetActive(true);
+        endOverallScoreText.text = ((int)_overallScore).ToString();
+        endBiggestSingleScoreText.text = ((int)_bestSingleScore).ToString();
+        
+        _levelManager.OnPlayerFinish();
     }
 
     private IEnumerator DriftFailAnimation()

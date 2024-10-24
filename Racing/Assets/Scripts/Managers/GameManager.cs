@@ -53,11 +53,11 @@ public class GameManager : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
         
+        _instance = this;
+        
         LoadSave();
 
         Application.targetFrameRate = 60;
-        
-        _instance = this;
 
         gameState = GameState.Menu;
     }
@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour
             
             if (playerData == null) return;
 
+            graphicsQuality = playerData.menuSelectedQuality;
             dayTime = playerData.menuSelectedDayTime;
             weather = playerData.menuSelectedWeather;
             stageId = playerData.menuSelectedStageId;
@@ -136,5 +137,6 @@ public class GameManager : MonoBehaviour
         graphicsQuality = qualityLevel;
         settings.graphicsPreset = qualityLevel;
         settings.ApplySettings();
+        SaveSystem.SavePlayer(this);
     }
 }

@@ -67,6 +67,7 @@ public class LevelManager : MonoBehaviour
     private AudioSource _audioSource;
     private Controls _controls;
     private TimeAttackManager _timeAttackManager;
+    private DriftCounter _driftCounter;
     private CozyWeather _cozyWeather;
     private ReflectionProbe _reflectionProbe;
 
@@ -93,6 +94,7 @@ public class LevelManager : MonoBehaviour
         _cozyWeather = FindObjectOfType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
         _timeAttackManager = GetComponent<TimeAttackManager>();
+        _driftCounter = GetComponent<DriftCounter>();
         _reflectionProbe = FindObjectOfType<ReflectionProbe>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
@@ -245,7 +247,14 @@ public class LevelManager : MonoBehaviour
 
     public void OnLapFinish()
     {
-        _timeAttackManager.OnLapFinish();
+        if (raceMode == RaceMode.TimeAttack)
+        {
+            _timeAttackManager.OnLapFinish();
+        }
+        else if (raceMode == RaceMode.Drift)
+        {
+            _driftCounter.OnLapFinish();
+        }
     }
 
     public void OnCarStarted()

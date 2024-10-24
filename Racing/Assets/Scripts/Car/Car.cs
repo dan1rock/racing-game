@@ -705,7 +705,7 @@ public class Car : MonoBehaviour
             
             if (_stuckTimer > targetTime) _levelManager.ResetCar(true);
         }
-        else
+        else if (!_levelManager.wrongDirectionActive)
         {
             _stuckTimer = 0f;
             _levelManager.ResetCar(false);

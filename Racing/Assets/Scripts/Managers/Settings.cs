@@ -32,10 +32,8 @@ public class Settings : MonoBehaviour
             GameManager.Get().settings = this;
             graphicsPreset = GameManager.Get().graphicsQuality;
         }
-        else
-        {
-            ApplySettings();
-        }
+        
+        ApplySettings();
     }
 
     public static Settings Get()

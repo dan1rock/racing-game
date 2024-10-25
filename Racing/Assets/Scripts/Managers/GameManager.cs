@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public RaceMode raceMode;
 
     public Settings settings;
+    private AdMobManager _adMobManager;
     
     private static GameManager _instance;
     
@@ -54,6 +55,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
         _instance = this;
+        _adMobManager = FindObjectOfType<AdMobManager>();
+        _adMobManager?.InitializeAds();
         
         LoadSave();
 
@@ -95,7 +98,8 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.Menu;
         SaveSystem.SavePlayer(this);
-        SceneManager.LoadScene(0);
+        
+        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(0));
     }
 
     public void ReloadStage()

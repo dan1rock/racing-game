@@ -65,5 +65,6 @@ public class Wheel : MonoBehaviour
 
         _wheelTrail.emitTrail = state;
         _wheelTrail.wheelSpeed = speed;
+        _wheelTrail.surfaceLayer = surfaceLayer;
     }
 }

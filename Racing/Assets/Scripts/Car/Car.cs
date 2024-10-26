@@ -459,11 +459,11 @@ public class Car : MonoBehaviour
             };
 
             if (!isDriftCar) grip *= surfaceGrip;
-
-            bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
-            emitTrail = emitTrail 
-                        || (_engineOn && applyTorque && _acceleration > 0f && _currentGear == 1)
-                        || (_burnout && speed < 2f && _engineOn && applyTorque);
+            
+            bool emitTrail = ((slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f)
+                             || (_engineOn && applyTorque && _acceleration > 0f && _currentGear == 1)
+                             || (_burnout && speed < 2f && _engineOn && applyTorque)
+                             || (wheel.surfaceLayer != 7 && _acceleration != 0 && applyTorque);
 
             wheel.SetTrailState(emitTrail, Mathf.Abs(Vector3.Dot(wheelVelocity, tire.right)));
 
@@ -568,6 +568,7 @@ public class Car : MonoBehaviour
             float absSteeringVelocity = Mathf.Abs(steeringVelocity);
 
             float absoluteGripVelocity = isRear ? 0.3f : 0.5f;
+            if (wheel.surfaceLayer != 7) absoluteGripVelocity = -1f;
             
             if (absSteeringVelocity < absoluteGripVelocity) desiredVelocityChange = -steeringVelocity;
             float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;

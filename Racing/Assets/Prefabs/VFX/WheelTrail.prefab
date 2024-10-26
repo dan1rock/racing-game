@@ -47,13 +47,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trail: {fileID: 1048158877037759571}
+  tireParticles: {fileID: 8959556114289876307}
+  offRoadParticles: {fileID: 4603095725825219857}
   groundOffset: 0.01
   maxVolume: 0.3
   layerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 129
   emitTrail: 0
   wheelSpeed: 0
+  surfaceLayer: 0
 --- !u!82 &542818791151850605
 AudioSource:
   m_ObjectHideFlags: 0
@@ -406,9 +409,21 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1a31bd856d5a74fba7150f5bde202e, type: 3}
+--- !u!198 &4603095725825219857 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4820036033880328587, guid: 9a1a31bd856d5a74fba7150f5bde202e,
+    type: 3}
+  m_PrefabInstance: {fileID: 9008692462682330266}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6054630877710276869 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2955224080416181663, guid: 9a1a31bd856d5a74fba7150f5bde202e,
+    type: 3}
+  m_PrefabInstance: {fileID: 9008692462682330266}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8959556114289876307 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 95686925188729289, guid: 9a1a31bd856d5a74fba7150f5bde202e,
     type: 3}
   m_PrefabInstance: {fileID: 9008692462682330266}
   m_PrefabAsset: {fileID: 0}

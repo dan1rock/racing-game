@@ -3,15 +3,17 @@ using UnityEngine;
 public class WheelTrail : MonoBehaviour
 {
     [SerializeField] private Transform trail;
+    [SerializeField] private ParticleSystem tireParticles;
+    [SerializeField] private ParticleSystem offRoadParticles;
     [SerializeField] private float groundOffset = 0.05f;
     [SerializeField] private float maxVolume = 0.7f;
     [SerializeField] private LayerMask layerMask;
 
     public bool emitTrail = false;
     public float wheelSpeed = 0f;
+    public int surfaceLayer;
 
     private TrailRenderer _trailRenderer;
-    private ParticleSystem _particleSystem;
     private AudioSource _audioSource;
 
     private Vector3 _trailLastNormal;
@@ -22,7 +24,6 @@ public class WheelTrail : MonoBehaviour
     private void Awake()
     {
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
-        _particleSystem = GetComponentInChildren<ParticleSystem>();
         _audioSource = GetComponent<AudioSource>();
 
         _audioSource.pitch = Random.Range(0.8f, 1.2f);
@@ -43,6 +44,10 @@ public class WheelTrail : MonoBehaviour
             trail.up = outRay.normal;
             trail.position = outRay.point + outRay.normal * groundOffset;
 
+            Vector3 newRotation = trail.eulerAngles;
+            newRotation.y = transform.eulerAngles.y;
+            trail.rotation = Quaternion.Euler(newRotation);
+
             _trailLastNormal = trail.up;
             _trailLastPosition = trail.position;
         }
@@ -57,9 +62,13 @@ public class WheelTrail : MonoBehaviour
             trail.position = pos;
         }
         
-        _trailRenderer.emitting = emitTrail && hit;
-        ParticleSystem.EmissionModule emission = _particleSystem.emission;
-        emission.enabled = emitTrail && hit;
+        _trailRenderer.emitting = emitTrail && hit && surfaceLayer == 7;
+        
+        ParticleSystem.EmissionModule tireParticlesEmission = tireParticles.emission;
+        tireParticlesEmission.enabled = emitTrail && hit && surfaceLayer == 7;
+        
+        ParticleSystem.EmissionModule offRoadParticlesEmission = offRoadParticles.emission;
+        offRoadParticlesEmission.enabled = emitTrail && hit && surfaceLayer != 7;
 
         float volume = Mathf.Clamp01(wheelSpeed / 50f) * 0.8f + 0.2f;
         float to = emitTrail && hit ? volume * maxVolume : 0f;

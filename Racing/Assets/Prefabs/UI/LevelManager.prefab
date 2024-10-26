@@ -154,6 +154,8 @@ MonoBehaviour:
   raceMode: 0
   reverse: 0
   laps: 3
+  trackGrip: 1
+  otherGrip: 0.5
   grass: {fileID: 0}
   driftUI: {fileID: 4040685514823863}
   timeAttackUI: {fileID: 2914393469988818039}
@@ -169,6 +171,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4ef5a87214dcf4abdb41a77f5d5a9716, type: 2}
   - {fileID: 11400000, guid: ac3bcaecae4264ceb9a03f629d3b52d0, type: 2}
   nightMode: 0
+  currentLap: 1
   wrongDirection: 0
   wrongDirectionActive: 0
   resetCar: 0

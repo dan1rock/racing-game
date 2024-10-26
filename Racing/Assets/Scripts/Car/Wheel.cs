@@ -6,6 +6,7 @@ public class Wheel : MonoBehaviour
 
     public bool isContactingTrack = false;
     public bool surfaceContact = false;
+    public int surfaceLayer;
 
     private WheelTrail _wheelTrail;
 

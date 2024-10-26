@@ -107,6 +107,9 @@ public class Car : MonoBehaviour
     private float _speedSteeringRatio;
     private float _rearSlipAngle;
     private float _carAngle;
+    
+    private float _trackGrip = 1f;
+    private float _otherGrip = 0.5f;
 
     private int _currentGear = 1;
 
@@ -154,7 +157,12 @@ public class Car : MonoBehaviour
         _audioSource.volume = 0f;
         _driftCounter = FindObjectOfType<DriftCounter>();
         _levelManager = FindObjectOfType<LevelManager>();
-        if (_levelManager) _nightMode = _levelManager.nightMode;
+        if (_levelManager)
+        {
+            _nightMode = _levelManager.nightMode;
+            _trackGrip = _levelManager.trackGrip;
+            _otherGrip = _levelManager.otherGrip;
+        }
         
         _controls = Controls.Get();
 
@@ -420,6 +428,8 @@ public class Car : MonoBehaviour
         
         if (hit)
         {
+            wheel.surfaceLayer = wheelHit.transform.gameObject.layer;
+            
             // Grip calculation
             
             Vector3 wheelVelocity = _rb.GetPointVelocity(tire.position);
@@ -441,6 +451,14 @@ public class Car : MonoBehaviour
             
             float grip = tireGrip;
             grip *= Mathf.Clamp(gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle), 0.5f, 1f);
+
+            float surfaceGrip = wheel.surfaceLayer switch
+            {
+                7 => _trackGrip,
+                _ => _otherGrip
+            };
+
+            if (!isDriftCar) grip *= surfaceGrip;
 
             bool emitTrail = (slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f;
             emitTrail = emitTrail 
@@ -476,7 +494,9 @@ public class Car : MonoBehaviour
             float curveValue = _acceleration < 0f ? normalizedReverse : normalizedSpeed;
             float speedFactor = accelerate ? accelerationCurve.Evaluate(curveValue) : 0f;
             float availableTorque = torque * _acceleration * speedFactor;
-            if (useGripInAcceleration) availableTorque *= grip;
+
+            availableTorque *= useGripInAcceleration ? grip : surfaceGrip;
+            
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
             if (_rb.velocity.magnitude < 10f) availableTorque *= 0.5f;
             
@@ -502,7 +522,7 @@ public class Car : MonoBehaviour
             
             if (isBreaking && (!isRear || !_handbrake) && !(_handbrake && speed < 0.5f))
             {
-                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration)), wheel.transform.position);
+                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration) * grip), wheel.transform.position);
                 _breakLight = true;
             }
             else

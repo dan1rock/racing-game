@@ -34,6 +34,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public bool reverse;
     [SerializeField] public int laps = 3;
 
+    [Header("Surface Grip")] 
+    [SerializeField] public float trackGrip = 1f;
+    [SerializeField] public float otherGrip = 0.7f;
+    
     [Header("Graphics")] 
     [SerializeField] private GameObject grass;
 

@@ -14,7 +14,6 @@ public class TimeAttackManager : MonoBehaviour
     [SerializeField] private TMP_Text endBestLapTimeText;
 
     private bool _finished = false;
-    private int _currentLap = 1;
     public float overallTime = 0f;
     private float _lapTime = 0f;
     private float _bestLapTime = Mathf.Infinity;
@@ -28,7 +27,13 @@ public class TimeAttackManager : MonoBehaviour
         overallTimeText.text = FormatTime(0f);
         lapTimeText.text = FormatTime(0f);
         bestLapTimeText.text = "??:??:???";
-        lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
+        lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
+
+        if (_levelManager.raceMode == RaceMode.TimeAttack)
+        {
+            _levelManager.OnLapFinish += OnLapFinish;
+            _levelManager.OnStageFinish += OnStageFinish;
+        }
     }
 
     private void Update()
@@ -61,26 +66,19 @@ public class TimeAttackManager : MonoBehaviour
         _lapTime = 0f;
         lapTimeText.text = FormatTime(_lapTime);
         
-        if (_currentLap < _levelManager.laps)
+        if (_levelManager.currentLap <= _levelManager.laps)
         {
-            _currentLap++;
-
-            lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
-        }
-        else
-        {
-            _finished = true;
-            OnStageFinish();
+            lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
         }
     }
 
     private void OnStageFinish()
     {
+        _finished = true;
+        
         timeAttackEndMenu.SetActive(true);
         endOverallTimeText.text = overallTimeText.text;
         endBestLapTimeText.text = bestLapTimeText.text;
-        
-        _levelManager.OnPlayerFinish();
     }
 
     private string FormatTime(float secs)

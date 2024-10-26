@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,7 +44,6 @@ public class DriftCounter : MonoBehaviour
     private int _multiplier = 1;
     
     private bool _finished = false;
-    private int _currentLap = 1;
 
     private void Awake()
     {
@@ -62,19 +60,25 @@ public class DriftCounter : MonoBehaviour
         singleDriftScore.text = "0";
         overallDriftScore.text = "0";
         scoreMultiplier.text = "x1";
-        lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
+        lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
         
         InitMultiplierSystem();
         
         _nextMultiplierRaiseDistance = multiplierRaiseTime[0];
+        
+        if (_levelManager.raceMode == RaceMode.Drift)
+        {
+            _levelManager.OnLapFinish += OnLapFinish;
+            _levelManager.OnStageFinish += OnStageFinish;
+        }
     }
 
     private void InitMultiplierSystem()
     {
         List<float> newList = new();
 
-        float lengthRatio = 0.5f;
-        int numPerElement = 2;
+        const float lengthRatio = 0.5f;
+        const int numPerElement = 2;
 
         foreach (float length in multiplierRaiseTime)
         {
@@ -89,6 +93,8 @@ public class DriftCounter : MonoBehaviour
 
     private void Update()
     {
+        if (_levelManager.raceMode != RaceMode.Drift) return;
+        
         if (!_isDrifting) return;
         
         HandleMultiplier();
@@ -189,28 +195,21 @@ public class DriftCounter : MonoBehaviour
     
     public void OnLapFinish()
     {
-        if (_currentLap < _levelManager.laps)
+        if (_levelManager.currentLap <= _levelManager.laps)
         {
-            _currentLap++;
-
-            lapsText.text = $"Lap {_currentLap} / {_levelManager.laps}";
-        }
-        else
-        {
-            _finished = true;
-            OnStageFinish();
+            lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
         }
     }
 
     private void OnStageFinish()
     {
+        _finished = true;
+        
         StartCoroutine(ApplyScore());
         
         driftEndMenu.SetActive(true);
         endOverallScoreText.text = ((int)_overallScore).ToString();
         endBiggestSingleScoreText.text = ((int)_bestSingleScore).ToString();
-        
-        _levelManager.OnPlayerFinish();
     }
 
     private IEnumerator DriftFailAnimation()

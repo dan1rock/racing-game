@@ -55,6 +55,7 @@ public class LevelManager : MonoBehaviour
     private List<Car> _cars = new();
 
     private int _activeCar = 0;
+    public int currentLap = 1;
 
     public bool wrongDirection = false;
     public bool wrongDirectionActive = false;
@@ -63,6 +64,9 @@ public class LevelManager : MonoBehaviour
     private bool _playerFinished = false;
 
     public CheckPoint lastCheckPoint;
+
+    public event Action OnLapFinish;
+    public event Action OnStageFinish;
 
     private AudioSource _audioSource;
     private Controls _controls;
@@ -245,15 +249,15 @@ public class LevelManager : MonoBehaviour
         _audioSource.Play();
     }
 
-    public void OnLapFinish()
+    public void LapFinished()
     {
-        if (raceMode == RaceMode.TimeAttack)
+        currentLap += 1;
+        
+        OnLapFinish?.Invoke();
+
+        if (currentLap > laps)
         {
-            _timeAttackManager.OnLapFinish();
-        }
-        else if (raceMode == RaceMode.Drift)
-        {
-            _driftCounter.OnLapFinish();
+            OnPlayerFinish();
         }
     }
 
@@ -274,6 +278,8 @@ public class LevelManager : MonoBehaviour
 
     public void OnPlayerFinish()
     {
+        OnStageFinish?.Invoke();
+        
         DisableControls(true);
         resetCarUI.SetActive(false);
         WrongDirection(false);

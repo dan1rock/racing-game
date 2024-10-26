@@ -380,25 +380,7 @@ public class Car : MonoBehaviour
         
         // Drift counter steering
 
-        if (isDriftCar)
-        {
-            float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
-            if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
-            {
-                const float expoTrigger = 1.5f;
-                
-                float angleRatio = angle * (Mathf.Deg2Rad * expoTrigger);
-                if (angleRatio > 1f) angleRatio *= Mathf.Abs(angleRatio);
-
-                angleRatio *= 1f / expoTrigger;
-                
-                _driftCounterSteering = angleRatio * driftCounterSteering;
-            }
-            else
-            {
-                _driftCounterSteering = 0f;
-            }
-        }
+        HandleCounterSteering();
         
         // Rear free torque
 
@@ -582,6 +564,34 @@ public class Car : MonoBehaviour
 
             wheel.SetTrailState(false, 0f);
             wheel.isContactingTrack = false;
+        }
+    }
+
+    private float _counterSteeringPower = 1f;
+    private void HandleCounterSteering()
+    {
+        if (!isDriftCar) return;
+        
+        float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
+        if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
+        {
+            const float expoTrigger = 1.5f;
+                
+            float angleRatio = angle * (Mathf.Deg2Rad * expoTrigger);
+            if (angleRatio > 1f) angleRatio *= Mathf.Abs(angleRatio);
+
+            angleRatio *= 1f / expoTrigger;
+
+            bool underSteering = Mathf.Sign(_steering) != Mathf.Sign(angle) && _steering != 0f && _acceleration < 1f;
+            _counterSteeringPower = Mathf.Lerp(_counterSteeringPower, underSteering ? 0.7f : 1f, Time.fixedDeltaTime * 10f);
+            
+            angleRatio *= _counterSteeringPower;
+            
+            _driftCounterSteering = angleRatio * driftCounterSteering;
+        }
+        else
+        {
+            _driftCounterSteering = Mathf.Lerp(_driftCounterSteering, 0f, Time.fixedDeltaTime * 5f);
         }
     }
 

@@ -415,6 +415,7 @@ MonoBehaviour:
   relativeSpeed: 0.00007582225
   playerControlled: 0
   menuMode: 0
+  showcaseMode: 0
   wheelContact: 0
   rbVelocity: {x: 0, y: 0, z: 0}
 --- !u!82 &5354783316689544444
@@ -983,8 +984,8 @@ MeshRenderer:
   - {fileID: 2100000, guid: 4a72064d664517342b84f9b1473369eb, type: 2}
   - {fileID: 2100000, guid: 659ddf4740233aa44ae6fc105a22404a, type: 2}
   - {fileID: 2100000, guid: 15d813f831effa645bb5b34a3b1ee6ff, type: 2}
-  - {fileID: 2100000, guid: 97d58ad723060ad48939c346c5ee4b29, type: 2}
   - {fileID: 2100000, guid: 798947b84a52f024fa5cf27477f28e15, type: 2}
+  - {fileID: 2100000, guid: 97d58ad723060ad48939c346c5ee4b29, type: 2}
   - {fileID: 2100000, guid: bc9de8bec22d00447b963ebea98a06bd, type: 2}
   - {fileID: 2100000, guid: 1d7b8dbf5d84f294e9d4415791763dc6, type: 2}
   - {fileID: 2100000, guid: 494213157f66a4c4db5beb7c24cad5f8, type: 2}

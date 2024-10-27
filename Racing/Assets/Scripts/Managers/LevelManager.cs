@@ -35,6 +35,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public bool reverse;
     [SerializeField] public int laps = 3;
 
+    [SerializeField] private bool botCar = false;
+
     [Header("Surface Grip")] 
     [SerializeField] public float trackGrip = 1f;
     [SerializeField] public float otherGrip = 0.7f;
@@ -218,9 +220,14 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateTargetCar()
     {
-        if (!_cars[_activeCar].GetComponent<CarController>())
+        if (!_cars[_activeCar].GetComponent<CarController>() && !botCar)
         {
             _cars[_activeCar].AddComponent<CarController>();
+        }
+        
+        if (!_cars[_activeCar].GetComponent<CarBot>() && botCar)
+        {
+            _cars[_activeCar].AddComponent<CarBot>();
         }
     }
 

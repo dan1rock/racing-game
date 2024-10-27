@@ -94,8 +94,7 @@ public class Car : MonoBehaviour
 
     [SerializeField] [ReadOnly] public float speed;
     [SerializeField] [ReadOnly] private float relativeSpeed;
-
-    //[SerializeField] public bool playerControlled = false;
+    
     [SerializeField] private bool menuMode = false;
     [SerializeField] private bool showcaseMode = false;
 

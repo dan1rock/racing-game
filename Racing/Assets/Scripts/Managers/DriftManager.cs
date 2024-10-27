@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class DriftCounter : MonoBehaviour
+public class DriftManager : MonoBehaviour
 {
     [SerializeField] private float minAngle = 10;
     [SerializeField] private float minSpeed = 10;

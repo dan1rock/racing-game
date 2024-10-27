@@ -10,9 +10,9 @@ public class AutoReset : MonoBehaviour
         
         Car car = other.transform.parent.GetComponent<Car>();
         
-        if (!car.playerControlled) return;
+        if (!car.GetComponent<CarController>()) return;
         
-        car.InvokeReset();
+        car.InvokeReset(true);
     }
 
     private void OnTriggerExit(Collider other)
@@ -21,8 +21,8 @@ public class AutoReset : MonoBehaviour
         
         Car car = other.transform.parent.GetComponent<Car>();
         
-        if (!car.playerControlled) return;
+        if (!car.GetComponent<CarController>()) return;
         
-        car.InvokeReset();
+        car.InvokeReset(true);
     }
 }

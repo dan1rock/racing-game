@@ -839,6 +839,15 @@ MonoBehaviour:
   relativeSpeed: 0
   playerControlled: 0
   menuMode: 0
+  showcaseMode: 0
+  carSpeed: 0
+  accelInput: 0
+  burnout: 0
+  steering: 0
+  speedSteeringRatio: 0
+  engineOn: 0
+  handbrake: 0
+  forceStop: 0
   wheelContact: 0
   rbVelocity: {x: 0, y: 0, z: 0}
 --- !u!82 &7648455942495640622
@@ -1056,6 +1065,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &3277167619508518645
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,6 +1166,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &5015875717388139662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,6 +1267,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &5661553820624508075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,6 +1612,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &8059935280928451387
 GameObject:
   m_ObjectHideFlags: 0

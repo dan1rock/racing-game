@@ -371,6 +371,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e2cb94db5cad84caaa4a8388be7bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  carName: Car
+  maxSpeed: 1
+  acceleration: 1
+  handling: 1
+  difficulty: 1
   wheelOffset: 0.364
   suspensionLength: 0.45
   suspensionRest: 0.4
@@ -594,7 +599,6 @@ MonoBehaviour:
   gearShiftClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   engineStartClip: {fileID: 8300000, guid: d22a6df8670172c40bba81555342077d, type: 3}
   engineStopClip: {fileID: 8300000, guid: 7df6fd66be84cff4b9aac058c4401c07, type: 3}
-  carName: Car
   layerMask:
     serializedVersion: 2
     m_Bits: 183
@@ -602,6 +606,15 @@ MonoBehaviour:
   relativeSpeed: 0.000041655832
   playerControlled: 1
   menuMode: 0
+  showcaseMode: 0
+  carSpeed: 0
+  accelInput: 0
+  burnout: 0
+  steering: 0
+  speedSteeringRatio: 0
+  engineOn: 0
+  handbrake: 0
+  forceStop: 0
   wheelContact: 1
   rbVelocity: {x: 0.0040768282, y: -0.00017663836, z: -0.0038989566}
 --- !u!82 &8622551070679672228
@@ -908,6 +921,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &5526547603576993719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,6 +1142,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &6205860180858448018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,6 +1393,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &7444417083355103013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,6 +1494,7 @@ MonoBehaviour:
   velocityRatio: 130
   isContactingTrack: 0
   surfaceContact: 0
+  surfaceLayer: 0
 --- !u!1 &8169485201513060466
 GameObject:
   m_ObjectHideFlags: 0

@@ -54,7 +54,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float frontTireGrip = 0.8f;
     [SerializeField] private float rearTireGrip = 0.8f;
     [SerializeField] private float tireMass = 1f;
-    [SerializeField] private AnimationCurve steeringCurve;
+    [SerializeField] public AnimationCurve steeringCurve;
     [SerializeField] private AnimationCurve gripSlipCurve;
     [SerializeField] private AnimationCurve gripSpeedCurve;
     [SerializeField] private float driftTrailTrigger = 0.1f;
@@ -92,19 +92,20 @@ public class Car : MonoBehaviour
     [Header("Misc")] 
     [SerializeField] private LayerMask layerMask;
 
-    [SerializeField] [ReadOnly] private float speed;
+    [SerializeField] [ReadOnly] public float speed;
     [SerializeField] [ReadOnly] private float relativeSpeed;
 
-    [SerializeField] public bool playerControlled = false;
+    //[SerializeField] public bool playerControlled = false;
     [SerializeField] private bool menuMode = false;
     [SerializeField] private bool showcaseMode = false;
 
-    private float _carSpeed;
-    private float _acceleration = 0f;
-    private bool _burnout = false;
+    [HideInInspector] public float carSpeed;
+    [HideInInspector] public float accelInput = 0f;
+    [HideInInspector] public bool burnout = false;
+    [HideInInspector] public float steering;
+    [HideInInspector] public float speedSteeringRatio;
+    
     private float _driftCounterSteering;
-    private float _steering;
-    private float _speedSteeringRatio;
     private float _rearSlipAngle;
     private float _carAngle;
     
@@ -113,13 +114,14 @@ public class Car : MonoBehaviour
 
     private int _currentGear = 1;
 
-    private bool _forceStop = false;
+    [HideInInspector] public bool engineOn = false;
+    [HideInInspector] public bool handbrake = false;
+    [HideInInspector] public bool forceStop = false;
+    
     private bool _nightMode = false;
-    private bool _engineOn = false;
     private bool _engineStarting = false;
     private bool _pendingReset = false;
     private bool _forceReset = false;
-    private bool _handbrake = false;
     private bool _torqueWheelContact = false;
     
     [HideInInspector] public bool wheelContact = false;
@@ -131,8 +133,7 @@ public class Car : MonoBehaviour
     private GameObject _frontLightSource;
 
     private LevelManager _levelManager;
-    private Controls _controls;
-    private DriftCounter _driftCounter;
+    private DriftManager _driftManager;
     private AudioSource _audioSource;
     private Rigidbody _rb;
 
@@ -148,14 +149,14 @@ public class Car : MonoBehaviour
     private Material _frontLightMat;
     private Color _frontEmissionColor;
 
-    private readonly float _maxEngineVolume = 0.3f;
-    
+    private const float MaxEngineVolume = 0.3f;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
         _audioSource.volume = 0f;
-        _driftCounter = FindObjectOfType<DriftCounter>();
+        _driftManager = FindObjectOfType<DriftManager>();
         _levelManager = FindObjectOfType<LevelManager>();
         if (_levelManager)
         {
@@ -163,8 +164,6 @@ public class Car : MonoBehaviour
             _trackGrip = _levelManager.trackGrip;
             _otherGrip = _levelManager.otherGrip;
         }
-        
-        _controls = Controls.Get();
 
         _gearShiftSource = transform.Find("SFX").GetComponent<AudioSource>();
         
@@ -183,7 +182,7 @@ public class Car : MonoBehaviour
         _wheel_rr = _wheelRr.GetComponentInChildren<Wheel>();
         _wheel_rl = _wheelRl.GetComponentInChildren<Wheel>();
 
-        _speedSteeringRatio = 1f / speedSteeringDampening;
+        speedSteeringRatio = 1f / speedSteeringDampening;
 
         SetUpLights();
         
@@ -265,77 +264,11 @@ public class Car : MonoBehaviour
     {
         if (!_engineStarting)
         {
-            _engineVolume = Mathf.Lerp(_engineVolume, _engineOn ? _maxEngineVolume : 0f, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, engineOn ? MaxEngineVolume : 0f, Time.deltaTime * 3f);
         }
         _audioSource.volume = _engineVolume;
         
-        if (!playerControlled || _forceStop) return;
-        HandleInput();
-    }
-
-    private void HandleInput()
-    {
-        if (_controls.GetKeyDown(ControlKey.ResetCar))
-        {
-            _pendingReset = true;
-        }
-
-        if (_controls.GetKeyDown(ControlKey.StopEngine))
-        {
-            StartCoroutine(StopEngine());
-        }
-
-        _acceleration = 0f;
-        if (_controls.GetKey(ControlKey.Accelerate))
-        {
-            _acceleration += 1f;
-            if (!_engineOn) StartCoroutine(StartEngine());
-        }
-
-        if (_controls.GetKey(ControlKey.Break))
-        {
-            _acceleration -= 1f;
-            if (!_engineOn) StartCoroutine(StartEngine());
-        }
-
-        _handbrake = _controls.GetKey(ControlKey.Handbrake);
-
-        float steeringLimit = steeringCurve.Evaluate(speed / 100f);
-        if (_carSpeed < 0f) steeringLimit = 1f;
-        float steeringRatio = steeringLimit * _speedSteeringRatio + (1f - _speedSteeringRatio);
-
-        if (_controls.GetKey(ControlKey.Left))
-        {
-            _steering -= 1f * Time.deltaTime * steeringRatio;
-
-            if (_steering > 0f) _steering -= 5f * Time.deltaTime;
-        }
-
-        if (_controls.GetKey(ControlKey.Right))
-        {
-            _steering += 1f * Time.deltaTime * steeringRatio;
-
-            if (_steering < 0f) _steering += 5f * Time.deltaTime;
-        }
-
-        if (!_controls.GetKey(ControlKey.Right) && !_controls.GetKey(ControlKey.Left))
-        {
-            float diff = Mathf.Sign(_steering) * 5f * Time.deltaTime;
-            if (Mathf.Abs(diff) > Mathf.Abs(_steering))
-            {
-                _steering = 0f;
-            }
-            else
-            {
-                _steering -= diff;
-            }
-        }
-
-        _burnout = _controls.GetKey(ControlKey.Accelerate) && _controls.GetKey(ControlKey.Break); 
-
-        _steering = Mathf.Clamp(_steering, -steeringLimit, steeringLimit);
-
-        float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
+        float steering = smoothSteering.Evaluate(Mathf.Abs(this.steering)) * steeringMaxAngle * Mathf.Sign(this.steering) +
                          _driftCounterSteering;
 
         _tireFr.localRotation = Quaternion.Euler(0f, steering, 0f);
@@ -392,10 +325,10 @@ public class Car : MonoBehaviour
         
         // Rear free torque
 
-        if (!_wheel_rl.surfaceContact && !_wheel_rr.surfaceContact && _acceleration != 0f)
+        if (!_wheel_rl.surfaceContact && !_wheel_rr.surfaceContact && accelInput != 0f)
         {
-            _wheel_rr.SetRotationSpeed(20f * _acceleration);
-            _wheel_rl.SetRotationSpeed(20f * _acceleration);
+            _wheel_rr.SetRotationSpeed(20f * accelInput);
+            _wheel_rl.SetRotationSpeed(20f * accelInput);
         }
     }
 
@@ -418,8 +351,8 @@ public class Car : MonoBehaviour
             castOffset = 0f;
         }
 
-        _carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
-        speed = Mathf.Abs(_carSpeed);
+        carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
+        speed = Mathf.Abs(carSpeed);
         float normalizedSpeed = Mathf.Clamp01(speed / topSpeed);
         float normalizedReverse = Mathf.Clamp01(speed / topReverse);
         relativeSpeed = normalizedSpeed;
@@ -434,7 +367,7 @@ public class Car : MonoBehaviour
             
             Vector3 wheelVelocity = _rb.GetPointVelocity(tire.position);
             
-            float sign = Mathf.Sign(_carSpeed);
+            float sign = Mathf.Sign(carSpeed);
             
             float slipAngle = Vector3.SignedAngle(tire.forward * sign, wheelVelocity, tire.up);
             slipAngle = Mathf.Deg2Rad * Mathf.Abs(slipAngle);
@@ -447,7 +380,7 @@ public class Car : MonoBehaviour
             if (speed < 0.5f) slipAngle = 0f;
 
             float tireGrip = isRear ? rearTireGrip : frontTireGrip;
-            if (isDriftCar && isRear && (_acceleration > 0f || (_burnout && speed < 2f))) tireGrip *= 0.6f;
+            if (isDriftCar && isRear && (accelInput > 0f || (burnout && speed < 2f))) tireGrip *= 0.6f;
             
             float grip = tireGrip;
             grip *= Mathf.Clamp(gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle), 0.5f, 1f);
@@ -460,10 +393,10 @@ public class Car : MonoBehaviour
 
             if (!isDriftCar) grip *= surfaceGrip;
             
-            bool emitTrail = ((slipAngle > driftTrailTrigger || (isRear && _handbrake)) && speed > 1f)
-                             || (_engineOn && applyTorque && _acceleration > 0f && _currentGear == 1)
-                             || (_burnout && speed < 2f && _engineOn && applyTorque)
-                             || (wheel.surfaceLayer != 7 && _acceleration != 0 && applyTorque);
+            bool emitTrail = ((slipAngle > driftTrailTrigger || (isRear && handbrake)) && speed > 1f)
+                             || (engineOn && applyTorque && accelInput > 0f && _currentGear == 1)
+                             || (burnout && speed < 2f && engineOn && applyTorque)
+                             || (wheel.surfaceLayer != 7 && accelInput != 0 && applyTorque);
 
             wheel.SetTrailState(emitTrail, Mathf.Abs(Vector3.Dot(wheelVelocity, tire.right)));
 
@@ -489,18 +422,18 @@ public class Car : MonoBehaviour
 
             Vector3 accelerationDir = Vector3.ProjectOnPlane(tire.forward, wheelHit.normal);
 
-            float movingDir = Mathf.Sign(_carSpeed);
-            bool accelerate = movingDir == Mathf.Sign(_acceleration);
-            float curveValue = _acceleration < 0f ? normalizedReverse : normalizedSpeed;
+            float movingDir = Mathf.Sign(carSpeed);
+            bool accelerate = movingDir == Mathf.Sign(accelInput);
+            float curveValue = accelInput < 0f ? normalizedReverse : normalizedSpeed;
             float speedFactor = accelerate ? accelerationCurve.Evaluate(curveValue) : 0f;
-            float availableTorque = torque * _acceleration * speedFactor;
+            float availableTorque = torque * accelInput * speedFactor;
 
             availableTorque *= useGripInAcceleration ? grip : surfaceGrip;
             
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
             if (_rb.velocity.magnitude < 10f) availableTorque *= 0.5f;
             
-            if (applyTorque && (!isRear || !_handbrake) && _engineOn)
+            if (applyTorque && (!isRear || !handbrake) && engineOn)
             {
                 _rb.AddForceAtPosition(accelerationDir * availableTorque, wheel.transform.position);
                 if (availableTorque < 0f) _reverseLight = true;
@@ -508,21 +441,21 @@ public class Car : MonoBehaviour
             
             float accelerationVelocity = Vector3.Dot(tire.forward, wheelVelocity);
 
-            float rotationSpeed = isRear && _acceleration != 0f
+            float rotationSpeed = isRear && accelInput != 0f
                 ? wheelVelocity.magnitude * movingDir
                 : accelerationVelocity;
 
-            if (((_acceleration > 0f && _currentGear == 1) || (_burnout && speed < 2f)) && _engineOn && applyTorque) rotationSpeed = 10f;
+            if (((accelInput > 0f && _currentGear == 1) || (burnout && speed < 2f)) && engineOn && applyTorque) rotationSpeed = 10f;
             
             wheel.SetRotationSpeed(rotationSpeed);
             
             // Breaks
 
-            bool isBreaking = !accelerate && _acceleration != 0f;
+            bool isBreaking = !accelerate && accelInput != 0f;
             
-            if (isBreaking && (!isRear || !_handbrake) && !(_handbrake && speed < 0.5f))
+            if (isBreaking && (!isRear || !handbrake) && !(handbrake && speed < 0.5f))
             {
-                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(_acceleration) * grip), wheel.transform.position);
+                _rb.AddForceAtPosition(accelerationDir * (breakForce * Mathf.Sign(accelInput) * grip), wheel.transform.position);
                 _breakLight = true;
             }
             else
@@ -532,7 +465,7 @@ public class Car : MonoBehaviour
             
             // Handbrake
 
-            if (isRear && _handbrake)
+            if (isRear && handbrake)
             {
                 if (!isBreaking)
                 {
@@ -546,14 +479,14 @@ public class Car : MonoBehaviour
             
             // Drag
             
-            float drag = Mathf.Abs(_carSpeed);
+            float drag = Mathf.Abs(carSpeed);
             if (drag > 0.5f)
             {
                 drag = 1f;
-                drag *= Mathf.Sign(_carSpeed);
+                drag *= Mathf.Sign(carSpeed);
                 drag *= 0.5f;
             }
-            else if (_acceleration == 0f && _rb.velocity.magnitude < 0.5f && _carAngle < 5f)
+            else if (accelInput == 0f && _rb.velocity.magnitude < 0.5f && _carAngle < 5f)
             {
                 drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
             }
@@ -603,7 +536,7 @@ public class Car : MonoBehaviour
 
             angleRatio *= 1f / expoTrigger;
 
-            bool underSteering = Mathf.Sign(_steering) != Mathf.Sign(angle) && _steering != 0f && _acceleration < 1f;
+            bool underSteering = Mathf.Sign(steering) != Mathf.Sign(angle) && steering != 0f && accelInput < 1f;
             _counterSteeringPower = Mathf.Lerp(_counterSteeringPower, underSteering ? 0.7f : 1f, Time.fixedDeltaTime * 10f);
             
             angleRatio *= _counterSteeringPower;
@@ -639,9 +572,9 @@ public class Car : MonoBehaviour
     private void HandleEngineSound()
     {
         if (!_audioSource) return;
-        if (!_engineOn) return;
+        if (!engineOn) return;
         
-        bool accelerate = Mathf.Sign(_carSpeed) == Mathf.Sign(_acceleration) && _acceleration != 0f;
+        bool accelerate = Mathf.Sign(carSpeed) == Mathf.Sign(accelInput) && accelInput != 0f;
 
         float bottomBoundary = relativeGears[_currentGear - 1];
         float topBoundary = _currentGear < relativeGears.Count ? relativeGears[_currentGear] : 1f;
@@ -651,12 +584,12 @@ public class Car : MonoBehaviour
             ? gearPitch + (drivetrain == Drivetrain.FWD || !wheelContact ? 0f : _rearSlipAngle) 
             : gearPitch - 0.1f;
 
-        if ((_acceleration > 0f && _carSpeed < 10f) || (_burnout && speed < 2f))
+        if ((accelInput > 0f && carSpeed < 10f) || (burnout && speed < 2f))
         {
             to = maxEnginePitch;
         }
 
-        if (_acceleration != 0f && !_torqueWheelContact) to = maxEnginePitch;
+        if (accelInput != 0f && !_torqueWheelContact) to = maxEnginePitch;
 
         float lerpSpeed = _enginePitchFactor < to || !wheelContact ? 1f : 5f;
         _enginePitchFactor = Mathf.Lerp(_enginePitchFactor, to, Time.deltaTime * lerpSpeed);
@@ -671,7 +604,7 @@ public class Car : MonoBehaviour
 
     private void HandleGears()
     {
-        if (!_engineOn) return;
+        if (!engineOn) return;
         
         if (relativeGears[_currentGear - 1] > relativeSpeed)
         {
@@ -696,7 +629,7 @@ public class Car : MonoBehaviour
     {
         if (!isDriftCar) return;
         if (!wheelContact) return;
-        if (!_driftCounter) return;
+        if (!_driftManager) return;
 
         int tiresOnTrack = 0;
 
@@ -707,15 +640,15 @@ public class Car : MonoBehaviour
         
         if (tiresOnTrack < 3) return;
         
-        _driftCounter.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
+        _driftManager.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
     }
 
     private void HandleLights()
     {
         if (speed < 1f) _breakLight = true;
         
-        _breakLight = _breakLight && (_engineOn || _engineStarting);
-        _reverseLight = _reverseLight && (_engineOn || _engineStarting);
+        _breakLight = _breakLight && (engineOn || _engineStarting);
+        _reverseLight = _reverseLight && (engineOn || _engineStarting);
         
         _breakLightMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : Color.black);
         _breakFlareMat?.SetColor(EmissionColor, _breakLight ? _breakEmissionColor : _breakFlareEmissionColor);
@@ -734,7 +667,7 @@ public class Car : MonoBehaviour
         if (_wheel_rl.isContactingTrack) tiresOnSurface++;
         if (_wheel_rr.isContactingTrack) tiresOnSurface++;
         
-        if (_engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
+        if (engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
         {
             _stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirectionActive ? 1.5f : 1f);
 
@@ -783,7 +716,7 @@ public class Car : MonoBehaviour
         }
     }
 
-    private IEnumerator StartEngine()
+    public IEnumerator StartEngine()
     {
         if (_engineStarting) yield break;
         
@@ -805,9 +738,9 @@ public class Car : MonoBehaviour
         _enginePitchFactor = 0f;
         _audioSource.pitch = minEnginePitch;
 
-        while (_engineVolume < _maxEngineVolume * 0.6f)
+        while (_engineVolume < MaxEngineVolume * 0.6f)
         {
-            _engineVolume = Mathf.Lerp(_engineVolume, _maxEngineVolume, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, MaxEngineVolume, Time.deltaTime * 3f);
 
             yield return null;
         }
@@ -816,7 +749,7 @@ public class Car : MonoBehaviour
         {
             _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minEnginePitch) +
                                  minEnginePitch;
-            _engineVolume = Mathf.Lerp(_engineVolume, _maxEngineVolume, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, MaxEngineVolume, Time.deltaTime * 3f);
 
             _enginePitchFactor += Time.deltaTime * 0.5f;
 
@@ -826,7 +759,7 @@ public class Car : MonoBehaviour
         while (_enginePitchFactor > 0f)
         {
             _audioSource.pitch = enginePitchCurve.Evaluate(_enginePitchFactor) * (maxEnginePitch - minEnginePitch) + minEnginePitch;
-            _engineVolume = Mathf.Lerp(_engineVolume, _maxEngineVolume, Time.deltaTime * 3f);
+            _engineVolume = Mathf.Lerp(_engineVolume, MaxEngineVolume, Time.deltaTime * 3f);
 
             _enginePitchFactor -= Time.deltaTime * 0.3f;
             _enginePitchFactor = Mathf.Clamp01(_enginePitchFactor);
@@ -834,7 +767,7 @@ public class Car : MonoBehaviour
             yield return null;
         }
 
-        _engineOn = true;
+        engineOn = true;
         _engineStarting = false;
         
         _levelManager?.OnCarStarted();
@@ -849,10 +782,10 @@ public class Car : MonoBehaviour
             _breakFlareEmissionColor = _redLightEmissionColor;
         }
 
-        _engineOn = true;
+        engineOn = true;
     }
 
-    private IEnumerator StopEngine()
+    public IEnumerator StopEngine()
     {
         if (_engineStarting) yield break;
         
@@ -864,7 +797,7 @@ public class Car : MonoBehaviour
         }
         
         _engineStarting = true;
-        _engineOn = false;
+        engineOn = false;
         
         _audioSource.pitch = minEnginePitch;
 
@@ -892,9 +825,9 @@ public class Car : MonoBehaviour
             
         if (!carSelect)
         {
-            _steering = -0.5f;
-            _acceleration = 1f;
-            float steering = smoothSteering.Evaluate(Mathf.Abs(_steering)) * steeringMaxAngle * Mathf.Sign(_steering) +
+            this.steering = -0.5f;
+            accelInput = 1f;
+            float steering = smoothSteering.Evaluate(Mathf.Abs(this.steering)) * steeringMaxAngle * Mathf.Sign(this.steering) +
                              _driftCounterSteering;
             
             _tireFr.localRotation = Quaternion.Euler(0f, steering, 0f);
@@ -915,24 +848,19 @@ public class Car : MonoBehaviour
         _breakFlareEmissionColor = _redLightEmissionColor;
     }
 
-    public void InvokeReset()
+    public void InvokeReset(bool force)
     {
         _pendingReset = true;
-        _forceReset = true;
+        _forceReset = force;
     }
 
     public void StopCar()
     {
-        if (!playerControlled) return;
+        forceStop = true;
 
-        _forceStop = true;
-
-        _acceleration = 0f;
-        _steering = 0f;
-        _handbrake = true;
-        
-        _tireFr.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        _tireFl.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        accelInput = 0f;
+        steering = 0f;
+        handbrake = true;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -941,7 +869,7 @@ public class Car : MonoBehaviour
         {
             if (other.impulse.magnitude > 0.5f && other.gameObject.layer != 7)
             {
-                _driftCounter.OnDriftFail();
+                _driftManager.OnDriftFail();
             }
         }
     }

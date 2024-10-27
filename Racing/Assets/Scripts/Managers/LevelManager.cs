@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -75,7 +76,7 @@ public class LevelManager : MonoBehaviour
     private AudioSource _audioSource;
     private Controls _controls;
     private TimeAttackManager _timeAttackManager;
-    private DriftCounter _driftCounter;
+    private DriftManager _driftManager;
     private CozyWeather _cozyWeather;
     private ReflectionProbe _reflectionProbe;
 
@@ -102,7 +103,7 @@ public class LevelManager : MonoBehaviour
         _cozyWeather = FindObjectOfType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
         _timeAttackManager = GetComponent<TimeAttackManager>();
-        _driftCounter = GetComponent<DriftCounter>();
+        _driftManager = GetComponent<DriftManager>();
         _reflectionProbe = FindObjectOfType<ReflectionProbe>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
@@ -128,7 +129,7 @@ public class LevelManager : MonoBehaviour
         
         foreach (Car car in _cars)
         {
-            car.playerControlled = false;
+            Destroy(car.GetComponent<CarController>());
         }
         UpdateTargetCar();
 
@@ -177,7 +178,7 @@ public class LevelManager : MonoBehaviour
     {
         if (_controls.GetKeyDown(ControlKey.CycleCar))
         {
-            _cars[_activeCar].playerControlled = false;
+            Destroy(_cars[_activeCar].GetComponent<CarController>());
             _activeCar += 1;
             if (_activeCar >= _cars.Count) _activeCar = 0;
             UpdateTargetCar();
@@ -217,7 +218,10 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateTargetCar()
     {
-        _cars[_activeCar].playerControlled = true;
+        if (!_cars[_activeCar].GetComponent<CarController>())
+        {
+            _cars[_activeCar].AddComponent<CarController>();
+        }
     }
 
     public Car GetActiveCar()

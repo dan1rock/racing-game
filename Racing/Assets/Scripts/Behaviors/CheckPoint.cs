@@ -129,7 +129,7 @@ public class CheckPoint : MonoBehaviour
     {
         if (!isActive) return;
         
-        if (other.transform.parent.GetComponent<Car>().playerControlled)
+        if (other.transform.parent.GetComponent<CarController>())
         {
             if (_levelManager.wrongDirectionActive) _levelManager.WrongDirection(false);
             

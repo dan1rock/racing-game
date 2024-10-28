@@ -34,13 +34,13 @@ public class CarController : MonoBehaviour
         if (_controls.GetKey(ControlKey.Accelerate))
         {
             _car.accelInput += 1f;
-            if (!_car.engineOn) _car.StartCoroutine(_car.StartEngine());
+            if (!_car.engineOn) StartCar();
         }
 
         if (_controls.GetKey(ControlKey.Break))
         {
             _car.accelInput -= 1f;
-            if (!_car.engineOn) StartCoroutine(_car.StartEngine());
+            if (!_car.engineOn) StartCar();
         }
 
         _car.handbrake = _controls.GetKey(ControlKey.Handbrake);
@@ -79,5 +79,17 @@ public class CarController : MonoBehaviour
         _car.burnout = _controls.GetKey(ControlKey.Accelerate) && _controls.GetKey(ControlKey.Break); 
 
         _car.steering = Mathf.Clamp(_car.steering, -steeringLimit, steeringLimit);
+    }
+
+    private void StartCar()
+    {
+        _car.StartCoroutine(_car.StartEngine());
+
+        CarBot[] bots = FindObjectsOfType<CarBot>();
+        
+        foreach (CarBot bot in bots)
+        {
+            bot.ActivateBot();
+        }
     }
 }

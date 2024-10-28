@@ -528,12 +528,13 @@ public class Car : MonoBehaviour
         if (!isDriftCar && !isBot) return;
         
         float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
+        if (isBot) angle = Mathf.Clamp(angle, -30f, 30f);
         if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
         {
             const float expoTrigger = 1.5f;
                 
             float angleRatio = angle * (Mathf.Deg2Rad * expoTrigger);
-            if (angleRatio > 1f) angleRatio *= Mathf.Abs(angleRatio);
+            if (angleRatio > 1f && !isBot) angleRatio *= Mathf.Abs(angleRatio);
 
             angleRatio *= 1f / expoTrigger;
 

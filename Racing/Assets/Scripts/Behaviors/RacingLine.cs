@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class RacingLine : MonoBehaviour
 {
+    [SerializeField] private int racingLineSegments = 2;
+    
     public List<Transform> orderedNodes;
 
     private void Awake()
@@ -21,7 +23,7 @@ public class RacingLine : MonoBehaviour
             })
             .ToList();
         
-        CreatePerfectRacingLine();
+        CreatePerfectRacingLine(racingLineSegments);
     }
 
     [ContextMenu("InitLine")]
@@ -54,7 +56,7 @@ public class RacingLine : MonoBehaviour
             Vector3 p2 = nextNode.position;
             Vector3 p3 = (i + 2 < orderedNodes.Count) ? orderedNodes[i + 2].position : nextNode.position;
 
-            for (int j = 0; j <= segmentsPerCurve; j++)
+            for (int j = 0; j < segmentsPerCurve; j++)
             {
                 float t = (float)j / (float)segmentsPerCurve;
                 Vector3 point = CatmullRom(p0, p1, p2, p3, t);

@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class CarBot : MonoBehaviour
 {
+    public float speedLimit = Mathf.Infinity;
+    public bool dontBreak = false;
+    public float maxAcceleration = 1f;
+    
     private LayerMask _boundariesLayer = 1 << 9;
 
     private Car _car;
@@ -12,6 +16,8 @@ public class CarBot : MonoBehaviour
     private int _currentNodeId;
     private int _currentNodeTargetId;
     private Vector3 _currentNodeMarker;
+
+    private bool _isActive = false;
 
     private void Awake()
     {
@@ -24,15 +30,17 @@ public class CarBot : MonoBehaviour
 
     private void Start()
     {
-        _car.StartCoroutine(_car.StartEngine());
-
         _currentNodeId = _racingLine.GetNearestNodeID(transform.position);
         _currentNodeTargetId = _currentNodeId;
         _currentNodeMarker = _racingLine.orderedNodes[_currentNodeId].position;
+        
+        if (_levelManager.botCar) ActivateBot();
     }
 
     private void FixedUpdate()
     {
+        if (!_isActive) return;
+        
         HandleRacingLine();
         HandleAcceleration();
         HandleSteering();
@@ -56,17 +64,7 @@ public class CarBot : MonoBehaviour
         if (currentDistance < prevDistance)
         {
             _currentNodeId = next;
-
-            if (!_levelManager.reverse)
-            {
-                _currentNodeTargetId = _currentNodeId + 3;
-                if (_currentNodeTargetId >= nodesN) _currentNodeTargetId -= nodesN;
-            }
-            else
-            {
-                _currentNodeTargetId = _currentNodeId - 3;
-                if (_currentNodeTargetId < 0) _currentNodeTargetId += nodesN;
-            }
+            _currentNodeTargetId = ForecastRacingNode(3);
         }
         
         _currentNodeMarker = Vector3.Lerp(
@@ -99,7 +97,7 @@ public class CarBot : MonoBehaviour
             direction = Quaternion.Euler(0, angle, 0) * flatForward
         };
         
-        _car.accelInput = 1f;
+        _car.accelInput = maxAcceleration;
         
         bool hit = Physics.Raycast(rayRight, out RaycastHit raycastHit, maxDistance, _boundariesLayer);
         Debug.DrawLine(rayRight.origin, rayRight.origin + rayRight.direction * maxDistance, Color.red);
@@ -119,11 +117,27 @@ public class CarBot : MonoBehaviour
         
         Vector3 flatDirection = _currentNodeMarker - transform.position;
         flatDirection.y = 0f;
-        float signedAngle = Vector3.SignedAngle(flatForward, flatDirection, Vector3.up) / 60f;
-        signedAngle = Mathf.Clamp01(Mathf.Abs(signedAngle));
-        signedAngle *= 0.8f;
+        float signedAngle = Vector3.SignedAngle(flatForward, flatDirection, Vector3.up);
+        float deceleration = Mathf.Clamp01(Mathf.Abs(signedAngle / 60f));
+        deceleration *= 0.8f;
 
-        _car.accelInput -= signedAngle;
+        _car.accelInput -= deceleration;
+
+        Vector3 breakForecast = _racingLine.orderedNodes[ForecastRacingNode(4)].position -
+                                _racingLine.orderedNodes[ForecastRacingNode(3)].position;
+        Vector3 currentLine = _racingLine.orderedNodes[ForecastRacingNode(2)].position -
+                              _racingLine.orderedNodes[ForecastRacingNode(1)].position;
+        float forecastAngle = Vector3.SignedAngle(breakForecast, currentLine, Vector3.up);
+
+        if (!dontBreak)
+        {
+            if (Mathf.Abs(forecastAngle) > 20f && _car.carSpeed > 60f) _car.accelInput = -1f;
+            if (Mathf.Abs(forecastAngle) > 30f && _car.carSpeed > 50f) _car.accelInput = -1f;
+            if (Mathf.Abs(forecastAngle) > 40f && _car.carSpeed > 40f) _car.accelInput = -1f;
+            if (Mathf.Abs(forecastAngle) > 50f && _car.carSpeed > 30f) _car.accelInput = -1f;
+        }
+        
+        if (_car.carSpeed > speedLimit) _car.accelInput = -1f;
     }
     
     private void HandleSteering()
@@ -159,8 +173,8 @@ public class CarBot : MonoBehaviour
         signedAngle = Mathf.Clamp(signedAngle, -1f, 1f);
 
         float steering = 0f;
-        steering += ProcessSteeringRay(rayRight, maxDistance, minDistance, maxDistance, -0.1f);
-        steering += ProcessSteeringRay(rayLeft, maxDistance, minDistance , maxDistance, 0.1f);
+        steering += ProcessSteeringRay(rayRight, maxDistance, minDistance, maxDistance, -0.2f);
+        steering += ProcessSteeringRay(rayLeft, maxDistance, minDistance , maxDistance, 0.2f);
         steering += signedAngle * 0.3f;
 
         if (_car.carSpeed < 0f) steering = -steering;
@@ -194,6 +208,17 @@ public class CarBot : MonoBehaviour
         return (value - min) / (max - min);
     }
 
+    private int ForecastRacingNode(int forecast)
+    {
+        int nodesN = _racingLine.orderedNodes.Count;
+        
+        int nodeId = _currentNodeId + (_levelManager.reverse ? -forecast : forecast);
+        if (nodeId >= nodesN) nodeId -= nodesN;
+        if (nodeId < 0) nodeId += nodesN;
+
+        return nodeId;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -204,5 +229,11 @@ public class CarBot : MonoBehaviour
     public void Reset()
     {
         _car.InvokeReset(true);
+    }
+
+    public void ActivateBot()
+    {
+        _car.StartCoroutine(_car.StartEngine());
+        _isActive = true;
     }
 }

@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public bool reverse;
     [SerializeField] public int laps = 3;
 
-    [SerializeField] private bool botCar = false;
+    [SerializeField] public bool botCar = false;
 
     [Header("Surface Grip")] 
     [SerializeField] public float trackGrip = 1f;

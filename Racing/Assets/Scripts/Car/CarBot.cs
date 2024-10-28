@@ -18,6 +18,8 @@ public class CarBot : MonoBehaviour
         _car = GetComponent<Car>();
         _racingLine = FindObjectOfType<RacingLine>();
         _levelManager = FindObjectOfType<LevelManager>();
+
+        _car.isBot = true;
     }
 
     private void Start()
@@ -133,17 +135,21 @@ public class CarBot : MonoBehaviour
         float angle = 30f;
         
         Vector3 flatForward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+        Vector3 flatVelocity = _car.rbVelocity;
+        flatVelocity.y = 0f;
+        flatVelocity.Normalize();
+        Vector3 averageVector = (flatForward + flatVelocity).normalized;
         
         Ray rayRight = new()
         {
             origin = origin,
-            direction = Quaternion.Euler(0, angle, 0) * flatForward
+            direction = Quaternion.Euler(0, angle, 0) * averageVector
         };
         
         Ray rayLeft = new()
         {
             origin = origin,
-            direction = Quaternion.Euler(0, -angle, 0) * flatForward
+            direction = Quaternion.Euler(0, -angle, 0) * averageVector
         };
         
         Vector3 flatDirection = _currentNodeMarker - transform.position;

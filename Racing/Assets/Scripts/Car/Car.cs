@@ -60,6 +60,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float driftTrailTrigger = 0.1f;
     [SerializeField] public bool isDriftCar = false;
     [SerializeField] private float driftCounterSteering = 30f;
+    [SerializeField] private float botCounterSteering = 30f;
 
     [Header("Acceleration")] 
     [SerializeField] private Drivetrain drivetrain;
@@ -113,6 +114,7 @@ public class Car : MonoBehaviour
 
     private int _currentGear = 1;
 
+    [HideInInspector] public bool isBot = false;
     [HideInInspector] public bool engineOn = false;
     [HideInInspector] public bool handbrake = false;
     [HideInInspector] public bool forceStop = false;
@@ -523,7 +525,7 @@ public class Car : MonoBehaviour
     private float _counterSteeringPower = 1f;
     private void HandleCounterSteering()
     {
-        if (!isDriftCar) return;
+        if (!isDriftCar && !isBot) return;
         
         float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
         if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
@@ -540,7 +542,7 @@ public class Car : MonoBehaviour
             
             angleRatio *= _counterSteeringPower;
             
-            _driftCounterSteering = angleRatio * driftCounterSteering;
+            _driftCounterSteering = angleRatio * (isBot ? botCounterSteering : driftCounterSteering);
         }
         else
         {

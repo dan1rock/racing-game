@@ -528,6 +528,7 @@ MonoBehaviour:
   driftTrailTrigger: 0.1
   isDriftCar: 1
   driftCounterSteering: 38
+  botCounterSteering: 38
   drivetrain: 1
   torque: 10
   topSpeed: 100
@@ -604,7 +605,6 @@ MonoBehaviour:
     m_Bits: 183
   speed: 0.49550086
   relativeSpeed: 0.0049550086
-  playerControlled: 0
   menuMode: 0
   showcaseMode: 0
   carSpeed: 0
@@ -612,6 +612,7 @@ MonoBehaviour:
   burnout: 0
   steering: 0
   speedSteeringRatio: 0
+  isBot: 0
   engineOn: 0
   handbrake: 0
   forceStop: 0

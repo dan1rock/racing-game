@@ -856,6 +856,30 @@ public class Car : MonoBehaviour
         _forceReset = force;
     }
 
+    public void ResetToPosition(Vector3 pos, Quaternion rot)
+    {
+        Ray ray = new()
+        {
+            origin = pos + Vector3.up * 10f,
+            direction = Vector3.down
+        };
+
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, layerMask, QueryTriggerInteraction.Ignore);
+
+        if (hit)
+        {
+            _rb.MovePosition(raycastHit.point);
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            
+            Vector3 rotation = rot.eulerAngles;
+            rotation.x = 0f;
+            rotation.z = 0f;
+
+            transform.rotation = Quaternion.Euler(rotation);
+        }
+    }
+
     public void StopCar()
     {
         forceStop = true;

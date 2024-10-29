@@ -6,6 +6,8 @@ public class CarBot : MonoBehaviour
     public float speedLimit = Mathf.Infinity;
     public bool dontBreak = false;
     public float maxAcceleration = 1f;
+
+    private float _directionAngle;
     
     private LayerMask _boundariesLayer = 1 << 9;
 
@@ -44,6 +46,7 @@ public class CarBot : MonoBehaviour
         HandleRacingLine();
         HandleAcceleration();
         HandleSteering();
+        HandleReset();
     }
 
     private void HandleRacingLine()
@@ -118,6 +121,7 @@ public class CarBot : MonoBehaviour
         Vector3 flatDirection = _currentNodeMarker - transform.position;
         flatDirection.y = 0f;
         float signedAngle = Vector3.SignedAngle(flatForward, flatDirection, Vector3.up);
+        _directionAngle = signedAngle;
         float deceleration = Mathf.Clamp01(Mathf.Abs(signedAngle / 60f));
         deceleration *= 0.8f;
 
@@ -196,6 +200,26 @@ public class CarBot : MonoBehaviour
 
         return 0f;
     }
+
+    private float _resetTimer = 0f;
+    private void HandleReset()
+    {
+        if (!_isActive || !_car.engineOn) return;
+        
+        if (_car.carSpeed < 5f || Mathf.Abs(_directionAngle) > 80f)
+        {
+            _resetTimer += Time.fixedDeltaTime;
+        }
+        else
+        {
+            _resetTimer = 0f;
+        }
+
+        if (_resetTimer >= 5f)
+        {
+            Reset();
+        }
+    }
     
     private float GetInterpolatedValue(float value, float min, float max)
     {
@@ -228,12 +252,21 @@ public class CarBot : MonoBehaviour
     [ContextMenu("Reset Car")]
     public void Reset()
     {
-        _car.InvokeReset(true);
+        _resetTimer = 0f;
+
+        Quaternion rot = Quaternion.LookRotation(
+            _racingLine.orderedNodes[ForecastRacingNode(1)].position -
+            _racingLine.orderedNodes[_currentNodeId].position, Vector3.up);
+        _car.ResetToPosition(_racingLine.orderedNodes[_currentNodeId].position, rot);
     }
 
     public void ActivateBot()
     {
+        if (_isActive) return;
+        
         _car.StartCoroutine(_car.StartEngine());
         _isActive = true;
+        
+        FindObjectOfType<Minimap>().AddBotMarker(transform);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class RacingLine : MonoBehaviour
 {
     [SerializeField] private int racingLineSegments = 2;
+    [SerializeField] public int breakForecast = 1;
     
     public List<Transform> orderedNodes;
 

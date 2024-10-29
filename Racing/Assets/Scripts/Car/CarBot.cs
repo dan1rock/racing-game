@@ -123,8 +123,8 @@ public class CarBot : MonoBehaviour
 
         _car.accelInput -= deceleration;
 
-        Vector3 breakForecast = _racingLine.orderedNodes[ForecastRacingNode(4)].position -
-                                _racingLine.orderedNodes[ForecastRacingNode(3)].position;
+        Vector3 breakForecast = _racingLine.orderedNodes[ForecastRacingNode(3 + _racingLine.breakForecast)].position -
+                                _racingLine.orderedNodes[ForecastRacingNode(2 + _racingLine.breakForecast)].position;
         Vector3 currentLine = _racingLine.orderedNodes[ForecastRacingNode(2)].position -
                               _racingLine.orderedNodes[ForecastRacingNode(1)].position;
         float forecastAngle = Vector3.SignedAngle(breakForecast, currentLine, Vector3.up);

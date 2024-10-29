@@ -27,13 +27,14 @@ public enum DayTime
 public class LevelManager : MonoBehaviour
 {
     [Header("Stage Settings")]
-    [SerializeField] private GameObject pickedCar;
+    [SerializeField] public GameObject pickedCar;
     [SerializeField] private int pickedCarColor;
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
     [SerializeField] public RaceMode raceMode;
     [SerializeField] public bool reverse;
     [SerializeField] public int laps = 3;
+    [SerializeField] public int bots = 4;
 
     [SerializeField] public bool botCar = false;
 
@@ -47,6 +48,7 @@ public class LevelManager : MonoBehaviour
     [Header("Technical")] 
     [SerializeField] private GameObject driftUI;
     [SerializeField] private GameObject timeAttackUI;
+    [SerializeField] private GameObject raceUI;
     [SerializeField] private GameObject mobileUI;
     [SerializeField] private GameObject wrongDirectionSign;
     [SerializeField] private GameObject directionArrow;
@@ -60,6 +62,8 @@ public class LevelManager : MonoBehaviour
 
     private Transform _startPosition;
     private List<Car> _cars = new();
+
+    public List<Vector3> botSpawns = new();
 
     private int _activeCar = 0;
     public int currentLap = 1;
@@ -78,8 +82,6 @@ public class LevelManager : MonoBehaviour
 
     private AudioSource _audioSource;
     private Controls _controls;
-    private TimeAttackManager _timeAttackManager;
-    private DriftManager _driftManager;
     private CozyWeather _cozyWeather;
     private ReflectionProbe _reflectionProbe;
 
@@ -100,13 +102,13 @@ public class LevelManager : MonoBehaviour
             {
                 grass.SetActive(true);
             }
+
+            botCar = false;
         }
         
         _controls = Controls.Get();
         _cozyWeather = FindObjectOfType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
-        _timeAttackManager = GetComponent<TimeAttackManager>();
-        _driftManager = GetComponent<DriftManager>();
         _reflectionProbe = FindObjectOfType<ReflectionProbe>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
@@ -117,8 +119,17 @@ public class LevelManager : MonoBehaviour
         _startPosition = GameObject.FindWithTag("Respawn").transform;
 
         if (reverse) _startPosition.forward = -_startPosition.forward;
+        if (raceMode == RaceMode.Race) InitStartingGrid();
         
-        GameObject playerCar = Instantiate(pickedCar, _startPosition.position, _startPosition.rotation);
+        Ray ray = new()
+        {
+            origin = _startPosition.position + Vector3.up * 10f,
+            direction = Vector3.down
+        };
+        
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, (1 << 7) | (1 << 0), QueryTriggerInteraction.Ignore);
+        
+        GameObject playerCar = Instantiate(pickedCar, raycastHit.point, _startPosition.rotation);
         _cars.Add(playerCar.GetComponent<Car>());
         
         if (GameManager.Get())
@@ -144,6 +155,9 @@ public class LevelManager : MonoBehaviour
             case RaceMode.Drift:
                 driftUI.SetActive(true);
                 break;
+            case RaceMode.Race:
+                raceUI.SetActive(true);
+                break;
         }
 
         if (Application.isMobilePlatform)
@@ -153,6 +167,27 @@ public class LevelManager : MonoBehaviour
         
         UpdateWeather();
         StartCoroutine(UpdateReflectionProbe(0.1f));
+    }
+
+    private void InitStartingGrid()
+    {
+        _startPosition.position -= _startPosition.right * 2f;
+        
+        Transform startPos = _startPosition;
+        
+        int sign = 1;
+        Vector3 offset = Vector3.zero;
+        
+        for (int i = 0; i < bots; i++)
+        {
+            botSpawns.Add(startPos.position + offset);
+
+            offset += startPos.right * 4f * sign;
+            offset -= startPos.forward * 6f;
+            sign = -sign;
+        }
+
+        startPos.position += offset;
     }
 
     private void UpdateWeather()

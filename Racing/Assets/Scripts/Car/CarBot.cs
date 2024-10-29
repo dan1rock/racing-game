@@ -6,11 +6,13 @@ public class CarBot : MonoBehaviour
     public float speedLimit = Mathf.Infinity;
     public bool dontBreak = false;
     public float maxAcceleration = 1f;
+    public float steeringReaction = 1f;
 
     private float _directionAngle;
     
     private LayerMask _boundariesLayer = 1 << 9;
 
+    private MeshCollider _selfCollider;
     private Car _car;
     private RacingLine _racingLine;
     private LevelManager _levelManager;
@@ -26,6 +28,7 @@ public class CarBot : MonoBehaviour
         _car = GetComponent<Car>();
         _racingLine = FindObjectOfType<RacingLine>();
         _levelManager = FindObjectOfType<LevelManager>();
+        _selfCollider = GetComponentInChildren<MeshCollider>();
 
         _car.isBot = true;
     }
@@ -107,12 +110,9 @@ public class CarBot : MonoBehaviour
             float dist = _racingLine.CalculateDistanceBetweenNodes(_currentNodeId, 
                 _levelManager.player.currentNodeId,
                 _levelManager.reverse);
-
-            if (Mathf.Abs(dist) > 50f)
-            {
-                _car.accelInput += (dist - 50f) / 200f;
-                if (_car.accelInput < 0.2f) _car.accelInput = 0.2f;
-            }
+            
+            _car.accelInput += dist / 200f;
+            if (_car.accelInput < 0.4f) _car.accelInput = 0.4f;
         }
         
         bool hit = Physics.Raycast(rayRight, out RaycastHit raycastHit, maxDistance, _boundariesLayer);
@@ -198,7 +198,7 @@ public class CarBot : MonoBehaviour
 
         bool retract = (_car.steering > 0f && steering < _car.steering)
                        || (_car.steering < 0f && steering > _car.steering);
-        _car.steering = Mathf.Lerp(_car.steering, steering, retract ? 0.7f : 0.5f);
+        _car.steering = Mathf.Lerp(_car.steering, steering, (retract ? 0.7f : 0.5f) * steeringReaction);
     }
 
     private float ProcessSteeringRay(Ray ray, float dist, float minDist, float maxDist, float ratio)
@@ -220,6 +220,12 @@ public class CarBot : MonoBehaviour
     private void HandleReset()
     {
         if (!_isActive || !_car.engineOn) return;
+
+        if (_car.botReset)
+        {
+            Reset();
+        }
+        
         if (Time.time - _lastReset < 5f) return;
         
         if (_car.carSpeed < 1f || Mathf.Abs(_directionAngle) > 80f)
@@ -268,6 +274,8 @@ public class CarBot : MonoBehaviour
     [ContextMenu("Reset Car")]
     public void Reset()
     {
+        _car.botReset = false;
+        _car.stuckTimer = 0f;
         _resetTimer = 0f;
         _lastReset = Time.time;
 

@@ -18344,6 +18344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   racingLineSegments: 2
+  breakForecast: 1
   orderedNodes:
   - {fileID: 434881647}
   - {fileID: 713103499}
@@ -18685,7 +18686,7 @@ Transform:
   m_GameObject: {fileID: 1764484253}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.61909395, z: 0, w: -0.785317}
-  m_LocalPosition: {x: -1.3700005, y: -1.2, z: -8.49}
+  m_LocalPosition: {x: -0.85, y: -1.2, z: -8.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25110,7 +25111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.20707479, z: -0, w: 0.9783251}
+  m_LocalRotation: {x: -0, y: 0.14874706, z: -0, w: 0.9888753}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -26359,6 +26360,11 @@ PrefabInstance:
       propertyPath: reference2World
       value: 
       objectReference: {fileID: 2087247813}
+    - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+        type: 3}
+      propertyPath: bots
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
       propertyPath: laps

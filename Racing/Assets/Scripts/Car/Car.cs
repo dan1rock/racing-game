@@ -657,11 +657,11 @@ public class Car : MonoBehaviour
         _reverseLightMat?.SetColor(EmissionColor, _reverseLight ? _reverseEmissionColor : Color.black);
     }
 
-    private float _stuckTimer = 0f;
+    [HideInInspector] public bool botReset = true;
+    [HideInInspector] public float stuckTimer = 0f;
     private void HandleReset()
     {
         if (!_levelManager) return;
-        if (isBot) return;
         
         int tiresOnSurface = 0;
 
@@ -672,16 +672,33 @@ public class Car : MonoBehaviour
         
         if (engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
         {
-            _stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirectionActive ? 1.5f : 1f);
+            stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirectionActive ? 1.5f : 1f);
 
             float targetTime = _torqueWheelContact ? 5f : 2f;
             
-            if (_stuckTimer > targetTime) _levelManager.ResetCar(true);
+            if (stuckTimer > targetTime)
+            {
+                if (!isBot)
+                {
+                    _levelManager.ResetCar(true);
+                }
+                else
+                {
+                    botReset = true;
+                }
+            }
         }
         else if (!_levelManager.wrongDirectionActive)
         {
-            _stuckTimer = 0f;
-            _levelManager.ResetCar(false);
+            stuckTimer = 0f;
+            if (!isBot)
+            {
+                _levelManager.ResetCar(false);
+            }
+            else
+            {
+                botReset = false;
+            }
         }
         
         if (!_pendingReset) return;
@@ -715,7 +732,7 @@ public class Car : MonoBehaviour
             transform.rotation = Quaternion.Euler(rotation);
             
             _levelManager.ResetCar(false);
-            _stuckTimer = 0f;
+            stuckTimer = 0f;
         }
     }
 

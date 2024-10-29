@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 6859333858288550529}
   - component: {fileID: 6374711817727101306}
   - component: {fileID: 4156431833122410394}
+  - component: {fileID: 8283107810987989423}
   - component: {fileID: 946125954858553533}
   m_Layer: 0
   m_Name: LevelManager
@@ -154,11 +155,13 @@ MonoBehaviour:
   raceMode: 0
   reverse: 0
   laps: 3
+  botCar: 0
   trackGrip: 1
   otherGrip: 0.5
   grass: {fileID: 0}
   driftUI: {fileID: 4040685514823863}
   timeAttackUI: {fileID: 2914393469988818039}
+  raceUI: {fileID: 943570804146964229}
   mobileUI: {fileID: 1162258596122569578}
   wrongDirectionSign: {fileID: 8395451499988830251}
   directionArrow: {fileID: 4471130943950322783}
@@ -177,6 +180,7 @@ MonoBehaviour:
   resetCar: 0
   carStarted: 0
   lastCheckPoint: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &6374711817727101306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +263,24 @@ MonoBehaviour:
   endOverallTimeText: {fileID: 1378014342147656049}
   endBestLapTimeText: {fileID: 1224869980997030124}
   overallTime: 0
+--- !u!114 &8283107810987989423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062183722033025656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e8866a578976c4fbf55bd19220d0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raceEndMenu: {fileID: 3107896768927092955}
+  lapsText: {fileID: 2648012386298799671}
+  carPos1: {fileID: 0}
+  carPos2: {fileID: 0}
+  carPos3: {fileID: 0}
+  carPos4: {fileID: 0}
 --- !u!82 &946125954858553533
 AudioSource:
   m_ObjectHideFlags: 0
@@ -635,6 +657,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &943570804146964229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2673853379355791906, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1017179623694898522 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2746893014268854397, guid: a243a5871f1f22c4d923847db2f67edd,
@@ -689,9 +717,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2648012386298799671 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 917875479745819408, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2914393469988818039 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 31897612026124624, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3107896768927092955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 225783046016402940, guid: a243a5871f1f22c4d923847db2f67edd,
     type: 3}
   m_PrefabInstance: {fileID: 2883240403428365607}
   m_PrefabAsset: {fileID: 0}

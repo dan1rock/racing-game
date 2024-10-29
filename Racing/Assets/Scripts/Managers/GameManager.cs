@@ -13,13 +13,14 @@ public enum GameState
 public enum RaceMode
 {
     Drift,
-    TimeAttack
+    TimeAttack,
+    Race
 }
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> driftCars;
-    [SerializeField] private List<GameObject> raceCars;
+    [SerializeField] public List<GameObject> driftCars;
+    [SerializeField] public List<GameObject> raceCars;
     [SerializeField] public List<Material> carColors;
     [SerializeField] public List<Sprite> mapPreviews;
     [SerializeField] public List<Sprite> mapLayouts;
@@ -85,7 +86,8 @@ public class GameManager : MonoBehaviour
         {
             RaceMode.Drift => driftCars[carId],
             RaceMode.TimeAttack => raceCars[carId],
-            _ => car
+            RaceMode.Race => raceCars[carId],
+            _ => raceCars[carId]
         };
 
         gameState = GameState.Stage;

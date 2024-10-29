@@ -101,6 +101,19 @@ public class CarBot : MonoBehaviour
         };
         
         _car.accelInput = maxAcceleration;
+
+        if (_levelManager.player)
+        {
+            float dist = _racingLine.CalculateDistanceBetweenNodes(_currentNodeId, 
+                _levelManager.player.currentNodeId,
+                _levelManager.reverse);
+
+            if (Mathf.Abs(dist) > 50f)
+            {
+                _car.accelInput += (dist - 50f) / 200f;
+                if (_car.accelInput < 0.2f) _car.accelInput = 0.2f;
+            }
+        }
         
         bool hit = Physics.Raycast(rayRight, out RaycastHit raycastHit, maxDistance, _boundariesLayer);
         Debug.DrawLine(rayRight.origin, rayRight.origin + rayRight.direction * maxDistance, Color.red);
@@ -123,7 +136,7 @@ public class CarBot : MonoBehaviour
         float signedAngle = Vector3.SignedAngle(flatForward, flatDirection, Vector3.up);
         _directionAngle = signedAngle;
         float deceleration = Mathf.Clamp01(Mathf.Abs(signedAngle / 60f));
-        deceleration *= 0.8f;
+        deceleration *= 0.8f * _car.accelInput;
 
         _car.accelInput -= deceleration;
 
@@ -202,11 +215,14 @@ public class CarBot : MonoBehaviour
     }
 
     private float _resetTimer = 0f;
+    private float _lastReset = -Mathf.Infinity;
+    
     private void HandleReset()
     {
         if (!_isActive || !_car.engineOn) return;
+        if (Time.time - _lastReset < 5f) return;
         
-        if (_car.carSpeed < 5f || Mathf.Abs(_directionAngle) > 80f)
+        if (_car.carSpeed < 1f || Mathf.Abs(_directionAngle) > 80f)
         {
             _resetTimer += Time.fixedDeltaTime;
         }
@@ -253,6 +269,7 @@ public class CarBot : MonoBehaviour
     public void Reset()
     {
         _resetTimer = 0f;
+        _lastReset = Time.time;
 
         Quaternion rot = Quaternion.LookRotation(
             _racingLine.orderedNodes[ForecastRacingNode(1)].position -

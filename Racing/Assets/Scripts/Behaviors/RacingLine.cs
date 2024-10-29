@@ -10,6 +10,8 @@ public class RacingLine : MonoBehaviour
     
     public List<Transform> orderedNodes;
 
+    private float _totalDistance;
+
     private void Awake()
     {
         Transform racingLineParent = transform;
@@ -25,6 +27,7 @@ public class RacingLine : MonoBehaviour
             .ToList();
         
         CreatePerfectRacingLine(racingLineSegments);
+        _totalDistance = CalculateRacingLineDistance();
     }
 
     [ContextMenu("InitLine")]
@@ -152,5 +155,53 @@ public class RacingLine : MonoBehaviour
         }
 
         return nearestID;
+    }
+
+    private float CalculateRacingLineDistance()
+    {
+        int nNodes = orderedNodes.Count;
+        float totalDistance = 0f;
+        
+        int currentNode = 0;
+
+        while (currentNode != nNodes - 1)
+        {
+            int nextNode = currentNode + 1;
+            
+            totalDistance += Vector3.Distance(
+                orderedNodes[currentNode].position, 
+                orderedNodes[nextNode].position
+            );
+            
+            currentNode = nextNode;
+        }
+
+        return totalDistance;
+    }
+    
+    public float CalculateDistanceBetweenNodes(int startNodeId, int targetNodeId, bool reverse)
+    {
+        int nNodes = orderedNodes.Count;
+        float totalDistance = 0f;
+        
+        int step = reverse ? -1 : 1;
+        
+        int currentNode = startNodeId;
+
+        while (currentNode != targetNodeId)
+        {
+            int nextNode = (currentNode + step + nNodes) % nNodes;
+            
+            totalDistance += Vector3.Distance(
+                orderedNodes[currentNode].position, 
+                orderedNodes[nextNode].position
+            );
+            
+            currentNode = nextNode;
+        }
+
+        if (totalDistance > _totalDistance / 2f) totalDistance -= _totalDistance;
+        
+        return totalDistance;
     }
 }

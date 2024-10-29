@@ -395,7 +395,7 @@ public class Car : MonoBehaviour
             if (!isDriftCar) grip *= surfaceGrip;
             
             bool emitTrail = ((slipAngle > driftTrailTrigger || (isRear && handbrake)) && speed > 1f)
-                             || (engineOn && applyTorque && accelInput > 0f && _currentGear == 1)
+                             || (engineOn && applyTorque && Mathf.Abs(accelInput) > 0.5f && _currentGear == 1)
                              || (burnout && speed < 2f && engineOn && applyTorque)
                              || (wheel.surfaceLayer != 7 && accelInput != 0 && applyTorque);
 
@@ -432,7 +432,7 @@ public class Car : MonoBehaviour
             availableTorque *= useGripInAcceleration ? grip : surfaceGrip;
             
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
-            if (_rb.velocity.magnitude < 10f) availableTorque *= 0.5f;
+            if (_currentGear == 1 && Mathf.Abs(accelInput) > 0.5f) availableTorque *= 0.5f;
             
             if (applyTorque && (!isRear || !handbrake) && engineOn)
             {
@@ -586,7 +586,7 @@ public class Car : MonoBehaviour
             ? gearPitch + (drivetrain == Drivetrain.FWD || !wheelContact ? 0f : _rearSlipAngle) 
             : gearPitch - 0.1f;
 
-        if ((accelInput > 0f && carSpeed < 10f) || (burnout && speed < 2f))
+        if ((Mathf.Abs(accelInput) > 0.5f && _currentGear == 1) || (burnout && speed < 2f))
         {
             to = maxEnginePitch;
         }
@@ -661,6 +661,7 @@ public class Car : MonoBehaviour
     private void HandleReset()
     {
         if (!_levelManager) return;
+        if (isBot) return;
         
         int tiresOnSurface = 0;
 

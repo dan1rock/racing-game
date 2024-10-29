@@ -71,6 +71,7 @@ public class LevelManager : MonoBehaviour
     private bool _playerFinished = false;
 
     public CheckPoint lastCheckPoint;
+    public CarController player;
 
     public event Action OnLapFinish;
     public event Action OnStageFinish;

@@ -3,135 +3,74 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    private Controls _controls;
-    private Car _car;
-    private LevelManager _levelManager;
-    private RacingLine _racingLine;
-
+    public string name;
+    
     public int currentNodeId;
+    public int currentLap = 0;
+    public float totalDistance;
+
+    public RectTransform leaderboardPos;
+
+    public int currentPosition;
+
+    protected RaceManager raceManager;
+    protected LevelManager levelManager;
+    protected RacingLine racingLine;
+    protected Car car;
 
     private void Awake()
     {
-        _car = GetComponent<Car>();
-        _controls = Controls.Get();
-        _levelManager = FindObjectOfType<LevelManager>();
-        _racingLine = FindObjectOfType<RacingLine>();
-
-        _levelManager.player = this;
-    }
-
-    private void Start()
-    {
-        currentNodeId = _racingLine.GetNearestNodeID(transform.position);
-    }
-
-    private void Update()
-    {
-        if (_car.forceStop) return;
-        
-        HandlePlayerInput();
-    }
-
-    private void FixedUpdate()
-    {
-        HandleRacingLine();
-    }
-
-    private void HandlePlayerInput()
-    {
-        if (_controls.GetKeyDown(ControlKey.ResetCar))
-        {
-            _car.InvokeReset(false);
-        }
-
-        if (_controls.GetKeyDown(ControlKey.StopEngine))
-        {
-            _car.StartCoroutine(_car.StopEngine());
-        }
-
-        _car.accelInput = 0f;
-        if (_controls.GetKey(ControlKey.Accelerate))
-        {
-            _car.accelInput += 1f;
-            if (!_car.engineOn) StartCar();
-        }
-
-        if (_controls.GetKey(ControlKey.Break))
-        {
-            _car.accelInput -= 1f;
-            if (!_car.engineOn) StartCar();
-        }
-
-        _car.handbrake = _controls.GetKey(ControlKey.Handbrake);
-
-        float steeringLimit = _car.steeringCurve.Evaluate(_car.speed / 100f);
-        if (_car.carSpeed < 0f) steeringLimit = 1f;
-        float steeringRatio = steeringLimit * _car.speedSteeringRatio + (1f - _car.speedSteeringRatio);
-
-        if (_controls.GetKey(ControlKey.Left))
-        {
-            _car.steering -= 1f * Time.deltaTime * steeringRatio;
-
-            if (_car.steering > 0f) _car.steering -= 5f * Time.deltaTime;
-        }
-
-        if (_controls.GetKey(ControlKey.Right))
-        {
-            _car.steering += 1f * Time.deltaTime * steeringRatio;
-
-            if (_car.steering < 0f) _car.steering += 5f * Time.deltaTime;
-        }
-
-        if (!_controls.GetKey(ControlKey.Right) && !_controls.GetKey(ControlKey.Left))
-        {
-            float diff = Mathf.Sign(_car.steering) * 5f * Time.deltaTime;
-            if (Mathf.Abs(diff) > Mathf.Abs(_car.steering))
-            {
-                _car.steering = 0f;
-            }
-            else
-            {
-                _car.steering -= diff;
-            }
-        }
-
-        _car.burnout = _controls.GetKey(ControlKey.Accelerate) && _controls.GetKey(ControlKey.Break); 
-
-        _car.steering = Mathf.Clamp(_car.steering, -steeringLimit, steeringLimit);
+        Initialize();
     }
     
-    private void HandleRacingLine()
+    protected virtual void Initialize()
     {
-        if (!_racingLine) return;
-        
-        int nodesN = _racingLine.orderedNodes.Count;
-        
-        int prev = currentNodeId - 1;
-        if (prev < 0) prev = nodesN - 1;
+        levelManager = FindFirstObjectByType<LevelManager>();
+        racingLine = FindFirstObjectByType<RacingLine>();
+        car = GetComponent<Car>();
 
-        int next = currentNodeId + 1;
-        if (next >= nodesN) next = 0;
-
-        if (_levelManager.reverse) (next, prev) = (prev, next);
-
-        float prevDistance = (_racingLine.orderedNodes[prev].position - transform.position).magnitude;
-        float currentDistance = (_racingLine.orderedNodes[currentNodeId].position - transform.position).magnitude;
-
-        if (currentDistance < prevDistance)
+        if (levelManager.raceMode == RaceMode.Race)
         {
-            currentNodeId = next;
+            raceManager = FindFirstObjectByType<RaceManager>();
         }
     }
 
-    private void StartCar()
+    protected void CalculateTotalDistance()
     {
-        _car.StartCoroutine(_car.StartEngine());
+        totalDistance = (currentLap - 1) * racingLine.totalDistance;
 
-        CarBot[] bots = FindObjectsOfType<CarBot>();
-        
-        foreach (CarBot bot in bots)
+        if (ForecastRacingNode(-1) != racingLine.startNodeId)
         {
-            bot.ActivateBot();
+            totalDistance += racingLine.CalculateDistanceBetweenNodes(racingLine.startNodeId, ForecastRacingNode(-2));
         }
+
+        Vector3 flatNode = racingLine.orderedNodes[ForecastRacingNode(-2)].position;
+        flatNode.y = 0f;
+        Vector3 flatPos = transform.position;
+        flatPos.y = 0f;
+        
+        float dist = (flatPos - flatNode).magnitude;
+        totalDistance += dist;
+    }
+    
+    protected int ForecastRacingNode(int forecast)
+    {
+        int nodesN = racingLine.orderedNodes.Count;
+        
+        int nodeId = currentNodeId + (levelManager.reverse ? -forecast : forecast);
+        if (nodeId >= nodesN) nodeId -= nodesN;
+        if (nodeId < 0) nodeId += nodesN;
+
+        return nodeId;
+    }
+
+    protected void HandleLeaderboardName()
+    {
+        if (!raceManager) return;
+        
+        Vector3 newPos = leaderboardPos.position;
+        newPos.y = raceManager.leaderboardPositions[currentPosition - 1].position.y;
+
+        leaderboardPos.position = Vector3.Lerp(leaderboardPos.position, newPos, Time.deltaTime * 5f);
     }
 }

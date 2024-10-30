@@ -10,7 +10,9 @@ public class RacingLine : MonoBehaviour
     
     public List<Transform> orderedNodes;
 
-    private float _totalDistance;
+    public int startNodeId;
+
+    public float totalDistance;
 
     private LevelManager _levelManager;
 
@@ -31,7 +33,10 @@ public class RacingLine : MonoBehaviour
             .ToList();
         
         CreatePerfectRacingLine(racingLineSegments);
-        _totalDistance = CalculateRacingLineDistance();
+        totalDistance = CalculateRacingLineDistance();
+
+        Transform start = GameObject.FindGameObjectWithTag("Finish").transform;
+        startNodeId = GetNearestNodeID(start.position);
     }
 
     [ContextMenu("InitLine")]
@@ -194,12 +199,12 @@ public class RacingLine : MonoBehaviour
         return totalDistance;
     }
     
-    public float CalculateDistanceBetweenNodes(int startNodeId, int targetNodeId, bool reverse)
+    public float CalculateDistanceBetweenNodes(int startNodeId, int targetNodeId)
     {
         int nNodes = orderedNodes.Count;
         float totalDistance = 0f;
         
-        int step = reverse ? -1 : 1;
+        int step = _levelManager.reverse ? -1 : 1;
         
         int currentNode = startNodeId;
 
@@ -214,8 +219,6 @@ public class RacingLine : MonoBehaviour
             
             currentNode = nextNode;
         }
-
-        if (totalDistance > _totalDistance / 2f) totalDistance -= _totalDistance;
         
         return totalDistance;
     }

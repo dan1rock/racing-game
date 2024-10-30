@@ -131,7 +131,7 @@ public class CheckPoint : MonoBehaviour
         
         if (!isActive) return;
         
-        if (other.transform.parent.GetComponent<CarController>() || (carBot && _levelManager.botCar))
+        if (other.transform.parent.GetComponent<CarPlayer>() || (carBot && _levelManager.botCar))
         {
             if (_levelManager.wrongDirectionActive) _levelManager.WrongDirection(false);
             

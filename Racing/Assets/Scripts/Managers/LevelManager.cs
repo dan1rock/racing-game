@@ -74,7 +74,7 @@ public class LevelManager : MonoBehaviour
     private bool _playerFinished = false;
 
     public CheckPoint lastCheckPoint;
-    public CarController player;
+    public CarPlayer player;
 
     public event Action OnLapFinish;
     public event Action OnStageFinish;
@@ -166,7 +166,7 @@ public class LevelManager : MonoBehaviour
         
         foreach (Car car in _cars)
         {
-            Destroy(car.GetComponent<CarController>());
+            Destroy(car.GetComponent<CarPlayer>());
         }
         UpdateTargetCar();
     }
@@ -228,7 +228,7 @@ public class LevelManager : MonoBehaviour
     {
         if (_controls.GetKeyDown(ControlKey.CycleCar))
         {
-            Destroy(_cars[_activeCar].GetComponent<CarController>());
+            Destroy(_cars[_activeCar].GetComponent<CarPlayer>());
             _activeCar += 1;
             if (_activeCar >= _cars.Count) _activeCar = 0;
             UpdateTargetCar();
@@ -268,9 +268,9 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateTargetCar()
     {
-        if (!_cars[_activeCar].GetComponent<CarController>() && !botCar)
+        if (!_cars[_activeCar].GetComponent<CarPlayer>() && !botCar)
         {
-            _cars[_activeCar].AddComponent<CarController>();
+            _cars[_activeCar].AddComponent<CarPlayer>();
         }
         
         if (!_cars[_activeCar].GetComponent<CarBot>() && botCar)

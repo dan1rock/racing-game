@@ -155,6 +155,7 @@ MonoBehaviour:
   raceMode: 0
   reverse: 0
   laps: 3
+  bots: 4
   botCar: 0
   trackGrip: 1
   otherGrip: 0.5
@@ -276,11 +277,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   raceEndMenu: {fileID: 3107896768927092955}
+  posText: {fileID: 4963122314713090929}
   lapsText: {fileID: 2648012386298799671}
-  carPos1: {fileID: 0}
-  carPos2: {fileID: 0}
-  carPos3: {fileID: 0}
-  carPos4: {fileID: 0}
+  leaderboardPos: {fileID: 8175077144980922486}
+  leaderboardName: {fileID: 5673985436136871969}
+  carControllers: []
+  leaderboardPositions: []
 --- !u!82 &946125954858553533
 AudioSource:
   m_ObjectHideFlags: 0
@@ -293,6 +295,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -2539051365687629170, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: caef8a9362fda2a4babf72a9bbb0e15b, type: 3}
+  m_Resource: {fileID: 8300000, guid: caef8a9362fda2a4babf72a9bbb0e15b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.2
   m_Pitch: 1.2
@@ -437,6 +440,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -753,6 +759,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2883240403428365607}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4963122314713090929 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7846359814198206038, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5131473409002510036 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8013579660268127219, guid: a243a5871f1f22c4d923847db2f67edd,
@@ -777,6 +795,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5673985436136871969 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7403170599952665862, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5996090656184316476 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8878063194917136155, guid: a243a5871f1f22c4d923847db2f67edd,
@@ -834,6 +858,12 @@ MonoBehaviour:
 --- !u!1 &8079365011860223830 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6349222747335500401, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8175077144980922486 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6444904535980143953, guid: a243a5871f1f22c4d923847db2f67edd,
     type: 3}
   m_PrefabInstance: {fileID: 2883240403428365607}
   m_PrefabAsset: {fileID: 0}

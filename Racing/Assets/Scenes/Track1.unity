@@ -1400,7 +1400,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Finish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18394,6 +18394,8 @@ MonoBehaviour:
   - {fileID: 1759256400}
   - {fileID: 1177635572}
   - {fileID: 1585779627}
+  startNodeId: 0
+  totalDistance: 0
 --- !u!1001 &1700940948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25144,7 +25146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.5006609, z: -0, w: 0.86564356}
+  m_LocalRotation: {x: -0, y: -0.85637975, z: -0, w: 0.5163465}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -26403,7 +26405,7 @@ PrefabInstance:
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
       propertyPath: bots
-      value: 20
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}

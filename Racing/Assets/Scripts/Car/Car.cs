@@ -287,7 +287,7 @@ public class Car : MonoBehaviour
         HandleLights();
         HandleReset();
 
-        rbVelocity = _rb.velocity;
+        rbVelocity = _rb.linearVelocity;
     }
 
     private void HandleCarPhysics()
@@ -352,7 +352,7 @@ public class Car : MonoBehaviour
             castOffset = 0f;
         }
 
-        carSpeed = Vector3.Dot(transform.forward, _rb.velocity);
+        carSpeed = Vector3.Dot(transform.forward, _rb.linearVelocity);
         speed = Mathf.Abs(carSpeed);
         float normalizedSpeed = Mathf.Clamp01(speed / topSpeed);
         float normalizedReverse = Mathf.Clamp01(speed / topReverse);
@@ -487,7 +487,7 @@ public class Car : MonoBehaviour
                 drag *= Mathf.Sign(carSpeed);
                 drag *= 0.5f;
             }
-            else if (accelInput == 0f && _rb.velocity.magnitude < 0.5f && _carAngle < 5f)
+            else if (accelInput == 0f && _rb.linearVelocity.magnitude < 0.5f && _carAngle < 5f)
             {
                 drag = accelerationVelocity * _rb.mass * 0.25f / Time.fixedDeltaTime;
             }
@@ -527,7 +527,7 @@ public class Car : MonoBehaviour
     {
         if (!isDriftCar && !isBot) return;
         
-        float angle = Vector3.SignedAngle(transform.forward, _rb.velocity, Vector3.up);
+        float angle = Vector3.SignedAngle(transform.forward, _rb.linearVelocity, Vector3.up);
         if (isBot) angle = Mathf.Clamp(angle, -30f, 30f);
         if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
         {
@@ -642,7 +642,7 @@ public class Car : MonoBehaviour
         
         if (tiresOnTrack < 3) return;
         
-        _driftManager.ProcessDrift(_rb.velocity.magnitude, _rearSlipAngle);
+        _driftManager.ProcessDrift(_rb.linearVelocity.magnitude, _rearSlipAngle);
     }
 
     private void HandleLights()
@@ -670,7 +670,7 @@ public class Car : MonoBehaviour
         if (_wheel_rl.isContactingTrack) tiresOnSurface++;
         if (_wheel_rr.isContactingTrack) tiresOnSurface++;
         
-        if (engineOn && (_rb.velocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
+        if (engineOn && (_rb.linearVelocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
         {
             stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirectionActive ? 1.5f : 1f);
 
@@ -720,7 +720,7 @@ public class Car : MonoBehaviour
         if (hit)
         {
             _rb.MovePosition(raycastHit.point);
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             
             Vector3 rotation = _levelManager.lastCheckPoint.transform.eulerAngles;
@@ -887,7 +887,7 @@ public class Car : MonoBehaviour
         if (hit)
         {
             _rb.MovePosition(raycastHit.point);
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             
             Vector3 rotation = rot.eulerAngles;

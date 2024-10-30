@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Cinemachine;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -224,7 +224,7 @@ public class MenuManager : MonoBehaviour
         lapsName.text = selectedLaps.ToString();
     }
 
-    private void SetView(ICinemachineCamera targetCamera)
+    private void SetView(CinemachineVirtualCamera targetCamera)
     {
         foreach (CinemachineVirtualCamera vCam in _cameras)
         {

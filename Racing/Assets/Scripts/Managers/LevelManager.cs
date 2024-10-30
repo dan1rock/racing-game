@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
 using Unity.VisualScripting;

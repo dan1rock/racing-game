@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> menuCars;
+    [SerializeField] private List<GameObject> showcaseCars;
     [SerializeField] private Transform carSpawn;
     [SerializeField] private Transform selectedCarSpawn;
 
@@ -134,6 +135,7 @@ public class MenuManager : MonoBehaviour
 
     public void ScrollCars(bool right)
     {
+        showcaseCars[selectedCarId].SetActive(true);
         selectedCarId += right ? 1 : -1;
         
         if (selectedCarId >= menuCars.Count) selectedCarId = 0;
@@ -186,6 +188,8 @@ public class MenuManager : MonoBehaviour
     private void SpawnSelectedCar()
     {
         if (_selectedCar) Destroy(_selectedCar);
+        
+        showcaseCars[selectedCarId].SetActive(false);
         
         _selectedCar = Instantiate(menuCars[selectedCarId], selectedCarSpawn.position, selectedCarSpawn.rotation);
         Car car = _selectedCar.GetComponent<Car>();

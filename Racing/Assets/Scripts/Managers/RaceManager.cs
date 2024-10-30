@@ -22,9 +22,12 @@ public class RaceManager : MonoBehaviour
         {
             _levelManager.OnLapFinish += OnLapFinish;
             _levelManager.OnStageFinish += OnStageFinish;
-            
-            InitRace();
         }
+    }
+
+    private void Start()
+    {
+        InitRace();
     }
 
     private void InitRace()
@@ -34,9 +37,9 @@ public class RaceManager : MonoBehaviour
         float baseSpeed = 1f;
         float steeringReaction = 0.2f;
 
-        foreach (Vector3 pos in _levelManager.botSpawns)
+        foreach (SpawnPos pos in _levelManager.botSpawns)
         {
-            SpawnBot(pos, startPos.rotation, baseSpeed, steeringReaction);
+            SpawnBot(pos.position, Quaternion.LookRotation(pos.forward, Vector3.up), baseSpeed, steeringReaction);
             baseSpeed -= 0.05f;
             steeringReaction *= 0.8f;
         }

@@ -62,7 +62,7 @@ public class LevelManager : MonoBehaviour
     private Transform _startPosition;
     private List<Car> _cars = new();
 
-    public List<Vector3> botSpawns = new();
+    public List<SpawnPos> botSpawns = new();
 
     private int _activeCar = 0;
     public int currentLap = 1;
@@ -115,37 +115,6 @@ public class LevelManager : MonoBehaviour
 
         Application.targetFrameRate = 60;
 
-        _startPosition = GameObject.FindWithTag("Respawn").transform;
-
-        if (reverse) _startPosition.forward = -_startPosition.forward;
-        if (raceMode == RaceMode.Race) InitStartingGrid();
-        
-        Ray ray = new()
-        {
-            origin = _startPosition.position + Vector3.up * 10f,
-            direction = Vector3.down
-        };
-        
-        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, (1 << 7) | (1 << 0), QueryTriggerInteraction.Ignore);
-        
-        GameObject playerCar = Instantiate(pickedCar, raycastHit.point, _startPosition.rotation);
-        _cars.Add(playerCar.GetComponent<Car>());
-        
-        if (GameManager.Get())
-        {
-            _cars[_activeCar].SetColor(GameManager.Get().carColors[pickedCarColor]);
-        }
-        
-        activeCarMarker.position = playerCar.transform.position + playerCar.transform.up;
-        cameraTarget.position = playerCar.transform.position;
-        cameraTarget.rotation = playerCar.transform.rotation;
-        
-        foreach (Car car in _cars)
-        {
-            Destroy(car.GetComponent<CarController>());
-        }
-        UpdateTargetCar();
-
         switch (raceMode)
         {
             case RaceMode.TimeAttack:
@@ -168,25 +137,69 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(UpdateReflectionProbe(0.1f));
     }
 
+    private void Start()
+    {
+        _startPosition = GameObject.FindWithTag("Respawn").transform;
+
+        if (reverse) _startPosition.forward = -_startPosition.forward;
+        if (raceMode == RaceMode.Race) InitStartingGrid();
+        
+        Ray ray = new()
+        {
+            origin = _startPosition.position + Vector3.up * 10f,
+            direction = Vector3.down
+        };
+        
+        Physics.Raycast(ray, out RaycastHit raycastHit,  100f, (1 << 7) | (1 << 0), QueryTriggerInteraction.Ignore);
+        
+        GameObject playerCar = Instantiate(pickedCar, raycastHit.point, _startPosition.rotation);
+        _cars.Add(playerCar.GetComponent<Car>());
+        
+        if (GameManager.Get())
+        {
+            _cars[_activeCar].SetColor(GameManager.Get().carColors[pickedCarColor]);
+        }
+        
+        activeCarMarker.position = playerCar.transform.position + playerCar.transform.up;
+        cameraTarget.position = playerCar.transform.position;
+        cameraTarget.rotation = playerCar.transform.rotation;
+        
+        foreach (Car car in _cars)
+        {
+            Destroy(car.GetComponent<CarController>());
+        }
+        UpdateTargetCar();
+    }
+
     private void InitStartingGrid()
     {
+        RacingLine racingLine = FindFirstObjectByType<RacingLine>();
+        
         _startPosition.position -= _startPosition.right * 2f;
         
         Transform startPos = _startPosition;
         
         int sign = 1;
         Vector3 offset = Vector3.zero;
+
+        Vector3 lineDirection = startPos.forward;
         
         for (int i = 0; i < bots; i++)
         {
-            botSpawns.Add(startPos.position + offset);
+            int nearestNode = racingLine.GetNearestNodeID(startPos.position + offset);
+            int prevNode = racingLine.ForecastRacingNode(nearestNode, -1);
+            lineDirection = racingLine.orderedNodes[prevNode].position -
+                                    racingLine.orderedNodes[nearestNode].position;
+            
+            botSpawns.Add(new SpawnPos(startPos.position + offset, -lineDirection.normalized));
 
             offset += startPos.right * 4f * sign;
-            offset -= startPos.forward * 6f;
+            offset += lineDirection.normalized * 6f;
             sign = -sign;
         }
-
+        
         startPos.position += offset;
+        startPos.rotation = Quaternion.LookRotation(-lineDirection.normalized, Vector3.up);
     }
 
     private void UpdateWeather()

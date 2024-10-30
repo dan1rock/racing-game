@@ -12,8 +12,12 @@ public class RacingLine : MonoBehaviour
 
     private float _totalDistance;
 
+    private LevelManager _levelManager;
+
     private void Awake()
     {
+        _levelManager = FindFirstObjectByType<LevelManager>();
+        
         Transform racingLineParent = transform;
         
         Regex regex = new(@"\((\d+)\)$");
@@ -136,6 +140,17 @@ public class RacingLine : MonoBehaviour
                 Gizmos.DrawLine(orderedNodes[i].position, orderedNodes[0].position);
             }
         }
+    }
+    
+    public int ForecastRacingNode(int startId, int forecast)
+    {
+        int nodesN = orderedNodes.Count;
+        
+        int nodeId = startId + (_levelManager.reverse ? -forecast : forecast);
+        if (nodeId >= nodesN) nodeId -= nodesN;
+        if (nodeId < 0) nodeId += nodesN;
+
+        return nodeId;
     }
     
     public int GetNearestNodeID(Vector3 targetPosition)

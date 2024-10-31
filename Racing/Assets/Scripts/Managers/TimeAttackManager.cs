@@ -55,7 +55,7 @@ public class TimeAttackManager : MonoBehaviour
         lapTimeText.text = FormatTime(_lapTime);
     }
 
-    public void OnLapFinish()
+    private void OnLapFinish()
     {
         if (_bestLapTime > _lapTime)
         {

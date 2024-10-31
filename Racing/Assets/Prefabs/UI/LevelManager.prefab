@@ -279,6 +279,7 @@ MonoBehaviour:
   raceEndMenu: {fileID: 3107896768927092955}
   posText: {fileID: 4963122314713090929}
   lapsText: {fileID: 2648012386298799671}
+  summaryPosition: {fileID: 5946642965353298051}
   leaderboardPos: {fileID: 8175077144980922486}
   leaderboardName: {fileID: 5673985436136871969}
   carControllers: []
@@ -801,6 +802,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2883240403428365607}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5946642965353298051 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8828721698763419044, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5996090656184316476 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8878063194917136155, guid: a243a5871f1f22c4d923847db2f67edd,

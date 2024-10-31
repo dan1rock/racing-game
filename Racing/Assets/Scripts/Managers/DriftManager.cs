@@ -193,7 +193,7 @@ public class DriftManager : MonoBehaviour
         StartCoroutine(DriftFailAnimation());
     }
     
-    public void OnLapFinish()
+    private void OnLapFinish()
     {
         if (_levelManager.currentLap <= _levelManager.laps)
         {

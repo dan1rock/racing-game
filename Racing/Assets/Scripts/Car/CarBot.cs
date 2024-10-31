@@ -9,6 +9,7 @@ public class CarBot : CarController
     public float steeringReaction = 1f;
 
     private float _directionAngle;
+    private float _launchTime;
     
     private LayerMask _boundariesLayer = 1 << 9;
     
@@ -109,6 +110,8 @@ public class CarBot : CarController
         
         car.accelInput = maxAcceleration;
 
+        if (Time.time - _launchTime < 3f) car.accelInput = 1f;
+
         if (levelManager.player)
         {
             float dist = levelManager.player.totalDistance - totalDistance;
@@ -140,7 +143,10 @@ public class CarBot : CarController
         float deceleration = Mathf.Clamp01(Mathf.Abs(signedAngle / 60f));
         deceleration *= 0.8f;
 
-        car.accelInput -= deceleration;
+        if (Time.time - _launchTime > 3f)
+        {
+            car.accelInput -= deceleration;
+        }
 
         Vector3 breakForecast = racingLine.orderedNodes[ForecastRacingNode(3 + racingLine.breakForecast)].position -
                                 racingLine.orderedNodes[ForecastRacingNode(2 + racingLine.breakForecast)].position;
@@ -269,6 +275,7 @@ public class CarBot : CarController
         car.stuckTimer = 0f;
         _resetTimer = 0f;
         _lastReset = Time.time;
+        _launchTime = Time.time;
 
         Quaternion rot = Quaternion.LookRotation(
             racingLine.orderedNodes[ForecastRacingNode(1)].position -
@@ -282,6 +289,7 @@ public class CarBot : CarController
         
         car.StartCoroutine(car.StartEngine());
         _isActive = true;
+        _launchTime = Time.time - 1f;
         
         FindObjectOfType<Minimap>().AddBotMarker(transform);
     }

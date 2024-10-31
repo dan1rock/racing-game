@@ -395,7 +395,7 @@ public class Car : MonoBehaviour
             if (!isDriftCar) grip *= surfaceGrip;
             
             bool emitTrail = ((slipAngle > driftTrailTrigger || (isRear && handbrake)) && speed > 1f)
-                             || (engineOn && applyTorque && Mathf.Abs(accelInput) > 0.5f && _currentGear == 1)
+                             || (engineOn && applyTorque && Mathf.Abs(accelInput) > 0.5f && speed < topSpeed * 0.1f)
                              || (burnout && speed < 2f && engineOn && applyTorque)
                              || (wheel.surfaceLayer != 7 && accelInput != 0 && applyTorque);
 
@@ -432,7 +432,7 @@ public class Car : MonoBehaviour
             availableTorque *= useGripInAcceleration ? grip : surfaceGrip;
             
             if (drivetrain == Drivetrain.AWD) availableTorque *= 0.5f;
-            if (_currentGear == 1 && Mathf.Abs(accelInput) > 0.5f) availableTorque *= 0.5f;
+            if (speed < topSpeed * 0.1f && Mathf.Abs(accelInput) > 0.5f) availableTorque *= 0.5f;
             
             if (applyTorque && (!isRear || !handbrake) && engineOn)
             {
@@ -446,7 +446,7 @@ public class Car : MonoBehaviour
                 ? wheelVelocity.magnitude * movingDir
                 : accelerationVelocity;
 
-            if (((accelInput > 0f && _currentGear == 1) || (burnout && speed < 2f)) && engineOn && applyTorque) rotationSpeed = 10f;
+            if (((accelInput > 0.5f && speed < topSpeed * 0.1f) || (burnout && speed < 2f)) && engineOn && applyTorque) rotationSpeed = 10f;
             
             wheel.SetRotationSpeed(rotationSpeed);
             
@@ -525,8 +525,6 @@ public class Car : MonoBehaviour
     private float _counterSteeringPower = 1f;
     private void HandleCounterSteering()
     {
-        if (!isDriftCar && !isBot) return;
-        
         float angle = Vector3.SignedAngle(transform.forward, _rb.linearVelocity, Vector3.up);
         if (isBot) angle = Mathf.Clamp(angle, -30f, 30f);
         if (Mathf.Abs(angle) < 90f && speed > 1f && wheelContact)
@@ -586,7 +584,7 @@ public class Car : MonoBehaviour
             ? gearPitch + (drivetrain == Drivetrain.FWD || !wheelContact ? 0f : _rearSlipAngle) 
             : gearPitch - 0.1f;
 
-        if ((Mathf.Abs(accelInput) > 0.5f && _currentGear == 1) || (burnout && speed < 2f))
+        if ((Mathf.Abs(accelInput) > 0.5f && speed < topSpeed * 0.1f) || (burnout && speed < 2f))
         {
             to = maxEnginePitch;
         }
@@ -610,21 +608,26 @@ public class Car : MonoBehaviour
         
         if (relativeGears[_currentGear - 1] > relativeSpeed)
         {
-            _gearShiftSource.clip = gearShiftClip;
-            _gearShiftSource.pitch = Random.Range(0.8f, 1.2f);
-            _gearShiftSource.Play();
-            _currentGear--;
+            ChangeGear(-1);
         }
         
         if (_currentGear >= relativeGears.Count) return;
         
         if (relativeGears[_currentGear] < relativeSpeed)
         {
-            _gearShiftSource.clip = gearShiftClip;
-            _gearShiftSource.pitch = Random.Range(0.8f, 1.2f);
-            _gearShiftSource.Play();
-            _currentGear++;
+            ChangeGear(1);
         }
+    }
+
+    private void ChangeGear(int delta)
+    {
+        _currentGear += delta;
+        
+        if (isBot) return;
+        
+        _gearShiftSource.clip = gearShiftClip;
+        _gearShiftSource.pitch = Random.Range(0.8f, 1.2f);
+        _gearShiftSource.Play();
     }
 
     private void HandleDrift()

@@ -41,9 +41,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334474330051068130}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 0
-  m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 100
   m_Range: 50
@@ -93,8 +92,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!114 &4283149379018561305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +357,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   driftTrailTrigger: 0.2
   isDriftCar: 0
-  driftCounterSteering: 35
+  driftCounterSteering: 5
   botCounterSteering: 35
   drivetrain: 1
   torque: 7
@@ -445,6 +448,8 @@ MonoBehaviour:
   forceStop: 0
   wheelContact: 1
   rbVelocity: {x: -0.0038205115, y: -0.00032645464, z: 0.007757687}
+  botReset: 1
+  stuckTimer: 0
 --- !u!82 &4631194817209409230
 AudioSource:
   m_ObjectHideFlags: 0
@@ -457,6 +462,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 7f1d0b61b6e2c1b4bb622b4af306182c, type: 3}
+  m_Resource: {fileID: 8300000, guid: 7f1d0b61b6e2c1b4bb622b4af306182c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 0.2
@@ -619,6 +625,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -720,6 +729,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -821,6 +833,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1089,6 +1104,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1261,9 +1279,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4108809423838204450}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 0
-  m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 100
   m_Range: 50
@@ -1313,8 +1330,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!114 &4004054250811418493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1397,6 +1418,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1539,6 +1563,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 3934327830485334529, guid: 92e1f831bfa680b4780f42dc5f93fd05,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
+  m_Resource: {fileID: 8300000, guid: 8aa16e0721a154298b1a27446b1d4210, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

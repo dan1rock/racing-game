@@ -11,6 +11,7 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private GameObject raceEndMenu;
     [SerializeField] private TMP_Text posText;
     [SerializeField] private TMP_Text lapsText;
+    [SerializeField] private TMP_Text summaryPosition;
 
     [SerializeField] private GameObject leaderboardPos;
     [SerializeField] public GameObject leaderboardName;
@@ -96,7 +97,7 @@ public class RaceManager : MonoBehaviour
         leaderboardName.GetComponent<RectTransform>().position += leaderboardOffset;
     }
 
-    public void OnLapFinish()
+    private void OnLapFinish()
     {
         if (_levelManager.currentLap <= _levelManager.laps)
         {
@@ -107,6 +108,18 @@ public class RaceManager : MonoBehaviour
     private void OnStageFinish()
     {
         _finished = true;
+
+        int pos = _levelManager.player.currentPosition;
+
+        string ending = pos switch
+        {
+            1 => "st",
+            2 => "nd",
+            3 => "rd",
+            _ => "th"
+        };
+        
+        summaryPosition.text = $"{_levelManager.player.currentPosition}{ending}";
         
         raceEndMenu.SetActive(true);
     }
@@ -149,7 +162,7 @@ public class RaceManager : MonoBehaviour
     
     private IEnumerator UpdatePositions()
     {
-        while (true)
+        while (!_finished)
         {
             carControllers = carControllers.OrderByDescending(car => car.totalDistance).ToList();
             for (int i = 0; i < carControllers.Count; i++)

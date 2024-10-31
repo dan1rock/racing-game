@@ -200,21 +200,21 @@ MonoBehaviour:
   wheelOffset: 0.315
   suspensionLength: 0.4
   suspensionRest: 0.35
-  springStrength: 50
+  springStrength: 75
   springDamper: 5
-  downForce: 10
+  downForce: 15
   downforceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 3.905661
-      outSlope: 3.905661
+      time: -0.000001525972
+      value: 0.11791992
+      inSlope: 2.164963
+      outSlope: 2.164963
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.027777772
+      outWeight: 0.045834795
     - serializedVersion: 3
       time: 0.998291
       value: 1

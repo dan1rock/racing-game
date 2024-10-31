@@ -725,14 +725,16 @@ public class Car : MonoBehaviour
             _rb.MovePosition(raycastHit.point);
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
-            
-            Vector3 rotation = _levelManager.lastCheckPoint.transform.eulerAngles;
+
+            Quaternion rot = Quaternion.LookRotation(_levelManager.lastCheckPoint.GetNext().transform.position -
+                                                     _levelManager.lastCheckPoint.transform.position, Vector3.up);
+            Vector3 rotation = rot.eulerAngles;
             rotation.x = 0f;
             rotation.z = 0f;
 
-            if (_levelManager.reverse) rotation.y += 180;
-
             transform.rotation = Quaternion.Euler(rotation);
+            
+            _rb.linearVelocity = transform.forward * 20f;
             
             _levelManager.ResetCar(false);
             stuckTimer = 0f;
@@ -885,11 +887,11 @@ public class Car : MonoBehaviour
             direction = Vector3.down
         };
 
-        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, layerMask, QueryTriggerInteraction.Ignore);
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  Mathf.Infinity, layerMask, QueryTriggerInteraction.Ignore);
 
         if (hit)
         {
-            _rb.MovePosition(raycastHit.point);
+            _rb.MovePosition(raycastHit.point + Vector3.up * 0.1f);
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             

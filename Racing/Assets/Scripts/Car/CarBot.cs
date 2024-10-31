@@ -110,7 +110,8 @@ public class CarBot : CarController
         
         car.accelInput = maxAcceleration;
 
-        if (Time.time - _launchTime < 3f) car.accelInput = 1f;
+        bool maxThrottle = Time.time - _launchTime < 3f;
+        if (maxThrottle) car.accelInput = 1f;
 
         if (levelManager.player)
         {
@@ -118,6 +119,8 @@ public class CarBot : CarController
             
             car.accelInput += dist / 200f;
             car.accelInput = Mathf.Clamp(car.accelInput, 0.4f, 1.5f);
+
+            if (maxThrottle) car.accelInput = Mathf.Max(1f, car.accelInput);
         }
         
         bool hit = Physics.Raycast(rayRight, out RaycastHit raycastHit, maxDistance, _boundariesLayer);
@@ -143,7 +146,7 @@ public class CarBot : CarController
         float deceleration = Mathf.Clamp01(Mathf.Abs(signedAngle / 60f));
         deceleration *= 0.8f;
 
-        if (Time.time - _launchTime > 3f)
+        if (!maxThrottle)
         {
             car.accelInput -= deceleration;
         }
@@ -275,7 +278,7 @@ public class CarBot : CarController
         car.stuckTimer = 0f;
         _resetTimer = 0f;
         _lastReset = Time.time;
-        _launchTime = Time.time;
+        _launchTime = Time.time + 1f;
 
         Quaternion rot = Quaternion.LookRotation(
             racingLine.orderedNodes[ForecastRacingNode(1)].position -
@@ -289,7 +292,7 @@ public class CarBot : CarController
         
         car.StartCoroutine(car.StartEngine());
         _isActive = true;
-        _launchTime = Time.time - 1f;
+        _launchTime = Time.time + 3f;
         
         FindObjectOfType<Minimap>().AddBotMarker(transform);
     }

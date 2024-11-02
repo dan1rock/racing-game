@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public int carId;
     public int carColorId;
     public RaceMode raceMode;
+    public Difficulty difficulty;
 
     public Settings settings;
     private AdMobManager _adMobManager;
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
         carId = menuManager.selectedCarId;
         carColorId = menuManager.selectedCarColorId;
         raceMode = menuManager.selectedRaceMode;
+        difficulty = menuManager.selectedDifficulty;
 
         car = raceMode switch
         {
@@ -126,6 +128,7 @@ public class GameManager : MonoBehaviour
             carId = playerData.menuSelectedCarId;
             carColorId = playerData.menuSelectedCarColorId;
             raceMode = playerData.menuSelectedRaceMode;
+            difficulty = playerData.menuSelectedDifficulty;
         }
         catch (Exception e)
         {

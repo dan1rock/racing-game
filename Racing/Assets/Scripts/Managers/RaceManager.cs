@@ -8,6 +8,11 @@ using Random = UnityEngine.Random;
 
 public class RaceManager : MonoBehaviour
 {
+    [SerializeField] private List<float> difficultyMaxThrottle;
+    [SerializeField] private List<float> difficultyThrottleReduction;
+    [SerializeField] private List<float> difficultyMaxReaction;
+    [SerializeField] private List<float> difficultyReactionReduction;
+    
     [SerializeField] private GameObject raceEndMenu;
     [SerializeField] private TMP_Text posText;
     [SerializeField] private TMP_Text lapsText;
@@ -61,11 +66,13 @@ public class RaceManager : MonoBehaviour
         {
             player.leaderboardPos = leaderboardName.GetComponent<RectTransform>();
         }
-        
-        float baseSpeed = 0.9f;
-        float steeringReaction = 0.3f;
 
-        Vector3 leaderboardOffset = Vector3.zero;
+        int difficulty = (int)_levelManager.difficulty;
+        
+        float baseSpeed = difficultyMaxThrottle[difficulty];
+        float steeringReaction = difficultyMaxReaction[difficulty];
+
+        Vector2 leaderboardOffset = Vector2.zero;
         
         leaderboardPositions.Add(leaderboardPos.GetComponent<RectTransform>());
 
@@ -74,27 +81,27 @@ public class RaceManager : MonoBehaviour
             string botName = $"Bot{leaderboardPositions.Count}";
             CarBot bot = SpawnBot(pos.position, Quaternion.LookRotation(pos.forward, Vector3.up), baseSpeed,
                 steeringReaction, botName);
-            baseSpeed -= 0.05f;
-            steeringReaction *= 0.8f;
+            baseSpeed -= difficultyThrottleReduction[difficulty];
+            steeringReaction *= difficultyReactionReduction[difficulty];
             steeringReaction = Mathf.Clamp(steeringReaction, 0.05f, 1f);
             
             GameObject ldName = Instantiate(leaderboardName, leaderboardName.transform.parent);
             RectTransform rt = ldName.GetComponent<RectTransform>();
-            rt.position += leaderboardOffset;
+            rt.anchoredPosition += leaderboardOffset;
             bot.leaderboardPos = rt;
             ldName.GetComponent<TMP_Text>().text = botName;
             
-            leaderboardOffset += Vector3.down * 35f;
+            leaderboardOffset += Vector2.down * 35f;
             GameObject ldPos = Instantiate(leaderboardPos, leaderboardPos.transform.parent);
             rt = ldPos.GetComponent<RectTransform>();
-            rt.position += leaderboardOffset;
+            rt.anchoredPosition += leaderboardOffset;
             
             leaderboardPositions.Add(rt);
 
             ldPos.GetComponent<TMP_Text>().text = $"{leaderboardPositions.Count}:";
         }
 
-        leaderboardName.GetComponent<RectTransform>().position += leaderboardOffset;
+        leaderboardName.GetComponent<RectTransform>().anchoredPosition += leaderboardOffset;
     }
 
     private void OnLapFinish()

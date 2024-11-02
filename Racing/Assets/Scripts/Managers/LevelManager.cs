@@ -23,6 +23,15 @@ public enum DayTime
     Night
 }
 
+public enum Difficulty
+{
+    Easy,
+    Medium,
+    Hard,
+    Expert,
+    Unbeatable
+}
+
 public class LevelManager : MonoBehaviour
 {
     [Header("Stage Settings")]
@@ -31,6 +40,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Weather weather;
     [SerializeField] private DayTime dayTime;
     [SerializeField] public RaceMode raceMode;
+    [SerializeField] public Difficulty difficulty;
     [SerializeField] public bool reverse;
     [SerializeField] public int laps = 3;
     [SerializeField] public int bots = 4;
@@ -94,6 +104,7 @@ public class LevelManager : MonoBehaviour
             weather = gameManager.weather;
             dayTime = gameManager.dayTime;
             raceMode = gameManager.raceMode;
+            difficulty = gameManager.difficulty;
             reverse = gameManager.stageReverse;
             laps = gameManager.laps;
 

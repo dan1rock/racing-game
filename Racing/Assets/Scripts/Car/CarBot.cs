@@ -17,6 +17,7 @@ public class CarBot : CarController
     private Vector3 _currentNodeMarker;
 
     private bool _isActive = false;
+    private bool _stopCar = false;
 
     protected override void Initialize()
     {
@@ -52,6 +53,12 @@ public class CarBot : CarController
         HandleAcceleration();
         HandleSteering();
         HandleReset();
+
+        if (currentLap > levelManager.laps && !_stopCar)
+        {
+            car.StopCar();
+            _stopCar = true;
+        }
     }
 
     private void HandleRacingLine()
@@ -87,6 +94,8 @@ public class CarBot : CarController
 
     private void HandleAcceleration()
     {
+        if (_stopCar) return;
+        
         Vector3 origin = transform.position + transform.forward;
         Vector3 flatForward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
 
@@ -209,7 +218,17 @@ public class CarBot : CarController
 
         bool retract = (car.steering > 0f && steering < car.steering)
                        || (car.steering < 0f && steering > car.steering);
-        car.steering = Mathf.Lerp(car.steering, steering, (retract ? 0.7f : 0.5f) * steeringReaction);
+
+        float reaction = steeringReaction;
+
+        if (levelManager.player)
+        {
+            float dist = levelManager.player.totalDistance - totalDistance;
+            if (dist < 0f) dist = 0f;
+            reaction *= dist + 1f;
+        }
+        
+        car.steering = Mathf.Lerp(car.steering, steering, (retract ? 0.7f : 0.5f) * reaction);
     }
 
     private float ProcessSteeringRay(Ray ray, float dist, float minDist, float maxDist, float ratio)
@@ -231,6 +250,7 @@ public class CarBot : CarController
     private void HandleReset()
     {
         if (!_isActive || !car.engineOn) return;
+        if (_stopCar) return;
         
         if (Time.time - _lastReset < 5f) return;
 

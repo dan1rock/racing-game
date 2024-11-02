@@ -10,6 +10,7 @@ public class PlayerData
     public int menuSelectedCarId;
     public int menuSelectedCarColorId;
     public RaceMode menuSelectedRaceMode;
+    public Difficulty menuSelectedDifficulty;
 
     public PlayerData(GameManager player)
     {
@@ -22,5 +23,6 @@ public class PlayerData
         menuSelectedCarId = player.carId;
         menuSelectedCarColorId = player.carColorId;
         menuSelectedRaceMode = player.raceMode;
+        menuSelectedDifficulty = player.difficulty;
     }
 }

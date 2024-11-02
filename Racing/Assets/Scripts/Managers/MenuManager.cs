@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Image mapLayout;
     [SerializeField] private TMP_Text mapName;
     [SerializeField] private TMP_Text modeName;
+    [SerializeField] private TMP_Text difficultyName;
     [SerializeField] private TMP_Text weatherName;
     [SerializeField] private TMP_Text dayTimeName;
     [SerializeField] private TMP_Text lapsName;
@@ -44,6 +45,7 @@ public class MenuManager : MonoBehaviour
     public DayTime selectedDayTime;
     public Weather selectedWeather;
     public RaceMode selectedRaceMode;
+    public Difficulty selectedDifficulty;
 
     private CinemachineVirtualCamera[] _cameras;
     private GameObject _selectedCar;
@@ -61,6 +63,7 @@ public class MenuManager : MonoBehaviour
         selectedDayTime = GameManager.Get().dayTime;
         selectedWeather = GameManager.Get().weather;
         selectedRaceMode = GameManager.Get().raceMode;
+        selectedDifficulty = GameManager.Get().difficulty;
 
         selectedLaps = Mathf.Clamp(selectedLaps, 1, maxLaps);
         
@@ -77,6 +80,7 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedTime();
         UpdateSelectedWeather();
         UpdateSelectedLaps();
+        UpdateSelectedDifficulty();
     }
 
     public void SetWeather(int id)
@@ -160,6 +164,13 @@ public class MenuManager : MonoBehaviour
         
         UpdateSelectedMode();
     }
+    
+    public void ScrollDifficulty(bool right)
+    {
+        selectedDifficulty = ClampEnum(selectedDifficulty, right);
+        
+        UpdateSelectedDifficulty();
+    }
 
     public void ScrollDayTime(bool right)
     {
@@ -221,6 +232,11 @@ public class MenuManager : MonoBehaviour
     private void UpdateSelectedMode()
     {
         modeName.text = selectedRaceMode.ToString();
+    }
+
+    private void UpdateSelectedDifficulty()
+    {
+        difficultyName.text = selectedDifficulty.ToString();
     }
 
     private void UpdateSelectedLaps()

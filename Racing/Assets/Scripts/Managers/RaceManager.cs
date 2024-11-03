@@ -55,7 +55,7 @@ public class RaceManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        posText.text = $"P{_levelManager.player.currentPosition}";
+        posText.text = $"P{_levelManager.player.currentPosition} / {_levelManager.bots + 1}";
     }
 
     private void InitRace()

@@ -12,6 +12,9 @@ public class CarBot : CarController
     private float _launchTime;
     
     private LayerMask _boundariesLayer = 1 << 9;
+    private LayerMask _carLayer = 1 << 6;
+
+    private Collider _selfCollider;
     
     private int _currentNodeTargetId;
     private Vector3 _currentNodeMarker;
@@ -24,6 +27,7 @@ public class CarBot : CarController
         base.Initialize();
         
         car = GetComponent<Car>();
+        _selfCollider = GetComponentInChildren<Collider>();
 
         car.isBot = true;
     }
@@ -47,12 +51,16 @@ public class CarBot : CarController
     private void FixedUpdate()
     {
         if (!_isActive) return;
+
+        _selfCollider.enabled = false;
         
         HandleRacingLine();
         CalculateTotalDistance();
         HandleAcceleration();
         HandleSteering();
         HandleReset();
+
+        _selfCollider.enabled = true;
 
         if (currentLap > levelManager.laps && !_stopCar)
         {
@@ -96,7 +104,7 @@ public class CarBot : CarController
     {
         if (_stopCar) return;
         
-        Vector3 origin = transform.position + transform.forward;
+        Vector3 origin = transform.position + transform.forward + Vector3.up * 0.5f;
         Vector3 flatForward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
 
         float maxDistance = 20f;
@@ -157,7 +165,7 @@ public class CarBot : CarController
 
         if (!maxThrottle)
         {
-            car.accelInput -= deceleration;
+            car.accelInput -= deceleration * car.accelInput;
         }
 
         Vector3 breakForecast = racingLine.orderedNodes[ForecastRacingNode(3 + racingLine.breakForecast)].position -
@@ -179,8 +187,10 @@ public class CarBot : CarController
     
     private void HandleSteering()
     {
-        Vector3 origin = transform.position + transform.forward;
+        Vector3 origin = transform.position + transform.forward + Vector3.up * 0.5f;
 
+        // Track navigation
+        
         float maxDistance = 10f;
         float minDistance = 1f;
         float angle = 30f;
@@ -210,8 +220,8 @@ public class CarBot : CarController
         signedAngle = Mathf.Clamp(signedAngle, -1f, 1f);
 
         float steering = 0f;
-        steering += ProcessSteeringRay(rayRight, maxDistance, minDistance, maxDistance, -0.2f);
-        steering += ProcessSteeringRay(rayLeft, maxDistance, minDistance , maxDistance, 0.2f);
+        steering += ProcessSteeringRay(rayRight, maxDistance, minDistance, maxDistance, -0.2f, _boundariesLayer);
+        steering += ProcessSteeringRay(rayLeft, maxDistance, minDistance , maxDistance, 0.2f, _boundariesLayer);
         steering += signedAngle * 0.3f;
 
         if (car.carSpeed < 0f) steering = -steering;
@@ -228,12 +238,37 @@ public class CarBot : CarController
             reaction *= dist + 1f;
         }
         
+        // Obstacle detection
+        
+        maxDistance = 7f;
+        minDistance = 2f;
+        angle = 15f;
+        
+        Ray rayForwardRight = new()
+        {
+            origin = origin,
+            direction = Quaternion.Euler(0, angle, 0) * flatForward
+        };
+        
+        angle = -angle;
+        
+        Ray rayForwardLeft = new()
+        {
+            origin = origin,
+            direction = Quaternion.Euler(0, angle, 0) * flatForward
+        };
+
+        steering += ProcessSteeringRay(rayRight, maxDistance, minDistance, maxDistance, -0.1f, _carLayer);
+        steering += ProcessSteeringRay(rayLeft, maxDistance, minDistance , maxDistance, 0.1f, _carLayer);
+        steering += ProcessSteeringRay(rayForwardRight, maxDistance, minDistance, maxDistance, -0.1f, _carLayer);
+        steering += ProcessSteeringRay(rayForwardLeft, maxDistance, minDistance , maxDistance, 0.1f, _carLayer);
+        
         car.steering = Mathf.Lerp(car.steering, steering, (retract ? 0.7f : 0.5f) * reaction);
     }
 
-    private float ProcessSteeringRay(Ray ray, float dist, float minDist, float maxDist, float ratio)
+    private float ProcessSteeringRay(Ray ray, float dist, float minDist, float maxDist, float ratio, int layer)
     {
-        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit, dist, _boundariesLayer);
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit, dist, layer);
         Debug.DrawLine(ray.origin, ray.origin + ray.direction * dist, Color.red);
         
         if (hit)

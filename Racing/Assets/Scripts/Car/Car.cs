@@ -157,8 +157,9 @@ public class Car : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
         _audioSource.volume = 0f;
-        _driftManager = FindObjectOfType<DriftManager>();
-        _levelManager = FindObjectOfType<LevelManager>();
+        _driftManager = FindFirstObjectByType<DriftManager>();
+        _levelManager = FindFirstObjectByType<LevelManager>();
+        
         if (_levelManager)
         {
             _nightMode = _levelManager.nightMode;
@@ -315,7 +316,7 @@ public class Car : MonoBehaviour
         
         // Downforce
         
-        if (wheelContact)
+        if (true)
         {
             _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed) * (1f - _carAngle / 90f)));
         }

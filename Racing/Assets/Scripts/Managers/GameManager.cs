@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public RaceMode raceMode;
     public Difficulty difficulty;
 
+    public int bots = 4;
+
     public Settings settings;
     private AdMobManager _adMobManager;
     
@@ -147,5 +149,10 @@ public class GameManager : MonoBehaviour
         settings.graphicsPreset = qualityLevel;
         settings.ApplySettings();
         SaveSystem.SavePlayer(this);
+    }
+
+    public void SetBotNum(String num)
+    {
+        bots = int.Parse(num);
     }
 }

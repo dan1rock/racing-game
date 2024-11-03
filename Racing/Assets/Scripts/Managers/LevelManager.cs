@@ -107,6 +107,7 @@ public class LevelManager : MonoBehaviour
             difficulty = gameManager.difficulty;
             reverse = gameManager.stageReverse;
             laps = gameManager.laps;
+            bots = gameManager.bots;
 
             if (gameManager.graphicsQuality == QualityLevel.High && grass)
             {

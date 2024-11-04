@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     public int bots = 4;
 
+    public float masterVolume = 0.2f;
+
     public Settings settings;
     private AdMobManager _adMobManager;
     
@@ -134,6 +136,8 @@ public class GameManager : MonoBehaviour
             difficulty = playerData.menuSelectedDifficulty;
             bots = playerData.menuSelectedBotCount;
 
+            masterVolume = playerData.masterVolume;
+
             if (bots <= 0) bots = 4;
         }
         catch (Exception e)
@@ -153,10 +157,5 @@ public class GameManager : MonoBehaviour
         settings.graphicsPreset = qualityLevel;
         settings.ApplySettings();
         SaveSystem.SavePlayer(this);
-    }
-
-    public void SetBotNum(String num)
-    {
-        bots = int.Parse(num);
     }
 }

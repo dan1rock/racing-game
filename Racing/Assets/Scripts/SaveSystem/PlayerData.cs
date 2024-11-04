@@ -13,6 +13,8 @@ public class PlayerData
     public Difficulty menuSelectedDifficulty;
     public int menuSelectedBotCount;
 
+    public float masterVolume;
+
     public PlayerData(GameManager player)
     {
         menuSelectedQuality = player.graphicsQuality;
@@ -26,5 +28,7 @@ public class PlayerData
         menuSelectedRaceMode = player.raceMode;
         menuSelectedDifficulty = player.difficulty;
         menuSelectedBotCount = player.bots;
+
+        masterVolume = player.masterVolume;
     }
 }

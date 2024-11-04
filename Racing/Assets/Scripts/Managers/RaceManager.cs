@@ -11,6 +11,8 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private List<float> difficultyThrottleReduction;
     [SerializeField] private List<float> difficultyMaxReaction;
     [SerializeField] private List<float> difficultyReactionReduction;
+    [SerializeField] private List<float> difficultyFallBehindAdjustment;
+    [SerializeField] private List<float> difficultyFallAheadAdjustment;
     
     [SerializeField] private GameObject raceEndMenu;
     [SerializeField] private TMP_Text posText;
@@ -18,12 +20,14 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private TMP_Text summaryPosition;
 
     [SerializeField] private GameObject leaderboardPos;
+    [SerializeField] private GameObject leaderboardDistance;
     [SerializeField] public GameObject leaderboardName;
 
     private bool _finished = false;
     
     public List<CarController> carControllers = new();
     public List<RectTransform> leaderboardPositions = new();
+    public List<TMP_Text> leaderboardDistances = new();
     
     private LevelManager _levelManager;
     private RacingLine _racingLine;
@@ -34,6 +38,7 @@ public class RaceManager : MonoBehaviour
         _levelManager = FindFirstObjectByType<LevelManager>();
         
         lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
+        leaderboardDistances.Add(leaderboardDistance.GetComponent<TMP_Text>());
 
         if (_levelManager.raceMode == RaceMode.Race)
         {
@@ -54,11 +59,29 @@ public class RaceManager : MonoBehaviour
         carControllers = new List<CarController>(FindObjectsByType<CarController>(FindObjectsSortMode.None));
 
         _updatePositionsCoroutine = StartCoroutine(UpdatePositions());
+        
+        Invoke(nameof(RecalculatePlayerDistanceLimit), 0.5f);
     }
 
     private void FixedUpdate()
     {
+        if (_levelManager.raceMode != RaceMode.Race) return;
+        
         posText.text = $"P{_levelManager.player.currentPosition} / {_levelManager.bots + 1}";
+        
+        UpdateDistances();
+    }
+
+    private void UpdateDistances()
+    {
+        float playerDistance = _levelManager.player.GetPlayerDistance();
+        
+        for (int i = 0; i < leaderboardDistances.Count; i++)
+        {
+            float diff = playerDistance - carControllers[i].totalDistance;
+            
+            leaderboardDistances[i].text = (diff > 0f ? "+" : "") + diff.ToString("F0");
+        }
     }
 
     private void InitRace()
@@ -100,6 +123,12 @@ public class RaceManager : MonoBehaviour
             rt.anchoredPosition += leaderboardOffset;
             
             leaderboardPositions.Add(rt);
+            
+            GameObject ldDistance = Instantiate(leaderboardDistance, leaderboardDistance.transform.parent);
+            rt = ldDistance.GetComponent<RectTransform>();
+            rt.anchoredPosition += leaderboardOffset;
+            
+            leaderboardDistances.Add(ldDistance.GetComponent<TMP_Text>());
 
             ldPos.GetComponent<TMP_Text>().text = $"{leaderboardPositions.Count}:";
         }
@@ -171,6 +200,8 @@ public class RaceManager : MonoBehaviour
             carBot.maxAcceleration = baseSpeed;
             carBot.steeringReaction = steeringReaction;
             carBot.name = name;
+            carBot.fallBehindAdjustment = difficultyFallBehindAdjustment[(int)_levelManager.difficulty];
+            carBot.fallAheadAdjustment = difficultyFallAheadAdjustment[(int)_levelManager.difficulty];
             
             if (GameManager.Get())
             {

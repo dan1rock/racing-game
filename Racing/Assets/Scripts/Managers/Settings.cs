@@ -31,6 +31,7 @@ public class Settings : MonoBehaviour
         {
             GameManager.Get().settings = this;
             graphicsPreset = GameManager.Get().graphicsQuality;
+            masterVolume = GameManager.Get().masterVolume;
         }
         
         ApplySettings();
@@ -51,5 +52,15 @@ public class Settings : MonoBehaviour
     {
         AudioListener.volume = masterVolume;
         SetQuality(graphicsPreset);
+    }
+
+    public void SetMasterVolume(float value)
+    {
+        value *= 0.01f;
+        
+        masterVolume = value;
+        AudioListener.volume = masterVolume;
+
+        GameManager.Get().masterVolume = masterVolume;
     }
 }

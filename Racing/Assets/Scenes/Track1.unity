@@ -2102,7 +2102,7 @@ PrefabInstance:
     - target: {fileID: 1355428302142002882, guid: 854fd0f045c676e42848700986d89b34,
         type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1355428302142002882, guid: 854fd0f045c676e42848700986d89b34,
         type: 3}
@@ -2142,7 +2142,7 @@ PrefabInstance:
     - target: {fileID: 4664459471014717300, guid: 854fd0f045c676e42848700986d89b34,
         type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4664459471014717300, guid: 854fd0f045c676e42848700986d89b34,
         type: 3}
@@ -8712,7 +8712,7 @@ Transform:
   m_GameObject: {fileID: 544163632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -171.5013, y: 20.930058, z: -41.7149}
+  m_LocalPosition: {x: -196.8789, y: 9.51754, z: -12.033486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18396,6 +18396,7 @@ MonoBehaviour:
   - {fileID: 1585779627}
   startNodeId: 0
   totalDistance: 0
+  playerDistanceLimit: 50
 --- !u!1001 &1700940948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25146,7 +25147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.8898263, z: -0, w: -0.45629945}
+  m_LocalRotation: {x: -0, y: -0.5360469, z: -0, w: 0.8441882}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

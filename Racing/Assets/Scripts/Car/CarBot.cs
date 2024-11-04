@@ -8,6 +8,9 @@ public class CarBot : CarController
     public float maxAcceleration = 1f;
     public float steeringReaction = 1f;
 
+    public float fallBehindAdjustment = 1f;
+    public float fallAheadAdjustment = 1f;
+
     private float _directionAngle;
     private float _launchTime;
     
@@ -50,10 +53,11 @@ public class CarBot : CarController
 
     private void FixedUpdate()
     {
-        if (!_isActive) return;
-        
         HandleRacingLine();
         CalculateTotalDistance();
+        
+        if (!_isActive) return;
+        
         HandleAcceleration();
         HandleSteering();
         HandleReset();
@@ -129,6 +133,8 @@ public class CarBot : CarController
         if (levelManager.player)
         {
             float dist = levelManager.player.GetPlayerDistance() - totalDistance;
+
+            dist *= dist < 0f ? fallAheadAdjustment : fallBehindAdjustment;
             
             car.accelInput += dist / 200f;
             car.accelInput = Mathf.Clamp(car.accelInput, 0.4f, 1.5f);
@@ -175,7 +181,7 @@ public class CarBot : CarController
             if (Mathf.Abs(forecastAngle) > 20f && car.carSpeed > 60f) car.accelInput = -1f;
             if (Mathf.Abs(forecastAngle) > 30f && car.carSpeed > 50f) car.accelInput = -1f;
             if (Mathf.Abs(forecastAngle) > 40f && car.carSpeed > 40f) car.accelInput = -1f;
-            if (Mathf.Abs(forecastAngle) > 50f && car.carSpeed > 30f) car.accelInput = -1f;
+            //if (Mathf.Abs(forecastAngle) > 50f && car.carSpeed > 30f) car.accelInput = -1f;
         }
         
         if (car.carSpeed > speedLimit) car.accelInput = -1f;
@@ -231,6 +237,9 @@ public class CarBot : CarController
         {
             float dist = levelManager.player.GetPlayerDistance() - totalDistance;
             if (dist < 0f) dist = 0f;
+
+            dist *= fallBehindAdjustment;
+            
             reaction *= dist + 1f;
         }
         
@@ -258,8 +267,10 @@ public class CarBot : CarController
         steering += ProcessSteeringRay(rayLeft, maxDistance, minDistance , maxDistance, 0.1f, _carLayer);
         steering += ProcessSteeringRay(rayForwardRight, maxDistance, minDistance, maxDistance, -0.1f, _carLayer);
         steering += ProcessSteeringRay(rayForwardLeft, maxDistance, minDistance , maxDistance, 0.1f, _carLayer);
+
+        float t = Mathf.Clamp01((retract ? 0.7f : 0.5f) * reaction);
         
-        car.steering = Mathf.Lerp(car.steering, steering, (retract ? 0.7f : 0.5f) * reaction);
+        car.steering = Mathf.Lerp(car.steering, steering, t);
     }
 
     private float ProcessSteeringRay(Ray ray, float dist, float minDist, float maxDist, float ratio, int layer)
@@ -346,6 +357,6 @@ public class CarBot : CarController
         _isActive = true;
         _launchTime = Time.time + 3f;
         
-        FindObjectOfType<Minimap>().AddBotMarker(transform);
+        FindFirstObjectByType<Minimap>().AddBotMarker(transform);
     }
 }

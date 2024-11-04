@@ -390,6 +390,7 @@ public class Car : MonoBehaviour
             float surfaceGrip = wheel.surfaceLayer switch
             {
                 7 => _trackGrip,
+                10 => _trackGrip,
                 _ => _otherGrip
             };
 
@@ -405,7 +406,7 @@ public class Car : MonoBehaviour
             if (applyTorque) _torqueWheelContact = true;
             wheelContact = true;
 
-            wheel.isContactingTrack = wheelHit.transform.gameObject.layer == 7;
+            wheel.isContactingTrack = wheelHit.transform.gameObject.layer is 7 or 10;
             
             // Suspension
             

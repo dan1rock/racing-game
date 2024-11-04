@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         carColorId = menuManager.selectedCarColorId;
         raceMode = menuManager.selectedRaceMode;
         difficulty = menuManager.selectedDifficulty;
+        bots = menuManager.selectedBotCount;
 
         car = raceMode switch
         {
@@ -131,6 +132,9 @@ public class GameManager : MonoBehaviour
             carColorId = playerData.menuSelectedCarColorId;
             raceMode = playerData.menuSelectedRaceMode;
             difficulty = playerData.menuSelectedDifficulty;
+            bots = playerData.menuSelectedBotCount;
+
+            if (bots <= 0) bots = 4;
         }
         catch (Exception e)
         {

@@ -77,6 +77,8 @@ public class LevelManager : MonoBehaviour
     private int _activeCar = 0;
     public int currentLap = 1;
 
+    public float playerDistanceLimit;
+    
     public bool wrongDirection = false;
     public bool wrongDirectionActive = false;
     public bool resetCar = false;
@@ -88,6 +90,7 @@ public class LevelManager : MonoBehaviour
 
     public event Action OnLapFinish;
     public event Action OnStageFinish;
+    public event Action OnCheckpoint;
 
     private AudioSource _audioSource;
     private Controls _controls;
@@ -317,11 +320,15 @@ public class LevelManager : MonoBehaviour
         resetCar = state;
     }
 
-    public void OnCheckpoint(CheckPoint checkpoint)
+    public void CheckpointReached(CheckPoint checkpoint)
     {
         lastCheckPoint = checkpoint;
         _audioSource.pitch = Random.Range(1.1f, 1.2f);
         _audioSource.Play();
+        
+        if (checkpoint.isStart) LapFinished();
+        
+        OnCheckpoint?.Invoke();
     }
 
     public void LapFinished()

@@ -13,6 +13,8 @@ public class CarController : MonoBehaviour
 
     public int currentPosition;
 
+    protected bool isPlayer;
+
     protected RaceManager raceManager;
     protected LevelManager levelManager;
     protected RacingLine racingLine;
@@ -51,6 +53,11 @@ public class CarController : MonoBehaviour
         
         float dist = (flatPos - flatNode).magnitude;
         totalDistance += dist;
+
+        if (isPlayer)
+        {
+            totalDistance = Mathf.Min(totalDistance, racingLine.playerDistanceLimit);
+        }
     }
     
     protected int ForecastRacingNode(int forecast)

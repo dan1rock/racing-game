@@ -13,6 +13,7 @@ public class RacingLine : MonoBehaviour
     public int startNodeId;
 
     public float totalDistance;
+    public float playerDistanceLimit = 50f;
 
     private LevelManager _levelManager;
 

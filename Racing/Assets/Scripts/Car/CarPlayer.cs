@@ -12,6 +12,8 @@ public class CarPlayer : CarController
         _controls = Controls.Get();
 
         levelManager.player = this;
+
+        isPlayer = true;
     }
 
     private void Start()
@@ -121,6 +123,11 @@ public class CarPlayer : CarController
             
             currentNodeId = next;
         }
+    }
+
+    public float GetPlayerDistance()
+    {
+        return Mathf.Min(totalDistance, racingLine.playerDistanceLimit);
     }
 
     private void StartCar()

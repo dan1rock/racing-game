@@ -27,6 +27,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private TMP_Text weatherName;
     [SerializeField] private TMP_Text dayTimeName;
     [SerializeField] private TMP_Text lapsName;
+    [SerializeField] private TMP_Text botCountName;
 
     [Header("Car Selection")] 
     [SerializeField] private GameObject carSelection;
@@ -39,6 +40,7 @@ public class MenuManager : MonoBehaviour
     
     public int selectedStage;
     public int selectedLaps;
+    public int selectedBotCount;
     public bool reverseToggled;
     public int selectedCarId;
     public int selectedCarColorId;
@@ -59,6 +61,7 @@ public class MenuManager : MonoBehaviour
         selectedCarColorId = GameManager.Get().carColorId;
         selectedStage = GameManager.Get().stageId;
         selectedLaps = GameManager.Get().laps;
+        selectedBotCount = GameManager.Get().bots;
         reverseToggled = GameManager.Get().stageReverse;
         selectedDayTime = GameManager.Get().dayTime;
         selectedWeather = GameManager.Get().weather;
@@ -81,6 +84,7 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedWeather();
         UpdateSelectedLaps();
         UpdateSelectedDifficulty();
+        UpdateSelectedBots();
     }
 
     public void SetWeather(int id)
@@ -195,6 +199,16 @@ public class MenuManager : MonoBehaviour
 
         UpdateSelectedLaps();
     }
+    
+    public void ScrollBotCount(bool right)
+    {
+        selectedBotCount += right ? 1 : -1;
+        
+        if (selectedBotCount > 20) selectedBotCount = 1;
+        if (selectedBotCount < 1) selectedBotCount = 20;
+
+        UpdateSelectedBots();
+    }
 
     private void SpawnSelectedCar()
     {
@@ -242,6 +256,11 @@ public class MenuManager : MonoBehaviour
     private void UpdateSelectedLaps()
     {
         lapsName.text = selectedLaps.ToString();
+    }
+
+    private void UpdateSelectedBots()
+    {
+        botCountName.text = selectedBotCount.ToString();
     }
 
     private void SetView(CinemachineVirtualCamera targetCamera)

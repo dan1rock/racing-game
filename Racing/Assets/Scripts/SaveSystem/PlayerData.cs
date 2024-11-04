@@ -11,6 +11,7 @@ public class PlayerData
     public int menuSelectedCarColorId;
     public RaceMode menuSelectedRaceMode;
     public Difficulty menuSelectedDifficulty;
+    public int menuSelectedBotCount;
 
     public PlayerData(GameManager player)
     {
@@ -24,5 +25,6 @@ public class PlayerData
         menuSelectedCarColorId = player.carColorId;
         menuSelectedRaceMode = player.raceMode;
         menuSelectedDifficulty = player.difficulty;
+        menuSelectedBotCount = player.bots;
     }
 }

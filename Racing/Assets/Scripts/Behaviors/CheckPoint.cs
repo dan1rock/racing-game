@@ -135,8 +135,7 @@ public class CheckPoint : MonoBehaviour
         {
             if (_levelManager.wrongDirectionActive) _levelManager.WrongDirection(false);
             
-            _levelManager.OnCheckpoint(this);
-            if (isStart) _levelManager.LapFinished();
+            _levelManager.CheckpointReached(this);
             Activate(false);
             
             GetNext().Activate(true);
@@ -147,7 +146,7 @@ public class CheckPoint : MonoBehaviour
     {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         Vector3 newSize = boxCollider.size;
-        newSize.x = wideness;
+        newSize.x = wideness + 5f;
         boxCollider.size = newSize;
 
         UpdateBar(bar1, wideness * 0.5f);

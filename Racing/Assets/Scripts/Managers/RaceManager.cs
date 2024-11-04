@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +26,7 @@ public class RaceManager : MonoBehaviour
     public List<RectTransform> leaderboardPositions = new();
     
     private LevelManager _levelManager;
+    private RacingLine _racingLine;
     private Coroutine _updatePositionsCoroutine;
 
     private void Awake()
@@ -39,6 +39,9 @@ public class RaceManager : MonoBehaviour
         {
             _levelManager.OnLapFinish += OnLapFinish;
             _levelManager.OnStageFinish += OnStageFinish;
+            _levelManager.OnCheckpoint += RecalculatePlayerDistanceLimit;
+
+            _racingLine = FindFirstObjectByType<RacingLine>();
         }
     }
 
@@ -129,6 +132,18 @@ public class RaceManager : MonoBehaviour
         summaryPosition.text = $"{_levelManager.player.currentPosition}{ending}";
         
         raceEndMenu.SetActive(true);
+    }
+
+    private void RecalculatePlayerDistanceLimit()
+    {
+        float distance = _racingLine.totalDistance * (_levelManager.currentLap - 1);
+
+        int checkpointNode = _racingLine.GetNearestNodeID(_levelManager.lastCheckPoint.GetComponent<CheckPoint>().GetNext().transform.position);
+        checkpointNode = _racingLine.ForecastRacingNode(checkpointNode, -1);
+
+        distance += _racingLine.CalculateDistanceBetweenNodes(_racingLine.startNodeId, checkpointNode);
+
+        _racingLine.playerDistanceLimit = distance + 50f;
     }
 
     private CarBot SpawnBot(Vector3 pos, Quaternion rot, float baseSpeed, float steeringReaction, string name)

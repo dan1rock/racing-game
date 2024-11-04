@@ -51,16 +51,12 @@ public class CarBot : CarController
     private void FixedUpdate()
     {
         if (!_isActive) return;
-
-        _selfCollider.enabled = false;
         
         HandleRacingLine();
         CalculateTotalDistance();
         HandleAcceleration();
         HandleSteering();
         HandleReset();
-
-        _selfCollider.enabled = true;
 
         if (currentLap > levelManager.laps && !_stopCar)
         {
@@ -132,7 +128,7 @@ public class CarBot : CarController
 
         if (levelManager.player)
         {
-            float dist = levelManager.player.totalDistance - totalDistance;
+            float dist = levelManager.player.GetPlayerDistance() - totalDistance;
             
             car.accelInput += dist / 200f;
             car.accelInput = Mathf.Clamp(car.accelInput, 0.4f, 1.5f);
@@ -233,7 +229,7 @@ public class CarBot : CarController
 
         if (levelManager.player)
         {
-            float dist = levelManager.player.totalDistance - totalDistance;
+            float dist = levelManager.player.GetPlayerDistance() - totalDistance;
             if (dist < 0f) dist = 0f;
             reaction *= dist + 1f;
         }
@@ -273,6 +269,7 @@ public class CarBot : CarController
         
         if (hit)
         {
+            if (raycastHit.collider == _selfCollider) return 0f;
             return (1f - GetInterpolatedValue(raycastHit.distance, minDist, maxDist)) * ratio;
         }
 

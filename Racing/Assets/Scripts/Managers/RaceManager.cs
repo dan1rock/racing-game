@@ -167,7 +167,7 @@ public class RaceManager : MonoBehaviour
 
     private void RecalculatePlayerDistanceLimit()
     {
-        float distance = _racingLine.totalDistance * (_levelManager.currentLap - 1);
+        float distance = _racingLine.lapDistance * (_levelManager.currentLap - 1);
 
         int checkpointNode = _racingLine.GetNearestNodeID(_levelManager.lastCheckPoint.GetComponent<CheckPoint>().GetNext().transform.position);
         checkpointNode = _racingLine.ForecastRacingNode(checkpointNode, -1);

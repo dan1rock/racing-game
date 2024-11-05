@@ -39,7 +39,7 @@ public class CarController : MonoBehaviour
 
     protected void CalculateTotalDistance()
     {
-        totalDistance = (currentLap - 1) * racingLine.totalDistance;
+        totalDistance = (currentLap - 1) * racingLine.lapDistance;
 
         if (ForecastRacingNode(-1) != racingLine.startNodeId)
         {
@@ -58,6 +58,8 @@ public class CarController : MonoBehaviour
         {
             totalDistance = Mathf.Min(totalDistance, racingLine.playerDistanceLimit);
         }
+
+        totalDistance = Mathf.Min(totalDistance, racingLine.totalDistance);
     }
     
     protected int ForecastRacingNode(int forecast)

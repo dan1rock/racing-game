@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RacingLine : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class RacingLine : MonoBehaviour
 
     public int startNodeId;
 
+    public float lapDistance;
     public float totalDistance;
     public float playerDistanceLimit = 50f;
 
@@ -34,7 +36,8 @@ public class RacingLine : MonoBehaviour
             .ToList();
         
         CreatePerfectRacingLine(racingLineSegments);
-        totalDistance = CalculateRacingLineDistance();
+        lapDistance = CalculateRacingLineDistance();
+        totalDistance = lapDistance * _levelManager.laps;
 
         Transform start = GameObject.FindGameObjectWithTag("Finish").transform;
         startNodeId = GetNearestNodeID(start.position);

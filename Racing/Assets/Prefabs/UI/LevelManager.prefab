@@ -321,6 +321,8 @@ MonoBehaviour:
   leaderboardPos: {fileID: 8175077144980922486}
   leaderboardDistance: {fileID: 8241700869796035491}
   leaderboardName: {fileID: 5673985436136871969}
+  playerNameCanvas: {fileID: 5033178537330016156, guid: 768631094f566594081949946e8b51dc,
+    type: 3}
   carControllers: []
   leaderboardPositions: []
   leaderboardDistances: []

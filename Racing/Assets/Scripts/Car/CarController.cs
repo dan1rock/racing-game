@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    public string name;
+    public string playerName;
     
     public int currentNodeId;
     public int currentLap = 0;

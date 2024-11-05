@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class CarBot : CarController
@@ -18,6 +19,7 @@ public class CarBot : CarController
     private LayerMask _carLayer = 1 << 6;
 
     private Collider _selfCollider;
+    private TMP_Text _selfName;
     
     private int _currentNodeTargetId;
     private Vector3 _currentNodeMarker;
@@ -33,6 +35,12 @@ public class CarBot : CarController
         _selfCollider = GetComponentInChildren<Collider>();
 
         car.isBot = true;
+
+        GameObject o = Instantiate(raceManager.playerNameCanvas, transform.position, Quaternion.identity);
+        o.transform.parent = transform;
+
+        _selfName = o.GetComponentInChildren<TMP_Text>();
+        _selfName.fontSize = 50;
     }
 
     private void Start()
@@ -53,6 +61,8 @@ public class CarBot : CarController
 
     private void FixedUpdate()
     {
+        _selfName.text = currentPosition.ToString();
+        
         HandleRacingLine();
         CalculateTotalDistance();
         

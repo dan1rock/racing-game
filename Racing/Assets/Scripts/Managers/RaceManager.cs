@@ -23,6 +23,8 @@ public class RaceManager : MonoBehaviour
     [SerializeField] private GameObject leaderboardDistance;
     [SerializeField] public GameObject leaderboardName;
 
+    [SerializeField] public GameObject playerNameCanvas;
+
     private bool _finished = false;
     
     public List<CarController> carControllers = new();
@@ -199,7 +201,7 @@ public class RaceManager : MonoBehaviour
             carBot = bot.AddComponent<CarBot>();
             carBot.maxAcceleration = baseSpeed;
             carBot.steeringReaction = steeringReaction;
-            carBot.name = name;
+            carBot.playerName = name;
             carBot.fallBehindAdjustment = difficultyFallBehindAdjustment[(int)_levelManager.difficulty];
             carBot.fallAheadAdjustment = difficultyFallAheadAdjustment[(int)_levelManager.difficulty];
             

@@ -168,6 +168,7 @@ MonoBehaviour:
   wrongDirectionSign: {fileID: 8395451499988830251}
   directionArrow: {fileID: 4471130943950322783}
   resetCarUI: {fileID: 8079365011860223830}
+  challengeResults: {fileID: 8091171657217482358}
   activeCarMarker: {fileID: 3382913086122023323}
   cameraTarget: {fileID: 3752979577396554047}
   dayTimes: 070000000d0000001200000002000000
@@ -175,6 +176,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
   - {fileID: 11400000, guid: 4ef5a87214dcf4abdb41a77f5d5a9716, type: 2}
   - {fileID: 11400000, guid: ac3bcaecae4264ceb9a03f629d3b52d0, type: 2}
+  starFilled: {fileID: 21300000, guid: 2e5cfd1f103177147bbea9fd642b74be, type: 3}
   nightMode: 0
   currentLap: 1
   playerDistanceLimit: 0
@@ -913,6 +915,12 @@ MonoBehaviour:
 --- !u!1 &8079365011860223830 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6349222747335500401, guid: a243a5871f1f22c4d923847db2f67edd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883240403428365607}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8091171657217482358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6362124052618726225, guid: a243a5871f1f22c4d923847db2f67edd,
     type: 3}
   m_PrefabInstance: {fileID: 2883240403428365607}
   m_PrefabAsset: {fileID: 0}

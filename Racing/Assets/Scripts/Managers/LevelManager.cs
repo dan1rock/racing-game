@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public enum Weather
@@ -62,10 +64,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject wrongDirectionSign;
     [SerializeField] private GameObject directionArrow;
     [SerializeField] private GameObject resetCarUI;
+    [SerializeField] private GameObject challengeResults;
+    
     [SerializeField] private Transform activeCarMarker;
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private List<int> dayTimes;
     [SerializeField] private List<WeatherProfile> weathers;
+    [SerializeField] private Sprite starFilled;
 
     [SerializeField] public bool nightMode = false;
 
@@ -150,8 +155,6 @@ public class LevelManager : MonoBehaviour
         
         UpdateWeather();
         StartCoroutine(UpdateReflectionProbe(0.1f));
-
-        if (GameManager.Get().challengeManager) OnStageFinish += CheckChallengeCompletion;
     }
 
     private void Start()
@@ -369,20 +372,27 @@ public class LevelManager : MonoBehaviour
         WrongDirection(false);
 
         _playerFinished = true;
+        
+        if (GameManager.Get().challengeManager) CheckChallengeCompletion();
     }
 
     private void CheckChallengeCompletion()
     {
-        ChallengeRequirement challenge = GameManager.Get().challengeManager.challenge1;
-        string result = challenge.GetCompletionResult() ? "fulfilled" : "failed";
-        Debug.Log($"{challenge.caption} {result}");
+        challengeResults.SetActive(true);
         
-        challenge = GameManager.Get().challengeManager.challenge2;
-        result = challenge.GetCompletionResult() ? "fulfilled" : "failed";
-        Debug.Log($"{challenge.caption} {result}");
-        
-        challenge = GameManager.Get().challengeManager.challenge3;
-        result = challenge.GetCompletionResult() ? "fulfilled" : "failed";
-        Debug.Log($"{challenge.caption} {result}");
+        ProcessChallenge(GameManager.Get().challengeManager.challenge1, 2);
+        ProcessChallenge(GameManager.Get().challengeManager.challenge2, 1);
+        ProcessChallenge(GameManager.Get().challengeManager.challenge3, 0);
+    }
+
+    private void ProcessChallenge(ChallengeRequirement requirement, int id)
+    {
+        Transform challenge = challengeResults.transform.GetChild(id);
+        challenge.GetComponentInChildren<TMP_Text>().text = requirement.caption;
+
+        if (requirement.GetCompletionResult())
+        {
+            challenge.GetComponentInChildren<Image>().sprite = starFilled;
+        }
     }
 }

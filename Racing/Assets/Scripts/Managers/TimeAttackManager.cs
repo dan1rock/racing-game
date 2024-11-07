@@ -79,6 +79,11 @@ public class TimeAttackManager : MonoBehaviour
         timeAttackEndMenu.SetActive(true);
         endOverallTimeText.text = overallTimeText.text;
         endBestLapTimeText.text = bestLapTimeText.text;
+        
+        if (GameManager.Get().challengeManager)
+        {
+            endBestLapTimeText.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     private string FormatTime(float secs)

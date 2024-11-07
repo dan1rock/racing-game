@@ -210,6 +210,16 @@ public class DriftManager : MonoBehaviour
         driftEndMenu.SetActive(true);
         endOverallScoreText.text = ((int)_overallScore).ToString();
         endBiggestSingleScoreText.text = ((int)_bestSingleScore).ToString();
+
+        if (GameManager.Get().challengeManager)
+        {
+            endBiggestSingleScoreText.transform.parent.gameObject.SetActive(false);
+        }
+    }
+
+    public int GetScore()
+    {
+        return (int)_overallScore;
     }
 
     private IEnumerator DriftFailAnimation()

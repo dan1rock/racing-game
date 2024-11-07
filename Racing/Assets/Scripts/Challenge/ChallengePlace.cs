@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FinishPlaceChallenge : ChallengeRequirement
+public class ChallengePlace : ChallengeRequirement
 {
     [SerializeField] private int targetPlace;
     

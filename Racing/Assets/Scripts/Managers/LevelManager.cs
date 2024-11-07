@@ -150,6 +150,8 @@ public class LevelManager : MonoBehaviour
         
         UpdateWeather();
         StartCoroutine(UpdateReflectionProbe(0.1f));
+
+        if (GameManager.Get().challengeManager) OnStageFinish += CheckChallengeCompletion;
     }
 
     private void Start()
@@ -367,5 +369,20 @@ public class LevelManager : MonoBehaviour
         WrongDirection(false);
 
         _playerFinished = true;
+    }
+
+    private void CheckChallengeCompletion()
+    {
+        ChallengeRequirement challenge = GameManager.Get().challengeManager.challenge1;
+        string result = challenge.GetCompletionResult() ? "fulfilled" : "failed";
+        Debug.Log($"{challenge.caption} {result}");
+        
+        challenge = GameManager.Get().challengeManager.challenge2;
+        result = challenge.GetCompletionResult() ? "fulfilled" : "failed";
+        Debug.Log($"{challenge.caption} {result}");
+        
+        challenge = GameManager.Get().challengeManager.challenge3;
+        result = challenge.GetCompletionResult() ? "fulfilled" : "failed";
+        Debug.Log($"{challenge.caption} {result}");
     }
 }

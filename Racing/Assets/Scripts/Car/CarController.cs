@@ -41,9 +41,11 @@ public class CarController : MonoBehaviour
     {
         totalDistance = (currentLap - 1) * racingLine.lapDistance;
 
-        if (ForecastRacingNode(-1) != racingLine.startNodeId)
+        totalDistance += racingLine.CalculateDistanceBetweenNodes(racingLine.startNodeId, ForecastRacingNode(-2));
+
+        if (ForecastRacingNode(-1) == racingLine.startNodeId)
         {
-            totalDistance += racingLine.CalculateDistanceBetweenNodes(racingLine.startNodeId, ForecastRacingNode(-2));
+            totalDistance -= racingLine.lapDistance;
         }
 
         Vector3 flatNode = racingLine.orderedNodes[ForecastRacingNode(-2)].position;

@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     public Settings settings;
     private AdMobManager _adMobManager;
+    public ChallengeManager challengeManager;
     
     private static GameManager _instance;
     
@@ -103,8 +104,37 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(stageId + 1);
     }
 
+    public void LoadChallenge(ChallengeManager challenge)
+    {
+        dayTime = challenge.dayTime;
+        weather = challenge.weather;
+        stageId = challenge.stageId;
+        laps = challenge.laps;
+        stageReverse = challenge.stageReverse;
+        car = challenge.car;
+
+        carId = driftCars.IndexOf(car);
+        if (carId == -1)
+        {
+            carId = raceCars.IndexOf(car);
+        }
+
+        carColorId = carColors.IndexOf(challenge.carColor);
+        raceMode = challenge.raceMode;
+        difficulty = challenge.difficulty;
+        bots = challenge.bots;
+
+        challengeManager = challenge;
+        DontDestroyOnLoad(challenge.gameObject);
+        
+        SaveSystem.SavePlayer(this);
+        SceneManager.LoadScene(stageId + 1);
+    }
+
     public void LoadMenu()
     {
+        if (challengeManager) Destroy(challengeManager.gameObject);
+        
         gameState = GameState.Menu;
         SaveSystem.SavePlayer(this);
         

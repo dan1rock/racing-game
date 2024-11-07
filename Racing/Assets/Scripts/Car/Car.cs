@@ -393,8 +393,6 @@ public class Car : MonoBehaviour
                 10 => _trackGrip,
                 _ => _otherGrip
             };
-
-            if (!isDriftCar) grip *= surfaceGrip;
             
             bool emitTrail = ((slipAngle > driftTrailTrigger || (isRear && handbrake)) && speed > 1f)
                              || (engineOn && applyTorque && Mathf.Abs(accelInput) > 0.5f && speed < topSpeed * 0.1f)
@@ -500,7 +498,7 @@ public class Car : MonoBehaviour
             Vector3 steeringDir = Vector3.ProjectOnPlane(tire.right, wheelHit.normal);
 
             float steeringVelocity = Vector3.Dot(steeringDir, wheelVelocity);
-            float desiredVelocityChange = -steeringVelocity * grip;
+            float desiredVelocityChange = -steeringVelocity * grip * surfaceGrip;
             float absSteeringVelocity = Mathf.Abs(steeringVelocity);
 
             float absoluteGripVelocity = isRear ? 0.3f : 0.5f;

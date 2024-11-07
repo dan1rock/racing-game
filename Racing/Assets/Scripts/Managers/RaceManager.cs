@@ -160,7 +160,7 @@ public class RaceManager : MonoBehaviour
             _ => "th"
         };
         
-        summaryPosition.text = $"{_levelManager.player.currentPosition}{ending}";
+        summaryPosition.text = $"{_levelManager.player.currentPosition}{ending} / {_levelManager.bots + 1}";
         
         raceEndMenu.SetActive(true);
     }
@@ -184,8 +184,9 @@ public class RaceManager : MonoBehaviour
             origin = pos + Vector3.up * 10f,
             direction = Vector3.down
         };
-        
-        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, (1 << 7) | (1 << 0), QueryTriggerInteraction.Ignore);
+
+        int layerMask = (1 << 7) | (1 << 0) | (1 << 10);
+        bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, layerMask, QueryTriggerInteraction.Ignore);
 
         CarBot carBot = null;
         

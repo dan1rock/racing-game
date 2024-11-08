@@ -12382,7 +12382,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.45275804, z: -0, w: 0.89163345}
+  m_LocalRotation: {x: -0, y: 0.1445748, z: -0, w: 0.9894939}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -19148,7 +19148,7 @@ MonoBehaviour:
   - Sandy Dunes
   audioMixer: {fileID: 24100000, guid: 92e1f831bfa680b4780f42dc5f93fd05, type: 2}
   gameState: 0
-  graphicsQuality: 0
+  graphicsQuality: 1
   dayTime: 0
   weather: 0
   stageId: 0
@@ -19160,7 +19160,7 @@ MonoBehaviour:
   raceMode: 0
   difficulty: 0
   bots: 4
-  masterVolume: 0
+  masterVolume: 0.2
   settings: {fileID: 0}
   challengeManager: {fileID: 0}
 --- !u!4 &993180599
@@ -19285,7 +19285,7 @@ MonoBehaviour:
   dayTime: 0
   weather: 0
   stageId: 0
-  laps: 1
+  laps: 2
   bots: 5
   stageReverse: 0
   car: {fileID: 2958380551315826844, guid: e078e4fbac8bdc44097af6ebb1dad56d, type: 3}
@@ -31486,7 +31486,7 @@ MonoBehaviour:
   dayTime: 0
   weather: 0
   stageId: 0
-  laps: 1
+  laps: 2
   bots: 5
   stageReverse: 0
   car: {fileID: 3100610531351138962, guid: 58f80efbee265a244b67159cab86fb49, type: 3}
@@ -32927,8 +32927,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eff74beda0adac4880e7eb319d3e61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caption: Finish in 30s
-  targetTime: 30
+  caption: Finish in 35s
+  targetTime: 35
 --- !u!1 &1577839984
 GameObject:
   m_ObjectHideFlags: 0
@@ -45152,8 +45152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eff74beda0adac4880e7eb319d3e61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caption: Finish in 50s
-  targetTime: 50
+  caption: Finish in 45s
+  targetTime: 45
 --- !u!1 &2080477750
 GameObject:
   m_ObjectHideFlags: 0

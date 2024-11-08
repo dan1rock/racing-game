@@ -65,12 +65,14 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject directionArrow;
     [SerializeField] private GameObject resetCarUI;
     [SerializeField] private GameObject challengeResults;
+    [SerializeField] private GameObject challengeInformation;
     
     [SerializeField] private Transform activeCarMarker;
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private List<int> dayTimes;
     [SerializeField] private List<WeatherProfile> weathers;
     [SerializeField] private Sprite starFilled;
+    [SerializeField] private Sprite starEmpty;
 
     [SerializeField] public bool nightMode = false;
 
@@ -151,6 +153,11 @@ public class LevelManager : MonoBehaviour
         if (Application.isMobilePlatform)
         {
             mobileUI.SetActive(true);
+        }
+
+        if (GameManager.Get().challengeManager)
+        {
+            StartCoroutine(UpdateChallengeInformation());
         }
         
         UpdateWeather();
@@ -376,9 +383,41 @@ public class LevelManager : MonoBehaviour
         if (GameManager.Get().challengeManager) CheckChallengeCompletion();
     }
 
+    private IEnumerator UpdateChallengeInformation()
+    {
+        challengeInformation.SetActive(true);
+        
+        yield return null;
+        
+        Transform challenge = challengeInformation.transform.GetChild(2);
+        challenge.GetComponentInChildren<TMP_Text>().text = GameManager.Get().challengeManager.challenge1.caption;
+        ChallengeRequirement challenge1 = GameManager.Get().challengeManager.challenge1;
+        Image star1 = challenge.GetComponentInChildren<Image>();
+        
+        challenge = challengeInformation.transform.GetChild(1);
+        challenge.GetComponentInChildren<TMP_Text>().text = GameManager.Get().challengeManager.challenge2.caption;
+        ChallengeRequirement challenge2 = GameManager.Get().challengeManager.challenge2;
+        Image star2 = challenge.GetComponentInChildren<Image>();
+        
+        challenge = challengeInformation.transform.GetChild(0);
+        challenge.GetComponentInChildren<TMP_Text>().text = GameManager.Get().challengeManager.challenge3.caption;
+        ChallengeRequirement challenge3 = GameManager.Get().challengeManager.challenge3;
+        Image star3 = challenge.GetComponentInChildren<Image>();
+        
+        while (!_playerFinished)
+        {
+            star1.sprite = challenge1.GetCompletionResult() ? starFilled : starEmpty;
+            star2.sprite = challenge2.GetCompletionResult() ? starFilled : starEmpty;
+            star3.sprite = challenge3.GetCompletionResult() ? starFilled : starEmpty;
+            
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    
     private void CheckChallengeCompletion()
     {
         challengeResults.SetActive(true);
+        challengeInformation.SetActive(false);
         
         ProcessChallenge(GameManager.Get().challengeManager.challenge1, 2);
         ProcessChallenge(GameManager.Get().challengeManager.challenge2, 1);

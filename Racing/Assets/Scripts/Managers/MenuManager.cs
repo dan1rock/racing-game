@@ -37,6 +37,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera mainView;
     [SerializeField] private CinemachineVirtualCamera carSelectView;
     [SerializeField] private CinemachineVirtualCamera stageSelectView;
+    [SerializeField] private CinemachineVirtualCamera challengesView;
     
     public int selectedStage;
     public int selectedLaps;
@@ -135,6 +136,7 @@ public class MenuManager : MonoBehaviour
             0 => mainView,
             1 => carSelectView,
             2 => stageSelectView,
+            3 => challengesView,
             _ => mainView
         };
 

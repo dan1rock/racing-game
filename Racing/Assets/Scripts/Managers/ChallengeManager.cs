@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ChallengeManager : MonoBehaviour
 {
+    [SerializeField] public int id;
+    
     public DayTime dayTime;
     public Weather weather;
     public int stageId;
@@ -14,24 +18,25 @@ public class ChallengeManager : MonoBehaviour
     public RaceMode raceMode;
     public Difficulty difficulty;
 
-    [SerializeField] private GameObject star1;
-    [SerializeField] private GameObject star2;
-    [SerializeField] private GameObject star3;
-
-    [HideInInspector] public ChallengeRequirement challenge1;
-    [HideInInspector] public ChallengeRequirement challenge2;
-    [HideInInspector] public ChallengeRequirement challenge3;
+    [HideInInspector] public List<ChallengeRequirement> challenges = new();
     
     private void Awake()
     {
-        challenge1 = star1.GetComponent<ChallengeRequirement>();
-        challenge2 = star2.GetComponent<ChallengeRequirement>();
-        challenge3 = star3.GetComponent<ChallengeRequirement>();
+        challenges.Add(GetActiveChallengeRequirement(transform.GetChild(0).gameObject));
+        challenges.Add(GetActiveChallengeRequirement(transform.GetChild(1).gameObject));
+        challenges.Add(GetActiveChallengeRequirement(transform.GetChild(2).gameObject));
     }
 
     [ContextMenu("Start Challenge")]
     public void StartChallenge()
     {
+        transform.parent = null;
         GameManager.Get().LoadChallenge(this);
+    }
+
+    private static ChallengeRequirement GetActiveChallengeRequirement(GameObject obj)
+    {
+        ChallengeRequirement[] requirements = obj.GetComponents<ChallengeRequirement>();
+        return requirements.FirstOrDefault(req => req.enabled);
     }
 }

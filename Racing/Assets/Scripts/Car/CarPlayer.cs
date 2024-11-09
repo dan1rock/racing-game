@@ -14,6 +14,8 @@ public class CarPlayer : CarController
         levelManager.player = this;
 
         isPlayer = true;
+
+        totalDistance = -1f;
     }
 
     private void Start()

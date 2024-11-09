@@ -15,6 +15,8 @@ public class PlayerData
 
     public float masterVolume;
 
+    public int[] challengeData;
+
     public PlayerData(GameManager player)
     {
         menuSelectedQuality = player.graphicsQuality;
@@ -30,5 +32,7 @@ public class PlayerData
         menuSelectedBotCount = player.bots;
 
         masterVolume = player.masterVolume;
+
+        challengeData = player.challengeData;
     }
 }

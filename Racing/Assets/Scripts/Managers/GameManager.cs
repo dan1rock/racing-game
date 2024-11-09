@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
 
     public float masterVolume = 0.2f;
 
+    public int[] challengeData;
+
     public Settings settings;
     private AdMobManager _adMobManager;
     public ChallengeManager challengeManager;
@@ -168,6 +170,9 @@ public class GameManager : MonoBehaviour
 
             masterVolume = playerData.masterVolume;
 
+            challengeData = playerData.challengeData;
+            challengeData ??= new int[1024];
+            
             if (bots <= 0) bots = 4;
         }
         catch (Exception e)

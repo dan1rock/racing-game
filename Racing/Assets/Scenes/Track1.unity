@@ -8712,7 +8712,7 @@ Transform:
   m_GameObject: {fileID: 544163632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -196.8789, y: 9.51754, z: -12.033486}
+  m_LocalPosition: {x: 12.620522, y: 7.6228848, z: 34.1322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10633,7 +10633,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 1.816e-42, y: 2.524355e-29, z: 0, w: 2.03125}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -18395,6 +18395,7 @@ MonoBehaviour:
   - {fileID: 1177635572}
   - {fileID: 1585779627}
   startNodeId: 0
+  lapDistance: 0
   totalDistance: 0
   playerDistanceLimit: 50
 --- !u!1001 &1700940948
@@ -25147,7 +25148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.5360469, z: -0, w: 0.8441882}
+  m_LocalRotation: {x: -0, y: 0.27807948, z: -0, w: 0.96055806}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

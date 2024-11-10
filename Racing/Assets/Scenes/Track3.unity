@@ -7081,7 +7081,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 1080195786684430708}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -52257,6 +52258,7 @@ MonoBehaviour:
   - {fileID: 2048118354}
   - {fileID: 1161956038}
   startNodeId: 0
+  lapDistance: 0
   totalDistance: 0
   playerDistanceLimit: 50
 --- !u!4 &1796343039
@@ -55922,7 +55924,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.87832236, z: -0, w: -0.47806883}
+  m_LocalRotation: {x: -0, y: -0.41900393, z: -0, w: 0.90798444}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -59556,6 +59558,12 @@ Transform:
 --- !u!224 &1080195786684430707 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6368560084777024377, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1080195786684430704}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &1080195786684430708 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6079623613786700417, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
     type: 3}
   m_PrefabInstance: {fileID: 1080195786684430704}
   m_PrefabAsset: {fileID: 0}

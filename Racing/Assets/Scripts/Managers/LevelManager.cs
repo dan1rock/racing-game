@@ -73,6 +73,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<WeatherProfile> weathers;
     [SerializeField] private Sprite starFilled;
     [SerializeField] private Sprite starEmpty;
+    [SerializeField] private GameObject starParticles;
 
     [SerializeField] public bool nightMode = false;
 
@@ -416,12 +417,12 @@ public class LevelManager : MonoBehaviour
         challengeResults.SetActive(true);
         challengeInformation.SetActive(false);
         
-        ProcessChallenge(0);
-        ProcessChallenge(1);
-        ProcessChallenge(2);
+        StartCoroutine(ProcessChallenge(0, 0.5f));
+        StartCoroutine(ProcessChallenge(1, 1f));
+        StartCoroutine(ProcessChallenge(2, 1.5f));
     }
 
-    private void ProcessChallenge(int id)
+    private IEnumerator ProcessChallenge(int id, float starDelay)
     {
         ChallengeManager challengeManager = GameManager.Get().challengeManager;
         ChallengeRequirement requirement = challengeManager.challenges[id];
@@ -431,9 +432,18 @@ public class LevelManager : MonoBehaviour
 
         if (requirement.GetCompletionResult())
         {
-            challenge.GetComponentInChildren<Image>().sprite = starFilled;
             GameManager.Get().challengeData[challengeManager.id] =
                 GameManager.Get().challengeData[challengeManager.id] | (1 << id);
+
+            yield return new WaitForSeconds(starDelay);
+            
+            Image star = challenge.GetComponentInChildren<Image>();
+            star.sprite = starFilled;
+
+            GameObject particles = Instantiate(starParticles, star.transform);
+            particles.transform.localScale /= star.transform.localScale.x;
+            
+            Destroy(particles, 2f);
         }
     }
 }

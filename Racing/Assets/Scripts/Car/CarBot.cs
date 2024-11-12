@@ -52,6 +52,8 @@ public class CarBot : CarController
         if (ForecastRacingNode(-1) == racingLine.startNodeId) currentLap += 1;
         
         if (levelManager.botCar) ActivateBot();
+        
+        FindFirstObjectByType<Minimap>().AddBotMarker(transform);
     }
 
     private void Update()
@@ -366,7 +368,5 @@ public class CarBot : CarController
         car.StartCoroutine(car.StartEngine());
         _isActive = true;
         _launchTime = Time.time + 3f;
-        
-        FindFirstObjectByType<Minimap>().AddBotMarker(transform);
     }
 }

@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
 
         gameState = GameState.Stage;
 
-        SaveSystem.SavePlayer(this);
+        SavePlayer();
         SceneManager.LoadScene(stageId + 1);
     }
 
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
         challengeManager = challenge;
         DontDestroyOnLoad(challenge.gameObject);
         
-        SaveSystem.SavePlayer(this);
+        SavePlayer();
         SceneManager.LoadScene(stageId + 1);
     }
 
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
         if (challengeManager) Destroy(challengeManager.gameObject);
         
         gameState = GameState.Menu;
-        SaveSystem.SavePlayer(this);
+        SavePlayer();
         
         _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(0));
     }
@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour
     public void ReloadStage()
     {
         SceneManager.LoadScene(stageId + 1);
+    }
+
+    public void SavePlayer()
+    {
+        SaveSystem.SavePlayer(this);
     }
 
     private void LoadSave()
@@ -191,6 +196,6 @@ public class GameManager : MonoBehaviour
         graphicsQuality = qualityLevel;
         settings.graphicsPreset = qualityLevel;
         settings.ApplySettings();
-        SaveSystem.SavePlayer(this);
+        SavePlayer();
     }
 }

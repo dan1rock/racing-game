@@ -39,4 +39,14 @@ public class UISettings : MonoBehaviour
     {
         GameManager.Get().SetGraphicsQuality((QualityLevel)index);
     }
+
+    public void SetMasterVolume(float value)
+    {
+        Settings.Get().SetMasterVolume(value);
+    }
+
+    public void OnSettingsClose()
+    {
+        GameManager.Get().SavePlayer();
+    }
 }

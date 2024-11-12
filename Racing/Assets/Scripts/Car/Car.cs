@@ -675,9 +675,9 @@ public class Car : MonoBehaviour
         
         if (engineOn && (_rb.linearVelocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
         {
-            stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirectionActive ? 1.5f : 1f);
+            stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirection ? 1.5f : 1f);
 
-            float targetTime = _torqueWheelContact ? 5f : 2f;
+            float targetTime = 2f;
             
             if (stuckTimer > targetTime)
             {

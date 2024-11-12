@@ -286,8 +286,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficultyMaxThrottle:
+  - 0.7
   - 0.8
-  - 0.85
   - 0.9
   - 0.95
   - 1
@@ -316,9 +316,9 @@ MonoBehaviour:
   - 0.75
   - 1
   difficultyFallAheadAdjustment:
+  - 2
+  - 1.5
   - 1
-  - 0.9
-  - 0.7
   - 0.5
   - 0
   raceEndMenu: {fileID: 3107896768927092955}

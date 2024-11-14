@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -12,12 +13,14 @@ public class PhotoModeManager : MonoBehaviour
     public float rollSpeed = 2f;
 
     private Canvas[] _allCanvas;
-    
+
+    private LevelManager _levelManager;
     private CinemachineBrain _cinemachineBrain;
     private CinemachineBlendDefinition _defaultBlend;
 
     private void Awake()
     {
+        _levelManager = FindFirstObjectByType<LevelManager>();
         _cinemachineBrain = FindFirstObjectByType<CinemachineBrain>();
         _defaultBlend = _cinemachineBrain.DefaultBlend;
 
@@ -46,10 +49,12 @@ public class PhotoModeManager : MonoBehaviour
         }
         else
         {
-            ExitPhotoMode();
+            StartCoroutine(ExitPhotoMode());
         }
     }
 
+    private CursorLockMode _previousCursorState;
+    private bool _previousCursorVisible;
     private void EnterPhotoMode()
     {
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition
@@ -57,10 +62,17 @@ public class PhotoModeManager : MonoBehaviour
             Style = CinemachineBlendDefinition.Styles.Cut,
             Time = 0f
         };
+
+        transform.position = Camera.main.transform.position;
+        transform.rotation = Camera.main.transform.rotation;
         
         Time.timeScale = 0f;
         photoModeCamera.Priority = 100;
         isPhotoModeActive = true;
+
+        _previousCursorState = Cursor.lockState;
+        _previousCursorVisible = Cursor.visible;
+        
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Debug.Log("Photo mode activated.");
@@ -69,23 +81,34 @@ public class PhotoModeManager : MonoBehaviour
         {
             canvas.enabled = false;
         }
+
+        if (_levelManager)
+        {
+            _levelManager.lastCheckPoint.GetComponent<CheckPoint>().GetNext().gameObject.SetActive(false);
+        }
     }
 
-    private void ExitPhotoMode()
+    private IEnumerator ExitPhotoMode()
     {
-        _cinemachineBrain.DefaultBlend = _defaultBlend;
-        
         Time.timeScale = 1f;
         photoModeCamera.Priority = 0;
         isPhotoModeActive = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = _previousCursorState;
+        Cursor.visible = _previousCursorVisible;
         Debug.Log("Photo mode deactivated.");
         
         foreach (Canvas canvas in _allCanvas)
         {
             canvas.enabled = true;
         }
+        
+        if (_levelManager)
+        {
+            _levelManager.lastCheckPoint.GetComponent<CheckPoint>().GetNext().gameObject.SetActive(true);
+        }
+
+        yield return null;
+        _cinemachineBrain.DefaultBlend = _defaultBlend;
     }
 
     private float sprintModifier = 2f;

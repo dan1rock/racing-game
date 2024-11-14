@@ -137,7 +137,7 @@ public class RaceManager : MonoBehaviour
 
         leaderboardName.GetComponent<RectTransform>().anchoredPosition += leaderboardOffset;
 
-        if (GameManager.Get().challengeManager)
+        if (GameManager.Get()?.challengeManager)
         {
             leaderboardPos.transform.parent.gameObject.SetActive(false);
         }

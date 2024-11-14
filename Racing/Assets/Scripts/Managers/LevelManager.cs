@@ -381,7 +381,7 @@ public class LevelManager : MonoBehaviour
 
         _playerFinished = true;
         
-        if (GameManager.Get().challengeManager) CheckChallengeCompletion();
+        if (GameManager.Get()?.challengeManager) CheckChallengeCompletion();
     }
 
     private IEnumerator UpdateChallengeInformation()

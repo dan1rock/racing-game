@@ -129,9 +129,9 @@ public class LevelManager : MonoBehaviour
         }
         
         _controls = Controls.Get();
-        _cozyWeather = FindObjectOfType<CozyWeather>();
+        _cozyWeather = FindFirstObjectByType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
-        _reflectionProbe = FindObjectOfType<ReflectionProbe>();
+        _reflectionProbe = FindFirstObjectByType<ReflectionProbe>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
         if (dayTime == DayTime.Night) nightMode = true;
@@ -149,6 +149,8 @@ public class LevelManager : MonoBehaviour
             case RaceMode.Race:
                 raceUI.SetActive(true);
                 break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         if (Application.isMobilePlatform)
@@ -173,7 +175,7 @@ public class LevelManager : MonoBehaviour
             direction = Vector3.down
         };
         
-        Physics.Raycast(ray, out RaycastHit raycastHit,  100f, (1 << 7) | (1 << 0), QueryTriggerInteraction.Ignore);
+        Physics.Raycast(ray, out RaycastHit raycastHit,  100f, (1 << 7) | (1 << 0) | (1 << 10), QueryTriggerInteraction.Ignore);
         
         GameObject playerCar = Instantiate(pickedCar, raycastHit.point, _startPosition.rotation);
         _cars.Add(playerCar.GetComponent<Car>());
@@ -211,10 +213,17 @@ public class LevelManager : MonoBehaviour
         Vector3 offset = Vector3.zero;
 
         Vector3 lineDirection = startPos.forward;
-        
+
+        int lastNearestNode = -1;
         for (int i = 0; i < bots; i++)
         {
             int nearestNode = racingLine.GetNearestNodeID(startPos.position + offset);
+            int diff = Mathf.Abs(lastNearestNode - nearestNode);
+            if (diff > racingLine.orderedNodes.Count / 2) diff -= racingLine.orderedNodes.Count;
+            if (lastNearestNode != -1 && Mathf.Abs(diff) > 10)
+            {
+                nearestNode = lastNearestNode;
+            }
             int prevNode = racingLine.ForecastRacingNode(nearestNode, -1);
             lineDirection = racingLine.orderedNodes[prevNode].position -
                                     racingLine.orderedNodes[nearestNode].position;
@@ -224,6 +233,8 @@ public class LevelManager : MonoBehaviour
             offset += startPos.right * 4f * sign;
             offset += lineDirection.normalized * 6f;
             sign = -sign;
+
+            lastNearestNode = nearestNode;
         }
         
         startPos.position += offset;

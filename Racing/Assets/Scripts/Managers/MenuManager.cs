@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -38,6 +39,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera carSelectView;
     [SerializeField] private CinemachineVirtualCamera stageSelectView;
     [SerializeField] private CinemachineVirtualCamera challengesView;
+
+    [Header("Challenge Selection")] 
+    [SerializeField] private TMP_Text totalStarsText;
     
     public int selectedStage;
     public int selectedLaps;
@@ -79,6 +83,8 @@ public class MenuManager : MonoBehaviour
         
         SpawnSelectedCar();
         
+        SetTotalStars();
+        
         UpdateSelectedMap();
         UpdateSelectedMode();
         UpdateSelectedTime();
@@ -86,6 +92,14 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedLaps();
         UpdateSelectedDifficulty();
         UpdateSelectedBots();
+    }
+
+    private void SetTotalStars()
+    {
+        int allStars = FindObjectsByType<ChallengeManager>(FindObjectsSortMode.None).Sum(challenge => challenge.GetMaxStars());
+        int claimedStars = GameManager.Get().CountTotalStars();
+
+        totalStarsText.text = $"{claimedStars} / {allStars}";
     }
 
     public void SetWeather(int id)

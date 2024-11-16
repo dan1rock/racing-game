@@ -1,4 +1,6 @@
-using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -38,5 +40,41 @@ public class ChallengeManager : MonoBehaviour
     {
         ChallengeRequirement[] requirements = obj.GetComponents<ChallengeRequirement>();
         return requirements.FirstOrDefault(req => req.enabled);
+    }
+    
+    public int GetMaxStars()
+    {
+        return transform.childCount;
+    }
+
+    public void SetVacantId()
+    {
+        HashSet<int> ids = new();
+
+        List<ChallengeManager> managers = new(FindObjectsByType<ChallengeManager>(FindObjectsSortMode.None));
+        managers.Remove(this);
+        
+        foreach (ChallengeManager challengeManager in managers)
+        {
+            ids.Add(challengeManager.id);
+        }
+
+        int vacantId = -1;
+        
+        for (int i = 0; i < 1024; i++)
+        {
+            if (ids.Contains(i)) continue;
+
+            vacantId = i;
+            break;
+        }
+
+        if (vacantId == -1) return;
+        
+        id = vacantId;
+        
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
+#endif
     }
 }

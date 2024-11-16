@@ -198,4 +198,22 @@ public class GameManager : MonoBehaviour
         settings.ApplySettings();
         SavePlayer();
     }
+
+    public int CountTotalStars()
+    {
+        int count = 0;
+        
+        foreach (int challenge in challengeData)
+        {
+            for (int j = 0; j < 32; j++)
+            {
+                if ((challenge & (1 << j)) != 0)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }

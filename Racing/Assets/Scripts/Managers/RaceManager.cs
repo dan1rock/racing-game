@@ -182,6 +182,7 @@ public class RaceManager : MonoBehaviour
         _racingLine.playerDistanceLimit = distance + 50f;
     }
 
+    private int _botsN = 0;
     private CarBot SpawnBot(Vector3 pos, Quaternion rot, float baseSpeed, float steeringReaction, string name)
     {
         Ray ray = new()
@@ -194,6 +195,15 @@ public class RaceManager : MonoBehaviour
         bool hit = Physics.Raycast(ray, out RaycastHit raycastHit,  100f, layerMask, QueryTriggerInteraction.Ignore);
 
         CarBot carBot = null;
+
+        GameObject carModel = _levelManager.pickedCar;
+        
+        if (GameManager.Get()?.challengeManager)
+        {
+            List<GameObject> cars = GameManager.Get().challengeManager.botCars;
+            int id = _botsN == 0 ? 0 : Random.Range(0, cars.Count);
+            carModel = cars[id];
+        }
         
         if (hit)
         {
@@ -203,7 +213,7 @@ public class RaceManager : MonoBehaviour
 
             //int carId = Random.Range(0, GameManager.Get().raceCars.Count);
             
-            GameObject bot = Instantiate(_levelManager.pickedCar, raycastHit.point, Quaternion.Euler(rotation));
+            GameObject bot = Instantiate(carModel, raycastHit.point, Quaternion.Euler(rotation));
             carBot = bot.AddComponent<CarBot>();
             carBot.maxAcceleration = baseSpeed;
             carBot.steeringReaction = steeringReaction;
@@ -217,7 +227,8 @@ public class RaceManager : MonoBehaviour
                 bot.GetComponent<Car>().SetColor(GameManager.Get().carColors[color]);
             }
         }
-        
+
+        _botsN++;
         return carBot;
     }
     

@@ -20,10 +20,14 @@ public class ChallengeManager : MonoBehaviour
     public RaceMode raceMode;
     public Difficulty difficulty;
 
+    public List<GameObject> botCars;
+
     [HideInInspector] public List<ChallengeRequirement> challenges = new();
     
     private void Awake()
     {
+        if (botCars.Count == 0) botCars.Add(car);
+        
         challenges.Add(GetActiveChallengeRequirement(transform.GetChild(0).gameObject));
         challenges.Add(GetActiveChallengeRequirement(transform.GetChild(1).gameObject));
         challenges.Add(GetActiveChallengeRequirement(transform.GetChild(2).gameObject));

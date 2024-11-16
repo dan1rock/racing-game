@@ -23,8 +23,6 @@ public class PhotoModeManager : MonoBehaviour
         _levelManager = FindFirstObjectByType<LevelManager>();
         _cinemachineBrain = FindFirstObjectByType<CinemachineBrain>();
         _defaultBlend = _cinemachineBrain.DefaultBlend;
-
-        _allCanvas = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
     }
 
     private void Update()
@@ -77,6 +75,7 @@ public class PhotoModeManager : MonoBehaviour
         Cursor.visible = true;
         Debug.Log("Photo mode activated.");
         
+        _allCanvas = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
         foreach (Canvas canvas in _allCanvas)
         {
             canvas.enabled = false;

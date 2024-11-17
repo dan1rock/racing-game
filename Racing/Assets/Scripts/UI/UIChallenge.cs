@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class UIChallenge : MonoBehaviour
 {
     [SerializeField] private Sprite starFilled;
     [SerializeField] private Image[] stars;
+    [SerializeField] private TMP_Text challengeNumber;
 
     private ChallengeManager _challengeManager;
 
@@ -23,5 +25,7 @@ public class UIChallenge : MonoBehaviour
                 stars[i].sprite = starFilled;
             }
         }
+
+        challengeNumber.text = (transform.GetSiblingIndex() + 1).ToString();
     }
 }

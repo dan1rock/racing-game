@@ -125,6 +125,11 @@ public class CheckPoint : MonoBehaviour
         return _levelManager.reverse ? prev : next;
     }
 
+    public Vector3 GetForward()
+    {
+        return _levelManager.reverse ? -transform.forward : transform.forward;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         CarBot carBot = other.transform.parent.GetComponent<CarBot>();

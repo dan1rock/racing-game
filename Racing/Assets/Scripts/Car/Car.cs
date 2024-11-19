@@ -734,7 +734,7 @@ public class Car : MonoBehaviour
             );
 
             Quaternion checkpointRot = Quaternion.LookRotation(
-                _levelManager.lastCheckPoint.transform.forward,
+                _levelManager.lastCheckPoint.GetForward(),
                 Vector3.up
             );
             

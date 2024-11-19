@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
 using TMPro;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -96,6 +97,8 @@ public class LevelManager : MonoBehaviour
     public CheckPoint lastCheckPoint;
     public CarPlayer player;
 
+    private CinemachineVirtualCamera _cinemachineCamera;
+
     public event Action OnLapFinish;
     public event Action OnStageFinish;
     public event Action OnCheckpoint;
@@ -132,6 +135,7 @@ public class LevelManager : MonoBehaviour
         _cozyWeather = FindFirstObjectByType<CozyWeather>();
         _audioSource = GetComponent<AudioSource>();
         _reflectionProbe = FindFirstObjectByType<ReflectionProbe>();
+        _cinemachineCamera = GameObject.FindWithTag("Main VCam").GetComponent<CinemachineVirtualCamera>();
 
         if (weather is Weather.Rainy or Weather.Snowy) nightMode = true;
         if (dayTime == DayTime.Night) nightMode = true;
@@ -456,5 +460,72 @@ public class LevelManager : MonoBehaviour
             
             Destroy(particles, 2f);
         }
+    }
+    
+    private IEnumerator SnapCameraToTarget()
+    {
+        cameraTarget.rotation = player.transform.rotation;
+        
+        CinemachineTransposer transposer = _cinemachineCamera.GetCinemachineComponent<CinemachineTransposer>();
+        CinemachineFramingTransposer framingTransposer = _cinemachineCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        CinemachineComposer composer = _cinemachineCamera.GetCinemachineComponent<CinemachineComposer>();
+        
+        float originalDamping = transposer ? transposer.m_XDamping : 0;
+        float originalYDamping = transposer ? transposer.m_YDamping : 0;
+        float originalZDamping = transposer ? transposer.m_ZDamping : 0;
+
+        float originalFramingXDamping = framingTransposer ? framingTransposer.m_XDamping : 0;
+        float originalFramingYDamping = framingTransposer ? framingTransposer.m_YDamping : 0;
+        float originalFramingZDamping = framingTransposer ? framingTransposer.m_ZDamping : 0;
+
+        float originalHorizontalDampening = composer ? composer.m_HorizontalDamping : 0;
+        float originalVerticalDampening = composer ? composer.m_VerticalDamping : 0;
+        
+        if (transposer)
+        {
+            transposer.m_XDamping = 0;
+            transposer.m_YDamping = 0;
+            transposer.m_ZDamping = 0;
+        }
+
+        if (framingTransposer)
+        {
+            framingTransposer.m_XDamping = 0;
+            framingTransposer.m_YDamping = 0;
+            framingTransposer.m_ZDamping = 0;
+        }
+
+        if (composer)
+        {
+            composer.m_HorizontalDamping = 0;
+            composer.m_VerticalDamping = 0;
+        }
+        
+        yield return null;
+        
+        if (transposer)
+        {
+            transposer.m_XDamping = originalDamping;
+            transposer.m_YDamping = originalYDamping;
+            transposer.m_ZDamping = originalZDamping;
+        }
+
+        if (framingTransposer)
+        {
+            framingTransposer.m_XDamping = originalFramingXDamping;
+            framingTransposer.m_YDamping = originalFramingYDamping;
+            framingTransposer.m_ZDamping = originalFramingZDamping;
+        }
+        
+        if (composer)
+        {
+            composer.m_HorizontalDamping = originalHorizontalDampening;
+            composer.m_VerticalDamping = originalVerticalDampening;
+        }
+    }
+
+    public void SnapCamera()
+    {
+        StartCoroutine(SnapCameraToTarget());
     }
 }

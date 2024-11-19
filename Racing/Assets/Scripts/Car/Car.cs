@@ -711,6 +711,8 @@ public class Car : MonoBehaviour
         if (!_levelManager.resetCar && !_forceReset) return;
 
         _forceReset = false;
+        _levelManager.ResetCar(false);
+        stuckTimer = 0f;
         
         Ray ray = new()
         {
@@ -726,18 +728,25 @@ public class Car : MonoBehaviour
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
 
-            Quaternion rot = Quaternion.LookRotation(_levelManager.lastCheckPoint.GetNext().transform.position -
-                                                     _levelManager.lastCheckPoint.transform.position, Vector3.up);
-            Vector3 rotation = rot.eulerAngles;
-            rotation.x = 0f;
-            rotation.z = 0f;
+            Quaternion dirRot = Quaternion.LookRotation(
+                _levelManager.lastCheckPoint.GetNext().transform.position - _levelManager.lastCheckPoint.transform.position,
+                Vector3.up
+            );
 
-            transform.rotation = Quaternion.Euler(rotation);
+            Quaternion checkpointRot = Quaternion.LookRotation(
+                _levelManager.lastCheckPoint.transform.forward,
+                Vector3.up
+            );
+            
+            Quaternion flatInterpolatedRot = Quaternion.Slerp(dirRot, checkpointRot, 0.5f);
+            
+            Quaternion alignedToNormal = Quaternion.FromToRotation(Vector3.up, raycastHit.normal);
+            
+            transform.rotation = alignedToNormal * flatInterpolatedRot;
             
             _rb.linearVelocity = transform.forward * 20f;
             
-            _levelManager.ResetCar(false);
-            stuckTimer = 0f;
+            _levelManager.SnapCamera();
         }
     }
 

@@ -129,6 +129,15 @@ public class LevelManager : MonoBehaviour
             }
 
             botCar = false;
+
+            ChallengeManager challengeManager = GameManager.Get().challengeManager;
+            if (challengeManager)
+            {
+                if (challengeManager.mapExpansion)
+                {
+                    Instantiate(challengeManager.mapExpansion);
+                }
+            }
         }
         
         _controls = Controls.Get();

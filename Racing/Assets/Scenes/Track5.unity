@@ -1166,7 +1166,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3020,7 +3020,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4786,7 +4786,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1037204682}
@@ -5082,7 +5082,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8195,7 +8195,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9025,7 +9025,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9631,7 +9631,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16717,7 +16717,7 @@ Transform:
   m_GameObject: {fileID: 544163632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -29.303726, y: 11.577418, z: 13.35943}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16877,7 +16877,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18267,7 +18267,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29359,7 +29359,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37656,7 +37656,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39424,7 +39424,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40758,7 +40758,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42325,7 +42325,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42967,7 +42967,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -49892,7 +49892,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -52425,7 +52425,7 @@ PrefabInstance:
     - target: {fileID: 9218306596751445601, guid: 317ff2bad5db3a4498d050a0b4539932,
         type: 3}
       propertyPath: m_TagString
-      value: Finish
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -53055,7 +53055,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968516924}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.8962547, z: -0, w: 0.44353968}
+  m_LocalRotation: {x: -0, y: 0.8843296, z: -0, w: -0.46686316}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -57590,7 +57590,7 @@ PrefabInstance:
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
       propertyPath: raceMode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}
@@ -57601,7 +57601,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pickedCar
       value: 
-      objectReference: {fileID: 609299808251279683, guid: 35b2eec4342ee1541b6d12e4ea898905,
+      objectReference: {fileID: 2958380551315826844, guid: e078e4fbac8bdc44097af6ebb1dad56d,
         type: 3}
     - target: {fileID: 6859333858288550529, guid: e72d4beb7bd27ac41b6593eab9b0fd9e,
         type: 3}

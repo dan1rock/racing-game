@@ -132,7 +132,7 @@ public class CheckPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CarBot carBot = other.transform.parent.GetComponent<CarBot>();
+        CarBot carBot = other.transform.parent?.GetComponent<CarBot>();
         
         if (!isActive) return;
         

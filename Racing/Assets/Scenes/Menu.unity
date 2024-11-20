@@ -13534,7 +13534,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.8005585, z: -0, w: 0.5992546}
+  m_LocalRotation: {x: -0, y: -0.19205917, z: -0, w: 0.9813834}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14507,6 +14507,7 @@ RectTransform:
   - {fileID: 2001591092}
   - {fileID: 1961721790}
   - {fileID: 215164257}
+  - {fileID: 1611117233}
   m_Father: {fileID: 1423495915}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -37035,6 +37036,323 @@ MonoBehaviour:
   accelerationSlider: {fileID: 1835757396}
   handlingSlider: {fileID: 2003086334}
   difficultySlider: {fileID: 190907698}
+--- !u!1001 &1611117232
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 562269324}
+    m_Modifications:
+    - target: {fileID: 11275300594835065, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: caption
+      value: Knock 125 barrels
+      objectReference: {fileID: 0}
+    - target: {fileID: 11275300594835065, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11275300594835065, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: targetKnocked
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 60914400750308951, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0c67068711d9c2446841bfe7207ede4f,
+        type: 3}
+    - target: {fileID: 184585582482420123, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: caption
+      value: Beat opponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 184585582482420123, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 418756866805219880, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b091e1d5523201b4094238be0d460deb,
+        type: 3}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291102732210388711, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: caption
+      value: Knock 150 barrels
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291102732210388711, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2291102732210388711, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: targetKnocked
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286753749844400095, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: caption
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286753749844400095, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286753749844400095, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: targetPlace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3556966997022203844, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: caption
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3556966997022203844, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3556966997022203844, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: targetPlace
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: id
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: car
+      value: 
+      objectReference: {fileID: 2958380551315826844, guid: e078e4fbac8bdc44097af6ebb1dad56d,
+        type: 3}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: bots
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: laps
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: dayTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: stageId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: weather
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: carColor
+      value: 
+      objectReference: {fileID: 2100000, guid: 7a0459ae5d4c87246a0f609f7bc7c23b, type: 2}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: raceMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: difficulty
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: mapExpansion
+      value: 
+      objectReference: {fileID: 4178951929374078979, guid: e6246497543bdd64c83e49bc1be27a7f,
+        type: 3}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: stageReverse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: botCars.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: 'botCars.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2958380551315826844, guid: e078e4fbac8bdc44097af6ebb1dad56d,
+        type: 3}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: 'botCars.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3100610531351138962, guid: 4948330d4b72753459615121381f8309,
+        type: 3}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: 'botCars.Array.data[2]'
+      value: 
+      objectReference: {fileID: 824886591927594260, guid: 2b5329532959e5447b93430bd60acf8e,
+        type: 3}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: 'botCars.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2432378102501418048, guid: 25cc717ea83e5e94aabb88a33cd2b23c,
+        type: 3}
+    - target: {fileID: 5937375599345415751, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_text
+      value: Desert Duel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085038984472315766, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Name
+      value: UIChallenge (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008492807556044073, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: caption
+      value: Knock 100 barrels
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008492807556044073, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008492807556044073, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
+      propertyPath: targetKnocked
+      value: 100
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 090c3028202d00c47931c78d6548cdb0, type: 3}
+--- !u!224 &1611117233 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1611117232}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1612436681
 GameObject:
   m_ObjectHideFlags: 0

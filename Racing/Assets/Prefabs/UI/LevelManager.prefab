@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 6374711817727101306}
   - component: {fileID: 4156431833122410394}
   - component: {fileID: 8283107810987989423}
+  - component: {fileID: 224349957089585868}
   - component: {fileID: 946125954858553533}
   m_Layer: 0
   m_Name: LevelManager
@@ -334,6 +335,20 @@ MonoBehaviour:
   carControllers: []
   leaderboardPositions: []
   leaderboardDistances: []
+--- !u!114 &224349957089585868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4062183722033025656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9307e22a6e9dd97429b664816cd188b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalObjects: 0
+  knockedObjects: 0
 --- !u!82 &946125954858553533
 AudioSource:
   m_ObjectHideFlags: 0

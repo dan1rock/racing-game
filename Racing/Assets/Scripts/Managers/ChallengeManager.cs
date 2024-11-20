@@ -22,6 +22,8 @@ public class ChallengeManager : MonoBehaviour
 
     public List<GameObject> botCars;
 
+    public GameObject mapExpansion;
+
     [HideInInspector] public List<ChallengeRequirement> challenges = new();
     
     private void Awake()

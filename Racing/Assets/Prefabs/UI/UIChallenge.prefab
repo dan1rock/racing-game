@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 184585582482420123}
   - component: {fileID: 2068618092178328447}
   - component: {fileID: 3787294984149750020}
+  - component: {fileID: 2291102732210388711}
   m_Layer: 0
   m_Name: Star3
   m_TagString: Untagged
@@ -76,6 +77,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   caption: 
   targetTime: 0
+--- !u!114 &2291102732210388711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067933513360501909}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd44725d81ce2c246a617ae17651d62f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caption: 
+  targetKnocked: 0
 --- !u!1 &1477565009170152297
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +193,7 @@ GameObject:
   - component: {fileID: 3556966997022203844}
   - component: {fileID: 4087901667383866432}
   - component: {fileID: 1512147825279163736}
+  - component: {fileID: 11275300594835065}
   m_Layer: 0
   m_Name: Star2
   m_TagString: Untagged
@@ -242,6 +258,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   caption: 
   targetTime: 0
+--- !u!114 &11275300594835065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2814897881334227614}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd44725d81ce2c246a617ae17651d62f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caption: 
+  targetKnocked: 0
 --- !u!1 &3422903149818444718
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +691,7 @@ MonoBehaviour:
   raceMode: 2
   difficulty: 1
   botCars: []
+  mapExpansion: {fileID: 0}
   challenges: []
 --- !u!1 &5630986919854175085
 GameObject:
@@ -824,6 +855,7 @@ GameObject:
   - component: {fileID: 3286753749844400095}
   - component: {fileID: 1438372846517419092}
   - component: {fileID: 3483939469654224433}
+  - component: {fileID: 7008492807556044073}
   m_Layer: 0
   m_Name: Star1
   m_TagString: Untagged
@@ -888,6 +920,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   caption: 
   targetTime: 0
+--- !u!114 &7008492807556044073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7095895937337935110}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd44725d81ce2c246a617ae17651d62f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caption: 
+  targetKnocked: 0
 --- !u!1 &7159991990914453177
 GameObject:
   m_ObjectHideFlags: 0

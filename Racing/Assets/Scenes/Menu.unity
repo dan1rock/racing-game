@@ -13534,7 +13534,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.19205917, z: -0, w: 0.9813834}
+  m_LocalRotation: {x: -0, y: -0.39272925, z: -0, w: 0.91965413}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -37079,7 +37079,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b091e1d5523201b4094238be0d460deb,
+      objectReference: {fileID: 21300000, guid: c2d51b05466cedb488f6b19517ea7248,
         type: 3}
     - target: {fileID: 582067954695959278, guid: 090c3028202d00c47931c78d6548cdb0,
         type: 3}
@@ -37274,6 +37274,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
         type: 3}
+      propertyPath: timeLimit
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061361865911709723, guid: 090c3028202d00c47931c78d6548cdb0,
+        type: 3}
       propertyPath: difficulty
       value: 3
       objectReference: {fileID: 0}
@@ -37320,7 +37325,7 @@ PrefabInstance:
     - target: {fileID: 5937375599345415751, guid: 090c3028202d00c47931c78d6548cdb0,
         type: 3}
       propertyPath: m_text
-      value: Desert Duel
+      value: Strike!
       objectReference: {fileID: 0}
     - target: {fileID: 6085038984472315766, guid: 090c3028202d00c47931c78d6548cdb0,
         type: 3}
@@ -41372,7 +41377,7 @@ Transform:
   m_GameObject: {fileID: 1856002615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: -10}
+  m_LocalPosition: {x: 0.5634129, y: 2.8550353, z: -14.120186}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -49629,7 +49634,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 642951711}

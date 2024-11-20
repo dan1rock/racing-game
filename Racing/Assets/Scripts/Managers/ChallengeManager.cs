@@ -20,6 +20,8 @@ public class ChallengeManager : MonoBehaviour
     public RaceMode raceMode;
     public Difficulty difficulty;
 
+    public float timeLimit = -1f;
+
     public List<GameObject> botCars;
 
     public GameObject mapExpansion;

@@ -87,7 +87,8 @@ public class LevelManager : MonoBehaviour
     public int currentLap = 1;
 
     public float playerDistanceLimit;
-    
+
+    public bool stageFailed = false;
     public bool wrongDirection = false;
     public bool wrongDirectionActive = false;
     public bool resetCar = false;
@@ -406,6 +407,14 @@ public class LevelManager : MonoBehaviour
         _playerFinished = true;
         
         if (GameManager.Get()?.challengeManager) CheckChallengeCompletion();
+    }
+
+    public void FailStage()
+    {
+        if (_playerFinished) return;
+
+        stageFailed = true;
+        OnPlayerFinish();
     }
 
     private IEnumerator UpdateChallengeInformation()

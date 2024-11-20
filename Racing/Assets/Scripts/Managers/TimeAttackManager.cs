@@ -12,7 +12,9 @@ public class TimeAttackManager : MonoBehaviour
     [SerializeField] private GameObject timeAttackEndMenu;
     [SerializeField] private TMP_Text endOverallTimeText;
     [SerializeField] private TMP_Text endBestLapTimeText;
+    [SerializeField] private TMP_Text endMainLabel;
 
+    private bool _reverse = false;
     private bool _finished = false;
     public float overallTime = 0f;
     private float _lapTime = 0f;
@@ -33,6 +35,15 @@ public class TimeAttackManager : MonoBehaviour
         {
             _levelManager.OnLapFinish += OnLapFinish;
             _levelManager.OnStageFinish += OnStageFinish;
+
+            if (GameManager.Get()?.challengeManager)
+            {
+                if (GameManager.Get().challengeManager.timeLimit > 0f)
+                {
+                    overallTime = GameManager.Get().challengeManager.timeLimit;
+                    _reverse = true;
+                }
+            }
         }
     }
 
@@ -49,7 +60,13 @@ public class TimeAttackManager : MonoBehaviour
         if (_finished) return;
         
         _lapTime += Time.deltaTime;
-        overallTime += Time.deltaTime;
+        overallTime += (_reverse ? -1f : 1f) * Time.deltaTime;
+        
+        if (overallTime < 0f)
+        {
+            overallTime = 0f;
+            _levelManager.FailStage();
+        }
         
         overallTimeText.text = FormatTime(overallTime);
         lapTimeText.text = FormatTime(_lapTime);
@@ -77,8 +94,13 @@ public class TimeAttackManager : MonoBehaviour
         _finished = true;
         
         timeAttackEndMenu.SetActive(true);
-        endOverallTimeText.text = overallTimeText.text;
+        endOverallTimeText.text = FormatTime(overallTime);
         endBestLapTimeText.text = bestLapTimeText.text;
+
+        if (_reverse)
+        {
+            endMainLabel.text = "Time left:";
+        }
         
         if (GameManager.Get().challengeManager)
         {

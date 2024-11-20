@@ -10,6 +10,6 @@ public class ChallengeKnock : ChallengeRequirement
     public override bool GetCompletionResult()
     {
         if (!_knockManager) _knockManager = FindFirstObjectByType<KnockManager>();
-        return _knockManager.knockedObjects >= targetKnocked;
+        return _knockManager.knockedObjects >= targetKnocked && !_knockManager.StageFailed();
     }
 }

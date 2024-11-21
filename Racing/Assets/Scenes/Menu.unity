@@ -9554,6 +9554,7 @@ MonoBehaviour:
   stageSelectView: {fileID: 603708558}
   challengesView: {fileID: 23852302}
   totalStarsText: {fileID: 1374972554}
+  challengesContent: {fileID: 562269324}
   selectedStage: 0
   selectedLaps: 0
   selectedBotCount: 0
@@ -13534,7 +13535,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488950887}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.39272925, z: -0, w: 0.91965413}
+  m_LocalRotation: {x: -0, y: 0.91505104, z: -0, w: -0.40333807}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -21401,6 +21402,8 @@ MonoBehaviour:
   - Deep Ocean
   audioMixer: {fileID: 24100000, guid: 92e1f831bfa680b4780f42dc5f93fd05, type: 2}
   gameState: 0
+  menuState: 0
+  menuChallengesScrollState: {x: 0, y: 0}
   graphicsQuality: 1
   dayTime: 0
   weather: 0
@@ -41377,7 +41380,7 @@ Transform:
   m_GameObject: {fileID: 1856002615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5634129, y: 2.8550353, z: -14.120186}
+  m_LocalPosition: {x: 0.7801189, y: -0.30554423, z: -10.3266115}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

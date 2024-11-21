@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     
     public GameState gameState;
+    public int menuState = 0;
+    public Vector2 menuChallengesScrollState = Vector2.zero;
 
     public QualityLevel graphicsQuality;
     public DayTime dayTime;
@@ -47,6 +49,8 @@ public class GameManager : MonoBehaviour
 
     public int[] challengeData;
 
+    public event Action OnStageLoad;
+    
     public Settings settings;
     private AdMobManager _adMobManager;
     public ChallengeManager challengeManager;
@@ -81,6 +85,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadStage(MenuManager menuManager)
     {
+        OnStageLoad?.Invoke();
+        
         dayTime = menuManager.selectedDayTime;
         weather = menuManager.selectedWeather;
         stageId = menuManager.selectedStage;
@@ -108,6 +114,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadChallenge(ChallengeManager challenge)
     {
+        OnStageLoad?.Invoke();
+        
         dayTime = challenge.dayTime;
         weather = challenge.weather;
         stageId = challenge.stageId;

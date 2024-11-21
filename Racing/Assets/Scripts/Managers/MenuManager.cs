@@ -42,6 +42,7 @@ public class MenuManager : MonoBehaviour
 
     [Header("Challenge Selection")] 
     [SerializeField] private TMP_Text totalStarsText;
+    [SerializeField] private RectTransform challengesContent;
     
     public int selectedStage;
     public int selectedLaps;
@@ -78,8 +79,12 @@ public class MenuManager : MonoBehaviour
         reverseToggle.isOn = reverseToggled;
 
         _cameras = new[] { mainView, carSelectView, stageSelectView };
+
+        challengesContent.anchoredPosition = GameManager.Get().menuChallengesScrollState;
+
+        GameManager.Get().OnStageLoad += OnStageLoad;
         
-        SetView(mainView);
+        SetMenuState(GameManager.Get().menuState);
         
         SpawnSelectedCar();
         
@@ -92,6 +97,11 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedLaps();
         UpdateSelectedDifficulty();
         UpdateSelectedBots();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Get().OnStageLoad -= OnStageLoad;
     }
 
     private void SetTotalStars()
@@ -139,11 +149,18 @@ public class MenuManager : MonoBehaviour
         GameManager.Get().LoadStage(this);
     }
 
+    private void OnStageLoad()
+    {
+        GameManager.Get().menuChallengesScrollState = challengesContent.anchoredPosition;
+    }
+
     public void SetMenuState(int state)
     {
         mainMenu.SetActive(state == 0);
         carSelection.SetActive(state == 1);
         stageSettings.SetActive(state == 2);
+
+        GameManager.Get().menuState = state;
 
         CinemachineVirtualCamera targetView = state switch
         {

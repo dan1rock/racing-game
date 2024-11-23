@@ -43,7 +43,7 @@ public class CheckPoint : MonoBehaviour
 
     private void Start()
     {
-        if (isStart)
+        if (isStart && _levelManager.raceMode != RaceMode.FreeRoam)
         {
             _levelManager.lastCheckPoint = this;
             if (_levelManager.reverse)

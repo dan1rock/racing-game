@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -665,14 +666,13 @@ public class Car : MonoBehaviour
     private void HandleReset()
     {
         if (!_levelManager) return;
-        
-        int tiresOnSurface = 0;
 
-        if (_wheel_fl.isContactingTrack) tiresOnSurface++;
-        if (_wheel_fr.isContactingTrack) tiresOnSurface++;
-        if (_wheel_rl.isContactingTrack) tiresOnSurface++;
-        if (_wheel_rr.isContactingTrack) tiresOnSurface++;
+        bool isFreeRoam = _levelManager.raceMode == RaceMode.FreeRoam;
         
+        Wheel[] wheels = { _wheel_fl, _wheel_fr, _wheel_rl, _wheel_rr };
+        
+        int tiresOnSurface = wheels.Count(wheel => isFreeRoam ? wheel.surfaceContact : wheel.isContactingTrack);
+
         if (engineOn && (_rb.linearVelocity.magnitude < 2f || tiresOnSurface < 4 || _levelManager.wrongDirection))
         {
             stuckTimer += Time.fixedDeltaTime * (_levelManager.wrongDirection ? 1.5f : 1f);
@@ -713,7 +713,19 @@ public class Car : MonoBehaviour
         _forceReset = false;
         _levelManager.ResetCar(false);
         stuckTimer = 0f;
-        
+
+        if (_levelManager.raceMode == RaceMode.FreeRoam)
+        {
+            ResetToNearestTrackNode();
+        }
+        else
+        {
+            ResetToLastCheckpoint();   
+        }
+    }
+
+    private void ResetToLastCheckpoint()
+    {
         Ray ray = new()
         {
             origin = _levelManager.lastCheckPoint.transform.position + Vector3.up * 10f,
@@ -748,6 +760,21 @@ public class Car : MonoBehaviour
             
             _levelManager.SnapCamera();
         }
+    }
+
+    private void ResetToNearestTrackNode()
+    {
+        RacingLine racingLine = FindFirstObjectByType<RacingLine>();
+
+        int nearestNode = racingLine.GetNearestNodeID(transform.position);
+        int nextNode = racingLine.ForecastRacingNode(nearestNode, 1);
+        
+        Quaternion rot = Quaternion.LookRotation(
+            racingLine.orderedNodes[nextNode].position -
+            racingLine.orderedNodes[nearestNode].position, Vector3.up);
+        ResetToPosition(racingLine.orderedNodes[nearestNode].position, rot);
+        
+        _levelManager.SnapCamera();
     }
 
     public IEnumerator StartEngine()

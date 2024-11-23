@@ -2,5 +2,6 @@ public enum RaceMode
 {
     Drift,
     TimeAttack,
-    Race
+    Race,
+    FreeRoam
 }

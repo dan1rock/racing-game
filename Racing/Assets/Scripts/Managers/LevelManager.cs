@@ -140,7 +140,7 @@ public class LevelManager : MonoBehaviour
                 raceUI.SetActive(true);
                 break;
             default:
-                throw new ArgumentOutOfRangeException();
+                break;
         }
 
         if (Application.isMobilePlatform)

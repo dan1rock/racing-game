@@ -319,7 +319,11 @@ public class Car : MonoBehaviour
         
         if (true)
         {
-            _rb.AddForce(-transform.up * (downForce * downforceCurve.Evaluate(relativeSpeed) * (1f - _carAngle / 90f)));
+            float angle = Vector3.Angle(transform.up, Vector3.up);
+
+            Vector3 direction = angle < 45f ? -transform.up : -Vector3.up;
+            
+            _rb.AddForce(direction * (downForce * downforceCurve.Evaluate(relativeSpeed) * (1f - _carAngle / 90f)));
         }
         
         // Drift counter steering

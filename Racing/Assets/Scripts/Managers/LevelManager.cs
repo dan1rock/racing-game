@@ -11,30 +11,6 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public enum Weather
-{
-    Clear,
-    Rainy,
-    Snowy
-}
-
-public enum DayTime
-{
-    Morning,
-    Noon,
-    Evening,
-    Night
-}
-
-public enum Difficulty
-{
-    Easy,
-    Medium,
-    Hard,
-    Expert,
-    Unbeatable
-}
-
 public class LevelManager : MonoBehaviour
 {
     [Header("Stage Settings")]

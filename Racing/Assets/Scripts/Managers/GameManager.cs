@@ -4,19 +4,6 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
-public enum GameState
-{
-    Menu,
-    Stage
-}
-
-public enum RaceMode
-{
-    Drift,
-    TimeAttack,
-    Race
-}
-
 public class GameManager : MonoBehaviour
 {
     [SerializeField] public List<GameObject> driftCars;

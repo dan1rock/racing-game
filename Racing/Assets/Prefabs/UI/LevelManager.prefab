@@ -173,6 +173,7 @@ MonoBehaviour:
   resetCarUI: {fileID: 8079365011860223830}
   challengeResults: {fileID: 8091171657217482358}
   challengeInformation: {fileID: 4155338602718888204}
+  scoreText: {fileID: 591293291542625622}
   activeCarMarker: {fileID: 3382913086122023323}
   cameraTarget: {fileID: 3752979577396554047}
   dayTimes: 070000000d0000001200000002000000

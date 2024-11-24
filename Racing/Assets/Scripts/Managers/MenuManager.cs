@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -99,11 +100,34 @@ public class MenuManager : MonoBehaviour
         UpdateSelectedBots();
     }
 
+    private void Start()
+    {
+        UpdateReflectionProbe(0.1f);
+    }
+
     private void OnDestroy()
     {
         GameManager.Get().OnStageLoad -= OnStageLoad;
     }
 
+    private void UpdateReflectionProbe(float delay)
+    {
+        IEnumerator UpdateProbe()
+        {
+            yield return new WaitForSeconds(delay);
+            
+            ReflectionProbe probe = FindFirstObjectByType<ReflectionProbe>();
+
+            if (probe)
+            {
+                probe.RenderProbe();
+                Debug.Log("Probe Updated");
+            }
+        }
+
+        StartCoroutine(UpdateProbe());
+    }
+    
     private void SetTotalStars()
     {
         int allStars = FindObjectsByType<ChallengeManager>(FindObjectsSortMode.None).Sum(challenge => challenge.GetMaxStars());

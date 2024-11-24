@@ -43,6 +43,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject resetCarUI;
     [SerializeField] private GameObject challengeResults;
     [SerializeField] private GameObject challengeInformation;
+
+    [SerializeField] private TMP_Text scoreText;
     
     [SerializeField] private Transform activeCarMarker;
     [SerializeField] private Transform cameraTarget;
@@ -395,6 +397,12 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator UpdateChallengeInformation()
     {
+        if (GameManager.Get().challengeManager.collectorChallenge)
+        {
+            StartCoroutine(UpdateCollectablesChallenge());
+            yield break;
+        }
+        
         challengeInformation.SetActive(true);
 
         List<ChallengeRequirement> challenges = GameManager.Get().challengeManager.challenges;
@@ -418,6 +426,17 @@ public class LevelManager : MonoBehaviour
             }
             
             yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private IEnumerator UpdateCollectablesChallenge()
+    {
+        ChallengeCollector challengeCollector = FindFirstObjectByType<ChallengeCollector>();
+
+        while (true)
+        {
+            scoreText.text = $"{challengeCollector.totalCollected} / {challengeCollector.totalCollectibles}";
+            yield return new WaitForSeconds(0.1f);
         }
     }
     

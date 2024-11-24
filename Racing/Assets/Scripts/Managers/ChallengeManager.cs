@@ -26,11 +26,19 @@ public class ChallengeManager : MonoBehaviour
 
     public GameObject mapExpansion;
 
+    [HideInInspector] public bool collectorChallenge = false;
+    
     [HideInInspector] public List<ChallengeRequirement> challenges = new();
     
     private void Awake()
     {
         if (botCars.Count == 0) botCars.Add(car);
+
+        if (GetComponentInChildren<ChallengeCollector>())
+        {
+            collectorChallenge = true;
+            return;
+        }
         
         challenges.Add(GetActiveChallengeRequirement(transform.GetChild(0).gameObject));
         challenges.Add(GetActiveChallengeRequirement(transform.GetChild(1).gameObject));
@@ -52,7 +60,8 @@ public class ChallengeManager : MonoBehaviour
     
     public int GetMaxStars()
     {
-        return transform.childCount;
+        ChallengeCollector collector = GetComponentInChildren<ChallengeCollector>();
+        return collector ? collector.totalCollectibles : transform.childCount;
     }
 
     public void SetVacantId()

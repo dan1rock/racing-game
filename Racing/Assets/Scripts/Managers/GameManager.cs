@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public Vector2 menuChallengesScrollState = Vector2.zero;
 
     public QualityLevel graphicsQuality;
+    public GraphicsSmoke smokeQuality;
+    
     public DayTime dayTime;
     public Weather weather;
     public int stageId;
@@ -38,7 +40,6 @@ public class GameManager : MonoBehaviour
 
     public event Action OnStageLoad;
     
-    public Settings settings;
     private AdMobManager _adMobManager;
     public ChallengeManager challengeManager;
     
@@ -157,6 +158,8 @@ public class GameManager : MonoBehaviour
             if (playerData == null) return;
 
             graphicsQuality = playerData.menuSelectedQuality;
+            smokeQuality = playerData.graphicsSmokeLevel;
+            
             dayTime = playerData.menuSelectedDayTime;
             weather = playerData.menuSelectedWeather;
             stageId = playerData.menuSelectedStageId;
@@ -186,11 +189,10 @@ public class GameManager : MonoBehaviour
         audioMixer.SetFloat("CarVolume", Mathf.Lerp(-80.0f, 0.0f, Mathf.Clamp01(volume)));
     }
 
-    public void SetGraphicsQuality(QualityLevel qualityLevel)
+    public void SaveGraphicsSettings(Settings settings)
     {
-        graphicsQuality = qualityLevel;
-        settings.graphicsPreset = qualityLevel;
-        settings.ApplySettings();
+        graphicsQuality = settings.graphicsPreset;
+        smokeQuality = settings.smokeQuality;
         SavePlayer();
     }
 

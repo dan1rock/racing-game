@@ -2,6 +2,8 @@
 public class PlayerData
 {
     public QualityLevel menuSelectedQuality;
+    public GraphicsSmoke graphicsSmokeLevel;
+    
     public DayTime menuSelectedDayTime;
     public Weather menuSelectedWeather;
     public int menuSelectedStageId;
@@ -20,6 +22,8 @@ public class PlayerData
     public PlayerData(GameManager player)
     {
         menuSelectedQuality = player.graphicsQuality;
+        graphicsSmokeLevel = player.smokeQuality;
+        
         menuSelectedDayTime = player.dayTime;
         menuSelectedWeather = player.weather;
         menuSelectedStageId = player.stageId;

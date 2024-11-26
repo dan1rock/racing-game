@@ -97,7 +97,7 @@ public class Car : MonoBehaviour
     [SerializeField] [ReadOnly] public float speed;
     [SerializeField] [ReadOnly] private float relativeSpeed;
     
-    [SerializeField] private bool menuMode = false;
+    [SerializeField] public bool menuMode = false;
     [SerializeField] private bool showcaseMode = false;
 
     [HideInInspector] public float carSpeed;
@@ -188,6 +188,12 @@ public class Car : MonoBehaviour
         speedSteeringRatio = 1f / speedSteeringDampening;
 
         SetUpLights();
+
+        WheelTrail[] trails = gameObject.GetComponentsInChildren<WheelTrail>();
+        foreach (WheelTrail wheelTrail in trails)
+        {
+            wheelTrail.car = this;
+        }
         
         if (menuMode)
         {

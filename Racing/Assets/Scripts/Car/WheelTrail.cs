@@ -8,11 +8,14 @@ public class WheelTrail : MonoBehaviour
     [SerializeField] private float groundOffset = 0.05f;
     [SerializeField] private float maxVolume = 0.7f;
     [SerializeField] private LayerMask layerMask;
-
+    
     public bool emitTrail = false;
     public float wheelSpeed = 0f;
     public int surfaceLayer;
 
+    public Car car;
+
+    private Settings _settings;
     private TrailRenderer _trailRenderer;
     private AudioSource _audioSource;
 
@@ -23,6 +26,7 @@ public class WheelTrail : MonoBehaviour
 
     private void Awake()
     {
+        _settings = FindFirstObjectByType<Settings>();
         _trailRenderer = GetComponentInChildren<TrailRenderer>();
         _audioSource = GetComponent<AudioSource>();
 
@@ -63,12 +67,15 @@ public class WheelTrail : MonoBehaviour
         }
         
         _trailRenderer.emitting = emitTrail && hit && surfaceLayer == 7;
+
+        bool smokeEmission = _settings.smokeQuality == GraphicsSmoke.All ||
+                             (_settings.smokeQuality == GraphicsSmoke.Player && (!car.isBot || car.menuMode));
         
         ParticleSystem.EmissionModule tireParticlesEmission = tireParticles.emission;
-        tireParticlesEmission.enabled = emitTrail && hit && surfaceLayer == 7;
+        tireParticlesEmission.enabled = emitTrail && hit && surfaceLayer == 7 && smokeEmission;
         
         ParticleSystem.EmissionModule offRoadParticlesEmission = offRoadParticles.emission;
-        offRoadParticlesEmission.enabled = emitTrail && hit && surfaceLayer != 7;
+        offRoadParticlesEmission.enabled = emitTrail && hit && surfaceLayer != 7 && smokeEmission;
 
         float volume = Mathf.Clamp01(wheelSpeed / 50f) * 0.8f + 0.2f;
         float to = emitTrail && hit ? volume * maxVolume : 0f;

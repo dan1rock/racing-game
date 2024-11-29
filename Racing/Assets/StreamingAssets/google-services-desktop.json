@@ -1,0 +1,31 @@
+{
+  "project_info": {
+    "project_number": "531777080710",
+    "project_id": "re-tired",
+    "storage_bucket": "re-tired.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531777080710:ios:c328acc7441ccd35bbf007",
+        "android_client_info": {
+          "package_name": "com.danirock.racing"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKpFvO6Am8cqVlRnFlpuBzlNkBHjyfNTo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

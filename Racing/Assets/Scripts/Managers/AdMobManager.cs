@@ -31,6 +31,7 @@ public class AdMobManager : MonoBehaviour
     private static AdMobManager _instance;
 
     private float _lastBannerRequest = -60f;
+    private float _lastInterstitialShown = 0f;
     
     private void Awake()
     {
@@ -138,13 +139,16 @@ public class AdMobManager : MonoBehaviour
     
     public void ShowInterstitialAd(Action onAdFinish)
     {
-        if (_interstitialAd != null && _interstitialAd.CanShowAd())
+        bool cooldownReady = Time.time - _lastInterstitialShown > 90f;
+        
+        if (_interstitialAd != null && _interstitialAd.CanShowAd() && cooldownReady)
         {
             Debug.Log("Showing interstitial ad.");
             void OnAdClosed()
             {
                 _interstitialAd.OnAdFullScreenContentClosed -= OnAdClosed;
                 onAdFinish?.Invoke();
+                _lastInterstitialShown = Time.time;
             }
             
             _interstitialAd.OnAdFullScreenContentClosed += OnAdClosed;

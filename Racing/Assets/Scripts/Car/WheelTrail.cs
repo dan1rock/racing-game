@@ -78,8 +78,8 @@ public class WheelTrail : MonoBehaviour
         offRoadParticlesEmission.enabled = emitTrail && hit && surfaceLayer != 7 && smokeEmission;
 
         float volume = Mathf.Clamp01(wheelSpeed / 50f) * 0.8f + 0.2f;
-        float to = emitTrail && hit ? volume * maxVolume : 0f;
-        float rate = emitTrail && hit ? 2f : 5f;
+        float to = emitTrail && hit && surfaceLayer == 7 ? volume * maxVolume : 0f;
+        float rate = emitTrail && hit && surfaceLayer == 7 ? 2f : 5f;
         _driftVolume = Mathf.Lerp(_driftVolume, to, Time.deltaTime * rate);
         
         _audioSource.volume = _driftVolume;

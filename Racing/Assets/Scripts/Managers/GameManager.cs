@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
 
     public void ReloadStage()
     {
-        SceneManager.LoadScene(stageId + 1);
+        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(stageId + 1));
     }
 
     public void SavePlayer()

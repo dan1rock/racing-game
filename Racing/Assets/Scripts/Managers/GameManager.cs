@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
         _instance = this;
-        _adMobManager = FindObjectOfType<AdMobManager>();
+        _adMobManager = FindFirstObjectByType<AdMobManager>();
         _adMobManager?.InitializeAds();
         
         LoadSave();
@@ -135,13 +135,13 @@ public class GameManager : MonoBehaviour
         
         gameState = GameState.Menu;
         SavePlayer();
-        
-        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(0));
+
+        SceneManager.LoadScene(0);
     }
 
     public void ReloadStage()
     {
-        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(stageId + 1));
+        SceneManager.LoadScene(stageId + 1);
     }
 
     public void SavePlayer()

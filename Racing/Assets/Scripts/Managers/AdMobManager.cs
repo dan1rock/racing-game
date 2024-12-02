@@ -51,6 +51,11 @@ public class AdMobManager : MonoBehaviour
         }
     }
 
+    public static AdMobManager Get()
+    {
+        return _instance;
+    }
+
     public void InitializeAds()
     {
         if (disableAds) return;

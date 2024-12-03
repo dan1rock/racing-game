@@ -349,6 +349,8 @@ public class LevelManager : MonoBehaviour
 
     public void LapFinished()
     {
+        if (_playerFinished) return;
+        
         currentLap += 1;
         
         OnLapFinish?.Invoke();
@@ -370,12 +372,18 @@ public class LevelManager : MonoBehaviour
 
         if (stopCar)
         {
-            _cars[_activeCar].StopCar();
+            _cars[_activeCar].GetComponent<CarPlayer>().disablePlayer = true;
+            _cars[_activeCar].isDriftCar = false;
+            CarBot bot = _cars[_activeCar].transform.AddComponent<CarBot>();
+            bot.playerAutopilot = true;
+            bot.ActivateBot();
         }
     }
 
     public void OnPlayerFinish()
     {
+        if (_playerFinished) return;
+        
         OnStageFinish?.Invoke();
         
         DisableControls(true);

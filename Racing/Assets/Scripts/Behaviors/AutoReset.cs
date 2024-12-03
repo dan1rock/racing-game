@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AutoReset : MonoBehaviour
@@ -12,7 +13,15 @@ public class AutoReset : MonoBehaviour
         
         if (!car.GetComponent<CarPlayer>()) return;
         
-        car.InvokeReset(true);
+        CarBot bot = car.GetComponent<CarBot>();
+        if (bot)
+        {
+            bot.Reset();
+        }
+        else
+        {
+            car.InvokeReset(true);   
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -20,9 +29,17 @@ public class AutoReset : MonoBehaviour
         if (!onExit) return;
         
         Car car = other.transform.parent.GetComponent<Car>();
-        
+
         if (!car.GetComponent<CarPlayer>()) return;
         
-        car.InvokeReset(true);
+        CarBot bot = car.GetComponent<CarBot>();
+        if (bot)
+        {
+            bot.Reset();
+        }
+        else
+        {
+            car.InvokeReset(true);   
+        }
     }
 }

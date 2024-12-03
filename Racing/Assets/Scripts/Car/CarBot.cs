@@ -7,7 +7,7 @@ public class CarBot : CarController
     public float speedLimit = Mathf.Infinity;
     public bool dontBreak = false;
     public float maxAcceleration = 1f;
-    public float steeringReaction = 1f;
+    public float steeringReaction = 2f;
 
     public float fallBehindAdjustment = 1f;
     public float fallAheadAdjustment = 1f;
@@ -24,6 +24,8 @@ public class CarBot : CarController
     private int _currentNodeTargetId;
     private Vector3 _currentNodeMarker;
 
+    public bool playerAutopilot = false;
+
     private bool _isActive = false;
     private bool _stopCar = false;
 
@@ -35,12 +37,6 @@ public class CarBot : CarController
         _selfCollider = GetComponentInChildren<Collider>();
 
         car.isBot = true;
-
-        GameObject o = Instantiate(raceManager.playerNameCanvas, transform.position, Quaternion.identity);
-        o.transform.parent = transform;
-
-        _selfName = o.GetComponentInChildren<TMP_Text>();
-        _selfName.fontSize = 50;
     }
 
     private void Start()
@@ -53,17 +49,31 @@ public class CarBot : CarController
         
         if (levelManager.botCar) ActivateBot();
         
-        FindFirstObjectByType<Minimap>().AddBotMarker(transform);
+        if (!playerAutopilot)
+        {
+            GameObject o = Instantiate(raceManager.playerNameCanvas, transform.position, Quaternion.identity);
+            o.transform.parent = transform;
+
+            _selfName = o.GetComponentInChildren<TMP_Text>();
+            _selfName.fontSize = 50;
+            
+            FindFirstObjectByType<Minimap>().AddBotMarker(transform);
+        }
     }
 
     private void Update()
     {
+        if (playerAutopilot) return;
+        
         HandleLeaderboardName();
     }
 
     private void FixedUpdate()
     {
-        _selfName.text = currentPosition.ToString();
+        if (!playerAutopilot)
+        {
+            _selfName.text = currentPosition.ToString();
+        }
         
         HandleRacingLine();
         CalculateTotalDistance();
@@ -74,11 +84,11 @@ public class CarBot : CarController
         HandleSteering();
         HandleReset();
 
-        if (currentLap > levelManager.laps && !_stopCar)
-        {
-            car.StopCar();
-            _stopCar = true;
-        }
+        // if (currentLap > levelManager.laps && !_stopCar)
+        // {
+        //     car.StopCar();
+        //     _stopCar = true;
+        // }
     }
 
     private void HandleRacingLine()
@@ -142,7 +152,7 @@ public class CarBot : CarController
         bool maxThrottle = Time.time - _launchTime < 3f;
         if (maxThrottle) car.accelInput = 1f;
 
-        if (levelManager.player)
+        if (levelManager.player && !playerAutopilot)
         {
             float dist = levelManager.player.GetPlayerDistance() - totalDistance;
 
@@ -245,7 +255,7 @@ public class CarBot : CarController
 
         float reaction = steeringReaction;
 
-        if (levelManager.player)
+        if (levelManager.player && !playerAutopilot)
         {
             float dist = levelManager.player.GetPlayerDistance() - totalDistance;
             if (dist < 0f) dist = 0f;

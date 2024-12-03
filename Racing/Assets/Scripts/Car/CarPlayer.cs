@@ -5,6 +5,8 @@ public class CarPlayer : CarController
     private Controls _controls;
     private Car _car;
 
+    public bool disablePlayer = false;
+
     protected override void Initialize()
     {
         base.Initialize();
@@ -28,7 +30,7 @@ public class CarPlayer : CarController
     {
         HandleLeaderboardName();
         
-        if (_car.forceStop) return;
+        if (_car.forceStop || disablePlayer) return;
         
         HandlePlayerInput();
     }

@@ -191,8 +191,6 @@ public class LevelManager : MonoBehaviour
             Destroy(car.GetComponent<CarPlayer>());
         }
         UpdateTargetCar();
-        
-        AdMobManager.Get().ShowInterstitialAd(() => { });
     }
 
     private void InitStartingGrid()

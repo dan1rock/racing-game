@@ -136,12 +136,12 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Menu;
         SavePlayer();
 
-        SceneManager.LoadScene(0);
+        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(0));
     }
 
     public void ReloadStage()
     {
-        SceneManager.LoadScene(stageId + 1);
+        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(stageId + 1));
     }
 
     public void SavePlayer()

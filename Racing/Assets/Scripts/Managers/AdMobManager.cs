@@ -151,9 +151,20 @@ public class AdMobManager : MonoBehaviour
             Debug.Log("Showing interstitial ad.");
             void OnAdClosed()
             {
-                _interstitialAd.OnAdFullScreenContentClosed -= OnAdClosed;
-                onAdFinish?.Invoke();
-                _lastInterstitialShown = Time.time;
+                MainThreadDispatcher.Enqueue(() =>
+                {
+                    try
+                    {
+                        _interstitialAd.OnAdFullScreenContentClosed -= OnAdClosed;
+                    }
+                    catch
+                    {
+                        Debug.Log("Action already unsubscribed");
+                    }
+                    
+                    _lastInterstitialShown = Time.time;
+                    onAdFinish?.Invoke();
+                });
             }
             
             _interstitialAd.OnAdFullScreenContentClosed += OnAdClosed;
@@ -162,7 +173,8 @@ public class AdMobManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Interstitial ad is not ready yet.");
-            onAdFinish?.Invoke();
+            
+            MainThreadDispatcher.Enqueue(() => onAdFinish?.Invoke());
         }
     }
     

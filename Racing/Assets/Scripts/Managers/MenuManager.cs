@@ -103,8 +103,6 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
         UpdateReflectionProbe(0.1f);
-        
-        AdMobManager.Get().ShowInterstitialAd(() => { });
     }
 
     private void OnDestroy()

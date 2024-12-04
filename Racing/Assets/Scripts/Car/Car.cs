@@ -16,6 +16,7 @@ public class Car : MonoBehaviour
 {
     [Header("Car Info")]
     [SerializeField] public string carName = "Car";
+    [SerializeField] public List<Material> randomColorPool;
     [Range(0f, 1f)] [SerializeField] public float maxSpeed = 1f;
     [Range(0f, 1f)] [SerializeField] public float acceleration = 1f;
     [Range(0f, 1f)] [SerializeField] public float handling = 1f;
@@ -267,6 +268,12 @@ public class Car : MonoBehaviour
         Material[] materials = carRenderer.materials;
         materials[_mainColorMatId] = newMaterialInstance;
         carRenderer.materials = materials;
+    }
+
+    public void SetRandomColor()
+    {
+        Material color = randomColorPool[Random.Range(0, randomColorPool.Count)];
+        SetColor(color);
     }
 
     private void Update()

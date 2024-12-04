@@ -36,8 +36,6 @@ public class CarBot : CarController
         
         car = GetComponent<Car>();
         _selfCollider = GetComponentInChildren<Collider>();
-        
-        car.isBot = true;
     }
 
     private void Start()
@@ -52,6 +50,8 @@ public class CarBot : CarController
         
         if (!playerAutopilot)
         {
+            car.isBot = true;
+            
             GameObject o = Instantiate(raceManager.playerNameCanvas, transform.position, Quaternion.identity);
             o.transform.parent = transform;
 

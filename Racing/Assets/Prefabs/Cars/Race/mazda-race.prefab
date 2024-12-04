@@ -305,6 +305,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carName: Car
+  randomColorPool:
+  - {fileID: 2100000, guid: 7a0459ae5d4c87246a0f609f7bc7c23b, type: 2}
+  - {fileID: 2100000, guid: f60e806c7fac6254ea231bc4da185972, type: 2}
+  - {fileID: 2100000, guid: e3de4881ccca2b14496378a09c62c8af, type: 2}
+  - {fileID: 2100000, guid: 8a059d06057e79a49b77f3051678d732, type: 2}
+  - {fileID: 2100000, guid: 1916ec74b79a5e641befab0676d55430, type: 2}
+  - {fileID: 2100000, guid: e87bfffdb30b6b04eabc90a06212fda8, type: 2}
+  - {fileID: 2100000, guid: f0a8a13532305ca4fae42efa3d8230d5, type: 2}
+  - {fileID: 2100000, guid: 96f144a7ca959eb45acfcbb2acae11b6, type: 2}
   maxSpeed: 1
   acceleration: 1
   handling: 1

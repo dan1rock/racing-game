@@ -221,11 +221,7 @@ public class RaceManager : MonoBehaviour
             carBot.fallBehindAdjustment = difficultyFallBehindAdjustment[(int)_levelManager.difficulty];
             carBot.fallAheadAdjustment = difficultyFallAheadAdjustment[(int)_levelManager.difficulty];
             
-            if (GameManager.Get())
-            {
-                int color = Random.Range(0, GameManager.Get().carColors.Count);
-                bot.GetComponent<Car>().SetColor(GameManager.Get().carColors[color]);
-            }
+            bot.GetComponent<Car>().SetRandomColor();
         }
 
         _botsN++;

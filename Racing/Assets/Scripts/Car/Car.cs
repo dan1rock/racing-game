@@ -787,13 +787,23 @@ public class Car : MonoBehaviour
         _levelManager.SnapCamera();
     }
 
-    public IEnumerator StartEngine()
+    public IEnumerator StartEngine(float delay = 0f)
     {
+        if (engineOn) yield break;
         if (_engineStarting) yield break;
+        
+        if (delay > 0f)
+        {
+            yield return new WaitForSeconds(delay);
+        }
         
         if (_nightMode)
         {
-            _frontLightSource?.SetActive(true);
+            GraphicsSmoke headlightsQuality = Settings.Get().headlightsQuality;
+            bool allowHeadlight = headlightsQuality == GraphicsSmoke.All ||
+                                  (headlightsQuality == GraphicsSmoke.Player && (!isBot || menuMode));
+            
+            _frontLightSource?.SetActive(allowHeadlight);
             _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
             _breakFlareEmissionColor = _redLightEmissionColor;
         }
@@ -858,6 +868,7 @@ public class Car : MonoBehaviour
 
     public IEnumerator StopEngine()
     {
+        if (!engineOn) yield break;
         if (_engineStarting) yield break;
         
         if (_nightMode)

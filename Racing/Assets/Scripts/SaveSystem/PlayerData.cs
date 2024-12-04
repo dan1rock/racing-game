@@ -3,6 +3,7 @@ public class PlayerData
 {
     public QualityLevel menuSelectedQuality;
     public GraphicsSmoke graphicsSmokeLevel;
+    public GraphicsSmoke graphicsHeadlightsLevel;
     
     public DayTime menuSelectedDayTime;
     public Weather menuSelectedWeather;
@@ -23,6 +24,7 @@ public class PlayerData
     {
         menuSelectedQuality = player.graphicsQuality;
         graphicsSmokeLevel = player.smokeQuality;
+        graphicsHeadlightsLevel = player.headlightsQuality;
         
         menuSelectedDayTime = player.dayTime;
         menuSelectedWeather = player.weather;

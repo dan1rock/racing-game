@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public QualityLevel graphicsQuality;
     public GraphicsSmoke smokeQuality;
+    public GraphicsSmoke headlightsQuality;
     
     public DayTime dayTime;
     public Weather weather;
@@ -159,6 +160,7 @@ public class GameManager : MonoBehaviour
 
             graphicsQuality = playerData.menuSelectedQuality;
             smokeQuality = playerData.graphicsSmokeLevel;
+            headlightsQuality = playerData.graphicsHeadlightsLevel;
             
             dayTime = playerData.menuSelectedDayTime;
             weather = playerData.menuSelectedWeather;
@@ -193,6 +195,8 @@ public class GameManager : MonoBehaviour
     {
         graphicsQuality = settings.graphicsPreset;
         smokeQuality = settings.smokeQuality;
+        headlightsQuality = settings.headlightsQuality;
+        
         SavePlayer();
     }
 

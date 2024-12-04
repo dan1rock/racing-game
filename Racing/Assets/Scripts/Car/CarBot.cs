@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CarBot : CarController
 {
@@ -35,7 +36,7 @@ public class CarBot : CarController
         
         car = GetComponent<Car>();
         _selfCollider = GetComponentInChildren<Collider>();
-
+        
         car.isBot = true;
     }
 
@@ -374,8 +375,10 @@ public class CarBot : CarController
     public void ActivateBot()
     {
         if (_isActive) return;
-        
-        car.StartCoroutine(car.StartEngine());
+
+        float delay = Random.Range(0, 1f);
+        delay *= delay;
+        car.StartCoroutine(car.StartEngine(delay * 0.3f));
         _isActive = true;
         _launchTime = Time.time + 3f;
     }

@@ -13,6 +13,7 @@ public class Settings : MonoBehaviour
     [SerializeField] public float masterVolume = 1f;
     [SerializeField] public QualityLevel graphicsPreset = QualityLevel.Medium;
     [SerializeField] public GraphicsSmoke smokeQuality = GraphicsSmoke.Player;
+    [SerializeField] public GraphicsSmoke headlightsQuality = GraphicsSmoke.All;
     
     private static Settings _instance;
 
@@ -32,6 +33,7 @@ public class Settings : MonoBehaviour
         {
             graphicsPreset = GameManager.Get().graphicsQuality;
             smokeQuality = GameManager.Get().smokeQuality;
+            headlightsQuality = GameManager.Get().headlightsQuality;
             masterVolume = GameManager.Get().masterVolume;
         }
         

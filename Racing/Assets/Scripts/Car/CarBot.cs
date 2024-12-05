@@ -8,7 +8,7 @@ public class CarBot : CarController
     public float speedLimit = Mathf.Infinity;
     public bool dontBreak = false;
     public float maxAcceleration = 1f;
-    public float steeringReaction = 2f;
+    public float steeringReaction = 1.2f;
 
     public float fallBehindAdjustment = 1f;
     public float fallAheadAdjustment = 1f;

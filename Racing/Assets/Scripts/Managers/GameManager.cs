@@ -57,10 +57,11 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
         _instance = this;
-        _adMobManager = FindFirstObjectByType<AdMobManager>();
-        _adMobManager?.InitializeAds();
         
         LoadSave();
+        
+        _adMobManager = FindFirstObjectByType<AdMobManager>();
+        _adMobManager?.InitializeAds();
 
         Application.targetFrameRate = 60;
 

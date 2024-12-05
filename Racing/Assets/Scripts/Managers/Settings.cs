@@ -67,4 +67,14 @@ public class Settings : MonoBehaviour
 
         GameManager.Get().masterVolume = masterVolume;
     }
+
+    public void MuteGame()
+    {
+        AudioListener.volume = 0f;
+    }
+
+    public void RestoreVolume()
+    {
+        AudioListener.volume = masterVolume;
+    }
 }

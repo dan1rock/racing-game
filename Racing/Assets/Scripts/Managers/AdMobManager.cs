@@ -156,10 +156,17 @@ public class AdMobManager : MonoBehaviour
         if (_interstitialAd != null && _interstitialAd.CanShowAd() && cooldownReady)
         {
             Debug.Log("Showing interstitial ad.");
+
+            Time.timeScale = 0f;
+            Settings.Get().MuteGame();
+            
             void OnAdClosed()
             {
                 MainThreadDispatcher.Enqueue(() =>
                 {
+                    Time.timeScale = 1f;
+                    Settings.Get().RestoreVolume();
+                    
                     try
                     {
                         _interstitialAd.OnAdFullScreenContentClosed -= OnAdClosed;

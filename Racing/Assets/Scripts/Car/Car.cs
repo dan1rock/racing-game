@@ -818,7 +818,7 @@ public class Car : MonoBehaviour
         _engineStarting = true;
         
         _gearShiftSource.clip = engineStartClip;
-        _gearShiftSource.pitch = 1f;
+        _gearShiftSource.pitch = Random.Range(0.95f, 1.05f);
         _gearShiftSource.Play();
 
         yield return new WaitForSeconds(0.4f);

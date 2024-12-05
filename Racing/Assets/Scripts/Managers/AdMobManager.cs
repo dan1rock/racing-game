@@ -65,13 +65,20 @@ public class AdMobManager : MonoBehaviour
             LoadInterstitialAd();
             return;
         }
-        
-        MobileAds.Initialize(initStatus =>
+
+        try
         {
-            Debug.Log("Ads initialized");
-            isInitialized = true;
-            LoadInterstitialAd();
-        });
+            MobileAds.Initialize(initStatus =>
+            {
+                Debug.Log("Ads initialized");
+                isInitialized = true;
+                LoadInterstitialAd();
+            });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     public void LoadBanner()

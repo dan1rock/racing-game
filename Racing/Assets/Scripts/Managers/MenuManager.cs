@@ -87,8 +87,6 @@ public class MenuManager : MonoBehaviour
         
         SetMenuState(GameManager.Get().menuState);
         
-        SpawnSelectedCar();
-        
         SetTotalStars();
         
         UpdateSelectedMap();
@@ -103,6 +101,7 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
         UpdateReflectionProbe(0.1f);
+        SpawnSelectedCar();
     }
 
     private void OnDestroy()

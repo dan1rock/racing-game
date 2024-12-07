@@ -92,3 +92,12 @@ MonoBehaviour:
   moveSpeed: 10
   mouseSensitivity: 5
   rollSpeed: 15
+  resolutions:
+  - width: 2860
+    height: 1320
+  - width: 2688
+    height: 1242
+  - width: 2752
+    height: 2064
+  - width: 2560
+    height: 1600

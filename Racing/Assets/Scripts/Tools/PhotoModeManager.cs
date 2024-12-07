@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -11,6 +12,21 @@ public class PhotoModeManager : MonoBehaviour
     public float moveSpeed = 5f;
     public float mouseSensitivity = 2f;
     public float rollSpeed = 2f;
+    
+    [Serializable]
+    public struct ResolutionSetting
+    {
+        public int width;
+        public int height;
+    }
+
+    public ResolutionSetting[] resolutions = 
+    {
+        new() { width = 2860, height = 1320 },
+        new() { width = 2688, height = 1242 },
+        new() { width = 2752, height = 2064 },
+        new() { width = 2560, height = 1600 }
+    };
 
     private Canvas[] _allCanvas;
 
@@ -30,6 +46,11 @@ public class PhotoModeManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePhotoMode();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            StartCoroutine(CaptureRoutine());
         }
 
         if (isPhotoModeActive)
@@ -108,6 +129,49 @@ public class PhotoModeManager : MonoBehaviour
 
         yield return null;
         _cinemachineBrain.DefaultBlend = _defaultBlend;
+    }
+    
+    private IEnumerator CaptureRoutine()
+    {
+        float timeScale = Time.timeScale;
+        Time.timeScale = 0f;
+        
+        ResolutionSetting original = new() { width = Screen.width, height = Screen.height};
+        bool fullscreen = Screen.fullScreen;
+        
+        foreach (ResolutionSetting res in resolutions)
+        {
+            Screen.SetResolution(res.width, res.height, false);
+            
+            yield return null;
+            
+            string parentDir = Path.Combine(Application.persistentDataPath, "Recordings");
+            if (!Directory.Exists(parentDir))
+            {
+                Directory.CreateDirectory(parentDir);
+            }
+
+            string directoryPath = Path.Combine(parentDir, $"{res.width}x{res.height}");
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            
+            int existingCount = Directory.GetFiles(directoryPath, "screenshot_*.png").Length;
+            int takeNumber = existingCount + 1;
+            string takeNumberStr = takeNumber.ToString("D3");
+            
+            string fileName = Path.Combine(directoryPath, $"screenshot_{res.width}x{res.height}_{takeNumberStr}.png");
+            
+            ScreenCapture.CaptureScreenshot(fileName);
+            Debug.Log($"Captured screenshot at {res.width}x{res.height} -> {fileName}");
+            
+            yield return null;
+        }
+        
+        Screen.SetResolution(original.width, original.height, fullscreen);
+
+        Time.timeScale = timeScale;
     }
 
     private float sprintModifier = 2f;

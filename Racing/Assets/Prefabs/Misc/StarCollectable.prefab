@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1794930338417608567}
   - component: {fileID: 4810563967078213721}
   - component: {fileID: 1492498434728921397}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StarCollectable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ MonoBehaviour:
   floatSpeed: 2
   floatRange: 0.1
   isCollected: 0
-  collectableId: 0
+  id: 0
 --- !u!1001 &6303536827998351166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,6 +142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Star
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1006bd7934fa51b4f9b739f4622a6d6f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -934,6 +934,7 @@ public class Car : MonoBehaviour
     public void SetShowcaseMode()
     {
         _frontLightMat?.SetColor(EmissionColor, _frontEmissionColor);
+        _frontLightSource.SetActive(true);
         _breakFlareEmissionColor = _redLightEmissionColor;
     }
 

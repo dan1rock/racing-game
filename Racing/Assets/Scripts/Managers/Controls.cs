@@ -11,7 +11,8 @@ public enum ControlKey
     Handbrake,
     ResetCar,
     CycleCar,
-    StopEngine
+    StopEngine,
+    Rewind
 }
 
 public class Controls : MonoBehaviour

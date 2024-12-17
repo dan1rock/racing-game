@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using Unity.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -17,10 +18,10 @@ public class Car : MonoBehaviour
     [Header("Car Info")]
     [SerializeField] public string carName = "Car";
     [SerializeField] public List<Material> randomColorPool;
-    [Range(0f, 1f)] [SerializeField] public float maxSpeed = 1f;
-    [Range(0f, 1f)] [SerializeField] public float acceleration = 1f;
-    [Range(0f, 1f)] [SerializeField] public float handling = 1f;
-    [Range(0f, 1f)] [SerializeField] public float difficulty = 1f;
+    [UnityEngine.Range(0f, 1f)] [SerializeField] public float maxSpeed = 1f;
+    [UnityEngine.Range(0f, 1f)] [SerializeField] public float acceleration = 1f;
+    [UnityEngine.Range(0f, 1f)] [SerializeField] public float handling = 1f;
+    [UnityEngine.Range(0f, 1f)] [SerializeField] public float difficulty = 1f;
     
     private Transform _tireFr;
     private Transform _tireFl;
@@ -120,6 +121,7 @@ public class Car : MonoBehaviour
     [HideInInspector] public bool engineOn = false;
     [HideInInspector] public bool handbrake = false;
     [HideInInspector] public bool forceStop = false;
+    [HideInInspector] public bool rewind = false;
     
     private bool _nightMode = false;
     private bool _engineStarting = false;
@@ -301,6 +303,7 @@ public class Car : MonoBehaviour
         HandleDrift();
         HandleLights();
         HandleReset();
+        HandleRewind();
 
         rbVelocity = _rb.linearVelocity;
     }
@@ -565,6 +568,79 @@ public class Car : MonoBehaviour
         {
             _driftCounterSteering = Mathf.Lerp(_driftCounterSteering, 0f, Time.fixedDeltaTime * 5f);
         }
+    }
+
+    private bool _wasRewinding = false;
+    private List<Vector3> _rewindPositions = new();
+    private List<Quaternion> _rewindRotations = new();
+    private List<Vector3> _rewindVelocities = new();
+    private List<Vector3> _rewindAngularVelocities = new();
+    private List<float> _rewindSteering = new();
+    private List<float> _rewindCounterSteering = new();
+    
+    private void HandleRewind()
+    {
+        if (_levelManager)
+        {
+            rewind = _levelManager.rewind;
+        }
+        
+        if (rewind)
+        {
+            RewindState();
+        }
+        else
+        {
+            RecordState();
+        }
+    }
+
+    private void RecordState()
+    {
+        if (_wasRewinding)
+        {
+            _rb.isKinematic = false;
+            
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _rb.ResetInertiaTensor();
+
+            transform.position = _rewindPositions[0];
+            transform.rotation = _rewindRotations[0];
+            _rb.linearVelocity = _rewindVelocities[0];
+            _rb.angularVelocity = _rewindAngularVelocities[0];
+
+            _wasRewinding = false;
+        }
+        
+        _rewindPositions.Insert(0, transform.position);
+        _rewindRotations.Insert(0, transform.rotation);
+        _rewindVelocities.Insert(0, _rb.linearVelocity);
+        _rewindAngularVelocities.Insert(0, _rb.angularVelocity);
+        _rewindSteering.Insert(0, steering);
+        _rewindCounterSteering.Insert(0, _driftCounterSteering);
+    }
+
+    private void RewindState()
+    {
+        _rb.isKinematic = true;
+        
+        _rb.MovePosition(_rewindPositions[0]);
+        _rewindPositions.RemoveAt(0);
+        
+        _rb.MoveRotation(_rewindRotations[0]);
+        _rewindRotations.RemoveAt(0);
+
+        steering = _rewindSteering[0];
+        _rewindSteering.RemoveAt(0);
+
+        _driftCounterSteering = _rewindCounterSteering[0];
+        _rewindCounterSteering.RemoveAt(0);
+        
+        _rewindVelocities.RemoveAt(0);
+        _rewindAngularVelocities.RemoveAt(0);
+
+        _wasRewinding = true;
     }
 
     private void OnDrawGizmos()

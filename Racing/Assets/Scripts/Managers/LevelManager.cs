@@ -71,6 +71,7 @@ public class LevelManager : MonoBehaviour
     public bool wrongDirectionActive = false;
     public bool resetCar = false;
     public bool carStarted = false;
+    public bool rewind = false;
     private bool _playerFinished = false;
 
     public CheckPoint lastCheckPoint;
@@ -263,6 +264,17 @@ public class LevelManager : MonoBehaviour
             _activeCar += 1;
             if (_activeCar >= _cars.Count) _activeCar = 0;
             UpdateTargetCar();
+        }
+
+        rewind = _controls.GetKey(ControlKey.Rewind);
+
+        if (rewind)
+        {
+            LockCamera();
+        }
+        else
+        {
+            UnlockCamera();
         }
     }
 
@@ -482,67 +494,103 @@ public class LevelManager : MonoBehaviour
             Destroy(particles, 2f);
         }
     }
+
+    private CinemachineTransposer _transposer;
+    private CinemachineFramingTransposer _framingTransposer;
+    private CinemachineComposer _composer;
+
+    private float _originalDamping;
+    private float _originalYDamping;
+    private float _originalZDamping;
+
+    private float _originalFramingXDamping;
+    private float _originalFramingYDamping;
+    private float _originalFramingZDamping;
+
+    private float _originalHorizontalDampening;
+    private float _originalVerticalDampening;
     
-    private IEnumerator SnapCameraToTarget()
+    private void LockCamera()
     {
         cameraTarget.rotation = player.transform.rotation;
         
-        CinemachineTransposer transposer = _cinemachineCamera.GetCinemachineComponent<CinemachineTransposer>();
-        CinemachineFramingTransposer framingTransposer = _cinemachineCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        CinemachineComposer composer = _cinemachineCamera.GetCinemachineComponent<CinemachineComposer>();
+        if (!_transposer)
+        {
+            _transposer = _cinemachineCamera.GetCinemachineComponent<CinemachineTransposer>();
+            
+            _originalDamping = _transposer ? _transposer.m_XDamping : 0;
+            _originalYDamping = _transposer ? _transposer.m_YDamping : 0;
+            _originalZDamping = _transposer ? _transposer.m_ZDamping : 0;
+        }
         
-        float originalDamping = transposer ? transposer.m_XDamping : 0;
-        float originalYDamping = transposer ? transposer.m_YDamping : 0;
-        float originalZDamping = transposer ? transposer.m_ZDamping : 0;
-
-        float originalFramingXDamping = framingTransposer ? framingTransposer.m_XDamping : 0;
-        float originalFramingYDamping = framingTransposer ? framingTransposer.m_YDamping : 0;
-        float originalFramingZDamping = framingTransposer ? framingTransposer.m_ZDamping : 0;
-
-        float originalHorizontalDampening = composer ? composer.m_HorizontalDamping : 0;
-        float originalVerticalDampening = composer ? composer.m_VerticalDamping : 0;
+        if (!_framingTransposer)
+        {
+            _framingTransposer = _cinemachineCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            
+            _originalFramingXDamping = _framingTransposer ? _framingTransposer.m_XDamping : 0;
+            _originalFramingYDamping = _framingTransposer ? _framingTransposer.m_YDamping : 0;
+            _originalFramingZDamping = _framingTransposer ? _framingTransposer.m_ZDamping : 0;
+        }
         
-        if (transposer)
+        if (!_composer)
         {
-            transposer.m_XDamping = 0;
-            transposer.m_YDamping = 0;
-            transposer.m_ZDamping = 0;
+            _composer = _cinemachineCamera.GetCinemachineComponent<CinemachineComposer>();
+
+            _originalHorizontalDampening = _composer ? _composer.m_HorizontalDamping : 0;
+            _originalVerticalDampening = _composer ? _composer.m_VerticalDamping : 0;
+        }
+        
+        if (_transposer)
+        {
+            _transposer.m_XDamping = 0;
+            _transposer.m_YDamping = 0;
+            _transposer.m_ZDamping = 0;
         }
 
-        if (framingTransposer)
+        if (_framingTransposer)
         {
-            framingTransposer.m_XDamping = 0;
-            framingTransposer.m_YDamping = 0;
-            framingTransposer.m_ZDamping = 0;
+            _framingTransposer.m_XDamping = 0;
+            _framingTransposer.m_YDamping = 0;
+            _framingTransposer.m_ZDamping = 0;
         }
 
-        if (composer)
+        if (_composer)
         {
-            composer.m_HorizontalDamping = 0;
-            composer.m_VerticalDamping = 0;
+            _composer.m_HorizontalDamping = 0;
+            _composer.m_VerticalDamping = 0;
         }
+    }
+
+    private void UnlockCamera()
+    {
+        if (_transposer)
+        {
+            _transposer.m_XDamping = _originalDamping;
+            _transposer.m_YDamping = _originalYDamping;
+            _transposer.m_ZDamping = _originalZDamping;
+        }
+
+        if (_framingTransposer)
+        {
+            _framingTransposer.m_XDamping = _originalFramingXDamping;
+            _framingTransposer.m_YDamping = _originalFramingYDamping;
+            _framingTransposer.m_ZDamping = _originalFramingZDamping;
+        }
+        
+        if (_composer)
+        {
+            _composer.m_HorizontalDamping = _originalHorizontalDampening;
+            _composer.m_VerticalDamping = _originalVerticalDampening;
+        }
+    }
+    
+    private IEnumerator SnapCameraToTarget()
+    {
+        LockCamera();
         
         yield return null;
         
-        if (transposer)
-        {
-            transposer.m_XDamping = originalDamping;
-            transposer.m_YDamping = originalYDamping;
-            transposer.m_ZDamping = originalZDamping;
-        }
-
-        if (framingTransposer)
-        {
-            framingTransposer.m_XDamping = originalFramingXDamping;
-            framingTransposer.m_YDamping = originalFramingYDamping;
-            framingTransposer.m_ZDamping = originalFramingZDamping;
-        }
-        
-        if (composer)
-        {
-            composer.m_HorizontalDamping = originalHorizontalDampening;
-            composer.m_VerticalDamping = originalVerticalDampening;
-        }
+        UnlockCamera();   
     }
 
     public void SnapCamera()

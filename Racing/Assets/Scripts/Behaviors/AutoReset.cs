@@ -11,6 +11,7 @@ public class AutoReset : MonoBehaviour
         
         Car car = other.transform.parent.GetComponent<Car>();
         
+        if (!car) return;
         if (!car.GetComponent<CarPlayer>()) return;
         
         CarBot bot = car.GetComponent<CarBot>();
@@ -30,6 +31,7 @@ public class AutoReset : MonoBehaviour
         
         Car car = other.transform.parent.GetComponent<Car>();
 
+        if (!car) return;
         if (!car.GetComponent<CarPlayer>()) return;
         
         CarBot bot = car.GetComponent<CarBot>();

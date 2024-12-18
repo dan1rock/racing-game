@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6855242182973597388}
   - component: {fileID: 3146453628560490338}
   - component: {fileID: 6507000245167948796}
+  - component: {fileID: 5047805932586912892}
   m_Layer: 11
   m_Name: KnockBarrel
   m_TagString: Untagged
@@ -148,5 +149,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77c130c6457e3214e8b1f04eda7e9363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5047805932586912892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611983923337241792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6665849e9ae4eea4dac92c0cc16e8cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

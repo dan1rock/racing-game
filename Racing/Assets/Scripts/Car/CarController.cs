@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -83,5 +84,46 @@ public class CarController : MonoBehaviour
         newPos.y = raceManager.leaderboardPositions[currentPosition - 1].position.y;
 
         leaderboardPos.position = Vector3.Lerp(leaderboardPos.position, newPos, Time.deltaTime * 5f);
+    }
+
+    private readonly List<int> _rewindNodeIds = new();
+    private readonly List<int> _rewindLaps = new();
+    protected void HandleRewind()
+    {
+        if (!levelManager) return;
+
+        if (levelManager.rewind)
+        {
+            RewindState();
+        }
+        else
+        {
+            RecordState();
+        }
+    }
+
+    private void RecordState()
+    {
+        _rewindNodeIds.Insert(0, currentNodeId);
+        _rewindLaps.Insert(0, currentLap);
+        
+        const int maxRewindSteps = 30 * 60;
+
+        if (_rewindNodeIds.Count > maxRewindSteps)
+        {
+            _rewindNodeIds.RemoveAt(_rewindNodeIds.Count - 1);
+            _rewindLaps.RemoveAt(_rewindLaps.Count - 1);
+        }
+    }
+
+    private void RewindState()
+    {
+        if (_rewindNodeIds.Count <= 1) return;
+        
+        currentNodeId = _rewindNodeIds[0];
+        _rewindNodeIds.RemoveAt(0);
+
+        currentLap = _rewindLaps[0];
+        _rewindLaps.RemoveAt(0);
     }
 }

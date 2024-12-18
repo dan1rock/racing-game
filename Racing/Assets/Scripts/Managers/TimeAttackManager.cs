@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -45,6 +47,63 @@ public class TimeAttackManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        HandleRewind();
+    }
+
+    private readonly List<float> _rewindOverallTimes = new();
+    private readonly List<float> _rewindLapTimes = new();
+    private readonly List<float> _rewindBestLapTimes = new();
+    
+    private void HandleRewind()
+    {
+        if (_levelManager.rewind)
+        {
+            RewindState();
+        }
+        else
+        {
+            RecordState();
+        }
+    }
+
+    private void RecordState()
+    {
+        _rewindOverallTimes.Insert(0, overallTime);
+        _rewindLapTimes.Insert(0, _lapTime);
+        _rewindBestLapTimes.Insert(0, _bestLapTime);
+        
+        const int maxRewindSteps = 30 * 60;
+
+        if (_rewindOverallTimes.Count > maxRewindSteps)
+        {
+            _rewindOverallTimes.RemoveAt(_rewindOverallTimes.Count - 1);
+            _rewindLapTimes.RemoveAt(_rewindLapTimes.Count - 1);
+            _rewindBestLapTimes.RemoveAt(_rewindBestLapTimes.Count - 1);
+        }
+    }
+
+    private void RewindState()
+    {
+        if (_rewindOverallTimes.Count <= 1) return;
+        
+        overallTime = _rewindOverallTimes[0];
+        _rewindOverallTimes.RemoveAt(0);
+
+        _lapTime = _rewindLapTimes[0];
+        _rewindLapTimes.RemoveAt(0);
+
+        _bestLapTime = _rewindBestLapTimes[0];
+        _rewindBestLapTimes.RemoveAt(0);
+        
+        lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
+        lapTimeText.text = FormatTime(_lapTime);
+        overallTimeText.text = FormatTime(overallTime);
+
+        bestLapTimeText.text = _bestLapTime < Mathf.Infinity ? FormatTime(_bestLapTime) : "??:??:???";
     }
 
     private void Update()

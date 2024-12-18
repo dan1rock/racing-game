@@ -94,7 +94,7 @@ public class CheckPoint : MonoBehaviour
         bool wrongDirection = Vector3.Dot(direction, playerVelocity) < 0f;
         _levelManager.wrongDirection = wrongDirection;
 
-        if (wrongDirection)
+        if (wrongDirection && !_levelManager.rewind)
         {
             _wrongDirectionTime += Time.deltaTime;
         }

@@ -250,6 +250,11 @@ public class LevelManager : MonoBehaviour
         _reflectionProbe.RenderProbe();
     }
 
+    private void FixedUpdate()
+    {
+        HandleRewind();
+    }
+
     private void Update()
     {
         HandleInput();
@@ -270,7 +275,7 @@ public class LevelManager : MonoBehaviour
 
         if (rewind)
         {
-            LockCamera();
+            LockCamera(Time.deltaTime * 10f);
         }
         else
         {
@@ -307,6 +312,48 @@ public class LevelManager : MonoBehaviour
         {
             _lerpSpeed = 0f;
         }
+    }
+
+    private readonly List<CheckPoint> _rewindCheckpoints = new();
+    private readonly List<int> _rewindLaps = new();
+    private void HandleRewind()
+    {
+        if (rewind)
+        {
+            RewindState();
+        }
+        else
+        {
+            RecordState();
+        }
+    }
+
+    private void RecordState()
+    {
+        const int maxRewindSteps = 30 * 60;
+        
+        _rewindCheckpoints.Insert(0, lastCheckPoint);
+        _rewindLaps.Insert(0, currentLap);
+
+        if (_rewindCheckpoints.Count > maxRewindSteps)
+        {
+            _rewindCheckpoints.RemoveAt(_rewindCheckpoints.Count - 1);
+            _rewindLaps.RemoveAt(_rewindLaps.Count - 1);
+        }
+    }
+
+    private void RewindState()
+    {
+        if (_rewindCheckpoints.Count <= 1) return;
+
+        lastCheckPoint = _rewindCheckpoints[0];
+        _rewindCheckpoints.RemoveAt(0);
+
+        currentLap = _rewindLaps[0];
+        _rewindLaps.RemoveAt(0);
+        
+        lastCheckPoint.Activate(false);
+        lastCheckPoint.GetNext().Activate(true);
     }
 
     private void UpdateTargetCar()
@@ -510,7 +557,7 @@ public class LevelManager : MonoBehaviour
     private float _originalHorizontalDampening;
     private float _originalVerticalDampening;
     
-    private void LockCamera()
+    private void LockCamera(float lerpSpeed = 1f)
     {
         cameraTarget.rotation = player.transform.rotation;
         
@@ -542,22 +589,22 @@ public class LevelManager : MonoBehaviour
         
         if (_transposer)
         {
-            _transposer.m_XDamping = 0;
-            _transposer.m_YDamping = 0;
-            _transposer.m_ZDamping = 0;
+            _transposer.m_XDamping = Mathf.Lerp(_transposer.m_XDamping, 0, lerpSpeed);
+            _transposer.m_YDamping = Mathf.Lerp(_transposer.m_YDamping, 0, lerpSpeed);
+            _transposer.m_ZDamping = Mathf.Lerp(_transposer.m_ZDamping, 0, lerpSpeed);
         }
 
         if (_framingTransposer)
         {
-            _framingTransposer.m_XDamping = 0;
-            _framingTransposer.m_YDamping = 0;
-            _framingTransposer.m_ZDamping = 0;
+            _framingTransposer.m_XDamping = Mathf.Lerp(_framingTransposer.m_XDamping, 0, lerpSpeed);
+            _framingTransposer.m_YDamping = Mathf.Lerp(_framingTransposer.m_YDamping, 0, lerpSpeed);
+            _framingTransposer.m_ZDamping = Mathf.Lerp(_framingTransposer.m_ZDamping, 0, lerpSpeed);
         }
 
         if (_composer)
         {
-            _composer.m_HorizontalDamping = 0;
-            _composer.m_VerticalDamping = 0;
+            _composer.m_HorizontalDamping = Mathf.Lerp(_composer.m_HorizontalDamping, 0, lerpSpeed);
+            _composer.m_VerticalDamping = Mathf.Lerp(_composer.m_VerticalDamping, 0, lerpSpeed);
         }
     }
 

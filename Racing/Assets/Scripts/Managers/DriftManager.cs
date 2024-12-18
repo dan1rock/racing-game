@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -91,6 +92,56 @@ public class DriftManager : MonoBehaviour
         multiplierRaiseTime = newList;
     }
 
+    private void FixedUpdate()
+    {
+        HandleRewind();
+    }
+
+    private List<float> _rewindOverallScores = new();
+    private List<float> _rewindBestSingleScores = new();
+    
+    private void HandleRewind()
+    {
+        if (_levelManager.rewind)
+        {
+            RewindState();
+        }
+        else
+        {
+            RecordState();
+        }
+    }
+
+    private void RecordState()
+    {
+        _rewindOverallScores.Insert(0, _overallScore);
+        _rewindBestSingleScores.Insert(0, _bestSingleScore);
+        
+        const int maxRewindSteps = 30 * 60;
+
+        if (_rewindOverallScores.Count > maxRewindSteps)
+        {
+            _rewindOverallScores.RemoveAt(_rewindOverallScores.Count - 1);
+            _rewindBestSingleScores.RemoveAt(_rewindBestSingleScores.Count - 1);
+        }
+    }
+
+    private void RewindState()
+    {
+        if (_rewindOverallScores.Count <= 1) return;
+
+        _overallScore = _rewindOverallScores[0];
+        _rewindOverallScores.RemoveAt(0);
+
+        _bestSingleScore = _rewindBestSingleScores[0];
+        _rewindBestSingleScores.RemoveAt(0);
+        
+        lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
+        overallDriftScore.text = ((int)_overallScore).ToString();
+        
+        OnDriftFail(false);
+    }
+
     private void Update()
     {
         if (_levelManager.raceMode != RaceMode.Drift) return;
@@ -174,7 +225,7 @@ public class DriftManager : MonoBehaviour
         }
     }
 
-    public void OnDriftFail()
+    public void OnDriftFail(bool displayFail = true)
     {
         if (!_isDrifting) return;
         
@@ -190,6 +241,8 @@ public class DriftManager : MonoBehaviour
 
         _lastDriftFail = Time.time;
 
+        if (!displayFail) return;
+        
         StartCoroutine(DriftFailAnimation());
     }
     

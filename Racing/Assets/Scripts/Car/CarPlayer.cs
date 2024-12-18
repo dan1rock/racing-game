@@ -39,6 +39,7 @@ public class CarPlayer : CarController
     {
         HandleRacingLine();
         CalculateTotalDistance();
+        HandleRewind();
     }
 
     private void HandlePlayerInput()

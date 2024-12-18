@@ -78,6 +78,7 @@ public class CarBot : CarController
         
         HandleRacingLine();
         CalculateTotalDistance();
+        HandleRewind();
         
         if (!_isActive) return;
         

@@ -72,6 +72,11 @@ public class RaceManager : MonoBehaviour
         posText.text = $"P{_levelManager.player.currentPosition} / {_levelManager.bots + 1}";
         
         UpdateDistances();
+
+        if (_levelManager.rewind)
+        {
+            lapsText.text = $"Lap {_levelManager.currentLap} / {_levelManager.laps}";
+        }
     }
 
     private void UpdateDistances()

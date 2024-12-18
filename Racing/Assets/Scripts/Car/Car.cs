@@ -570,13 +570,14 @@ public class Car : MonoBehaviour
         }
     }
 
+    private bool _rewindProtection = false;
     private bool _wasRewinding = false;
-    private List<Vector3> _rewindPositions = new();
-    private List<Quaternion> _rewindRotations = new();
-    private List<Vector3> _rewindVelocities = new();
-    private List<Vector3> _rewindAngularVelocities = new();
-    private List<float> _rewindSteering = new();
-    private List<float> _rewindCounterSteering = new();
+    private readonly List<Vector3> _rewindPositions = new();
+    private readonly List<Quaternion> _rewindRotations = new();
+    private readonly List<Vector3> _rewindVelocities = new();
+    private readonly List<Vector3> _rewindAngularVelocities = new();
+    private readonly List<float> _rewindSteering = new();
+    private readonly List<float> _rewindCounterSteering = new();
     
     private void HandleRewind()
     {
@@ -595,6 +596,13 @@ public class Car : MonoBehaviour
         }
     }
 
+    private IEnumerator DisableRewindProtection(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        _rewindProtection = false;
+    }
+
     private void RecordState()
     {
         if (_wasRewinding)
@@ -604,14 +612,21 @@ public class Car : MonoBehaviour
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.ResetInertiaTensor();
-
-            transform.position = _rewindPositions[0];
-            transform.rotation = _rewindRotations[0];
-            _rb.linearVelocity = _rewindVelocities[0];
-            _rb.angularVelocity = _rewindAngularVelocities[0];
+            
+            if (_rewindPositions.Count >= 1)
+            {
+                transform.position = _rewindPositions[0];
+                transform.rotation = _rewindRotations[0];
+                _rb.linearVelocity = _rewindVelocities[0];
+                _rb.angularVelocity = _rewindAngularVelocities[0];
+            }
 
             _wasRewinding = false;
+
+            StartCoroutine(DisableRewindProtection(0.1f));
         }
+
+        const int maxRewindSteps = 30 * 60;
         
         _rewindPositions.Insert(0, transform.position);
         _rewindRotations.Insert(0, transform.rotation);
@@ -619,11 +634,23 @@ public class Car : MonoBehaviour
         _rewindAngularVelocities.Insert(0, _rb.angularVelocity);
         _rewindSteering.Insert(0, steering);
         _rewindCounterSteering.Insert(0, _driftCounterSteering);
+        
+        if (_rewindPositions.Count > maxRewindSteps)
+        {
+            _rewindPositions.RemoveAt(_rewindPositions.Count - 1);
+            _rewindRotations.RemoveAt(_rewindRotations.Count - 1);
+            _rewindVelocities.RemoveAt(_rewindVelocities.Count - 1);
+            _rewindAngularVelocities.RemoveAt(_rewindAngularVelocities.Count - 1);
+            _rewindSteering.RemoveAt(_rewindSteering.Count - 1);
+            _rewindCounterSteering.RemoveAt(_rewindCounterSteering.Count - 1);
+        }
     }
 
     private void RewindState()
     {
         _rb.isKinematic = true;
+
+        if (_rewindPositions.Count <= 1) return;
         
         _rb.MovePosition(_rewindPositions[0]);
         _rewindPositions.RemoveAt(0);
@@ -641,6 +668,7 @@ public class Car : MonoBehaviour
         _rewindAngularVelocities.RemoveAt(0);
 
         _wasRewinding = true;
+        _rewindProtection = true;
     }
 
     private void OnDrawGizmos()
@@ -759,6 +787,13 @@ public class Car : MonoBehaviour
     private void HandleReset()
     {
         if (!_levelManager) return;
+        if (_rewindProtection)
+        {
+            _pendingReset = false;
+            _forceReset = false;
+            stuckTimer = 0f;
+            return;
+        }
 
         bool isFreeRoam = _levelManager.raceMode == RaceMode.FreeRoam;
         
@@ -819,6 +854,8 @@ public class Car : MonoBehaviour
 
     private void ResetToLastCheckpoint()
     {
+        if (rewind || _wasRewinding) return;
+        
         Ray ray = new()
         {
             origin = _levelManager.lastCheckPoint.transform.position + Vector3.up * 10f,
@@ -1016,6 +1053,8 @@ public class Car : MonoBehaviour
 
     public void InvokeReset(bool force)
     {
+        if (rewind || _wasRewinding) return;
+        
         _pendingReset = true;
         _forceReset = force;
     }

@@ -318,6 +318,12 @@ public class CarBot : CarController
     {
         if (!_isActive || !car.engineOn) return;
         if (_stopCar) return;
+
+        if (levelManager.rewind)
+        {
+            _resetTimer = 0f;
+            return;
+        }
         
         if (Time.time - _lastReset < 5f) return;
 

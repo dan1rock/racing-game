@@ -21,7 +21,7 @@ public class AutoReset : MonoBehaviour
         }
         else
         {
-            car.InvokeReset(true);   
+            car.InvokeReset(true);
         }
     }
 

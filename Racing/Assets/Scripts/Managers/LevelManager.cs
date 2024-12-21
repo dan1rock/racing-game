@@ -270,9 +270,7 @@ public class LevelManager : MonoBehaviour
             if (_activeCar >= _cars.Count) _activeCar = 0;
             UpdateTargetCar();
         }
-
-        rewind = _controls.GetKey(ControlKey.Rewind);
-
+        
         if (rewind)
         {
             LockCamera(Time.deltaTime * 10f);
@@ -280,6 +278,11 @@ public class LevelManager : MonoBehaviour
         else
         {
             UnlockCamera();
+
+            if (_controls.GetKeyDown(ControlKey.Rewind))
+            {
+                StartCoroutine(RewindRoutine());
+            }
         }
     }
 
@@ -354,6 +357,52 @@ public class LevelManager : MonoBehaviour
         
         lastCheckPoint.Activate(false);
         lastCheckPoint.GetNext().Activate(true);
+    }
+
+    private IEnumerator RewindRoutine()
+    {
+        rewind = true;
+
+        while (true)
+        {
+            while (Time.timeScale < 1f)
+            {
+                Time.timeScale = Mathf.Clamp01(Time.timeScale + Time.unscaledDeltaTime * 2f);
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(2f);
+
+            while (Time.timeScale > 0f)
+            {
+                Time.timeScale = Mathf.Clamp01(Time.timeScale - Time.unscaledDeltaTime * 2f);
+                yield return null;
+            }
+
+            while (true)
+            {
+                if (_controls.GetKey(ControlKey.Accelerate))
+                {
+                    rewind = false;
+                    break;
+                }
+                
+                if (_controls.GetKey(ControlKey.Rewind))
+                {
+                    break;
+                }
+                
+                yield return null;
+            }
+
+            while (Time.timeScale < 1f)
+            {
+                Time.timeScale = Mathf.Clamp01(Time.timeScale + Time.unscaledDeltaTime * 2f);
+                yield return null;
+            }
+            
+            if (!rewind) break;
+        }
     }
 
     private void UpdateTargetCar()

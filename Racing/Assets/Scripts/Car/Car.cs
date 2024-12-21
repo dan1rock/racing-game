@@ -615,8 +615,8 @@ public class Car : MonoBehaviour
             
             if (_rewindPositions.Count >= 1)
             {
-                transform.position = _rewindPositions[0];
-                transform.rotation = _rewindRotations[0];
+                //transform.position = _rewindPositions[0];
+                //transform.rotation = _rewindRotations[0];
                 _rb.linearVelocity = _rewindVelocities[0];
                 _rb.angularVelocity = _rewindAngularVelocities[0];
             }

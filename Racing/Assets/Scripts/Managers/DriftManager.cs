@@ -204,6 +204,7 @@ public class DriftManager : MonoBehaviour
     {
         if (_finished) return;
         if (_levelManager.wrongDirectionActive) return;
+        if (_levelManager.rewind) return;
         
         angle = Mathf.Abs(angle);
         if (angle < _minAngleRads) return;

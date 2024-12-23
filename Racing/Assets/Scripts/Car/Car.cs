@@ -406,7 +406,8 @@ public class Car : MonoBehaviour
             if (isDriftCar && isRear && (accelInput > 0f || (burnout && speed < 2f))) tireGrip *= 0.6f;
             
             float grip = tireGrip;
-            grip *= Mathf.Clamp(gripSpeedCurve.Evaluate(relativeSpeed) * gripSlipCurve.Evaluate(slipAngle), 0.5f, 1f);
+            float gripSlip = Mathf.Clamp(gripSlipCurve.Evaluate(slipAngle), 0.7f, 1f);
+            grip *= Mathf.Clamp(gripSpeedCurve.Evaluate(relativeSpeed) * gripSlip, 0.5f, 1f);
 
             float surfaceGrip = wheel.surfaceLayer switch
             {
@@ -789,6 +790,10 @@ public class Car : MonoBehaviour
         if (!_levelManager) return;
         if (_rewindProtection)
         {
+            if (_levelManager.resetCar)
+            {
+                _levelManager.ResetCar(false);
+            }
             _pendingReset = false;
             _forceReset = false;
             stuckTimer = 0f;

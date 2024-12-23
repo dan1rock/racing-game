@@ -55,7 +55,7 @@ public class Settings : MonoBehaviour
     {
         AudioListener.volume = masterVolume;
         SetQuality(graphicsPreset);
-        GameManager.Get().SaveGraphicsSettings(this);
+        GameManager.Get()?.SaveGraphicsSettings(this);
     }
 
     public void SetMasterVolume(float value)

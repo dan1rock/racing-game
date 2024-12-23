@@ -48,10 +48,6 @@ public class WheelTrail : MonoBehaviour
             trail.up = outRay.normal;
             trail.position = outRay.point + outRay.normal * groundOffset;
 
-            Vector3 newRotation = trail.eulerAngles;
-            newRotation.y = transform.eulerAngles.y;
-            trail.rotation = Quaternion.Euler(newRotation);
-
             _trailLastNormal = trail.up;
             _trailLastPosition = trail.position;
         }

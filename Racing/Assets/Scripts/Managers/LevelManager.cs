@@ -357,10 +357,13 @@ public class LevelManager : MonoBehaviour
         
         lastCheckPoint.Activate(false);
         lastCheckPoint.GetNext().Activate(true);
+        lastCheckPoint.GetNext().GetNext().Activate(false);
     }
 
     private IEnumerator RewindRoutine()
     {
+        if (_playerFinished) yield break;
+        
         rewind = true;
 
         while (true)

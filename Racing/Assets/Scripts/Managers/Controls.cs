@@ -73,7 +73,7 @@ public class Controls : MonoBehaviour
 
     public static Controls Get()
     {
-        if (!_instance) _instance = FindObjectOfType<Controls>();
+        if (!_instance) _instance = FindFirstObjectByType<Controls>();
         return _instance;
     }
 

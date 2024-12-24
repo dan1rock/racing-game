@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public List<Sprite> mapLayouts;
     [SerializeField] public List<string> mapNames;
     [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private ChallengeManager tutorial;
     
     public GameState gameState;
     public int menuState = 0;
@@ -66,6 +67,8 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         gameState = GameState.Menu;
+        
+        if (challengeData[1023] == 0) tutorial.StartChallenge();
     }
 
     public static GameManager Get()

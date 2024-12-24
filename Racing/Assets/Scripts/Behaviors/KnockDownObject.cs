@@ -20,7 +20,7 @@ public class KnockDownObject : MonoBehaviour
 
     private IEnumerator Init()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
         _basePosition = transform.position;
         _isActive = true;

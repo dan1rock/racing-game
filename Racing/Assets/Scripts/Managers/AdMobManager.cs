@@ -157,6 +157,7 @@ public class AdMobManager : MonoBehaviour
         {
             Debug.Log("Showing interstitial ad.");
 
+            float currentTimeScale = Time.timeScale;
             Time.timeScale = 0f;
             Settings.Get().MuteGame();
             
@@ -164,7 +165,7 @@ public class AdMobManager : MonoBehaviour
             {
                 MainThreadDispatcher.Enqueue(() =>
                 {
-                    Time.timeScale = 1f;
+                    Time.timeScale = currentTimeScale;
                     Settings.Get().RestoreVolume();
                     
                     try

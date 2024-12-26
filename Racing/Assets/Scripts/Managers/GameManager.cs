@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     
     public GameState gameState;
     public int menuState = 0;
+    public bool firstScene = true;
     public Vector2 menuChallengesScrollState = Vector2.zero;
 
     public QualityLevel graphicsQuality;
@@ -102,7 +104,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Stage;
 
         SavePlayer();
-        SceneManager.LoadScene(stageId + 1);
+        LoadScene(stageId + 1);
     }
 
     public void LoadChallenge(ChallengeManager challenge)
@@ -131,7 +133,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(challenge.gameObject);
         
         SavePlayer();
-        SceneManager.LoadScene(stageId + 1);
+        LoadScene(stageId + 1);
     }
 
     public void LoadMenu()
@@ -141,12 +143,33 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Menu;
         SavePlayer();
 
-        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(0));
+        _adMobManager.ShowInterstitialAd(() => LoadScene(0));
     }
 
     public void ReloadStage()
     {
-        _adMobManager.ShowInterstitialAd(() => SceneManager.LoadScene(stageId + 1));
+        _adMobManager.ShowInterstitialAd(() => LoadScene(stageId + 1));
+    }
+
+    private Coroutine _sceneLoadRoutine = null;
+    private void LoadScene(int sceneId)
+    {
+        if (_sceneLoadRoutine != null) return;
+        _sceneLoadRoutine = StartCoroutine(LoadSceneRoutine(sceneId));
+    }
+
+    private IEnumerator LoadSceneRoutine(int sceneId)
+    {
+        FindFirstObjectByType<SceneTransition>().PlayTransitionOut();
+
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        SetCarVolume(1f);
+        Time.timeScale = 1f;
+        firstScene = false;
+        SceneManager.LoadScene(sceneId);
+
+        _sceneLoadRoutine = null;
     }
 
     public void SavePlayer()

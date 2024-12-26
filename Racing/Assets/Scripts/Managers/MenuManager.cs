@@ -61,6 +61,11 @@ public class MenuManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!GameManager.Get().firstScene)
+        {
+            FindFirstObjectByType<SceneTransition>()?.PlayTransitionIn();
+        }
+        
         GameObject car = Instantiate(menuCars[Random.Range(0, menuCars.Count - 1)], carSpawn.position, carSpawn.rotation);
         car.GetComponent<Car>().SetMenuMode();
 

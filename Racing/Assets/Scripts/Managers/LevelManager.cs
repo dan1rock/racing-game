@@ -90,6 +90,8 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        FindFirstObjectByType<SceneTransition>()?.PlayTransitionIn();
+        
         if (GameManager.Get())
         {
             GameManager gameManager = GameManager.Get();

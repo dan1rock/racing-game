@@ -373,6 +373,7 @@ public class LevelManager : MonoBehaviour
             while (Time.timeScale < 1f)
             {
                 Time.timeScale = Mathf.Clamp01(Time.timeScale + Time.unscaledDeltaTime * 2f);
+                GameManager.Get().SetCarVolume(Time.timeScale * 0.3f + 0.7f);
                 yield return null;
             }
 
@@ -381,6 +382,7 @@ public class LevelManager : MonoBehaviour
             while (Time.timeScale > 0f)
             {
                 Time.timeScale = Mathf.Clamp01(Time.timeScale - Time.unscaledDeltaTime * 2f);
+                GameManager.Get().SetCarVolume(Time.timeScale * 0.3f + 0.7f);
                 yield return null;
             }
 
@@ -403,6 +405,7 @@ public class LevelManager : MonoBehaviour
             while (Time.timeScale < 1f)
             {
                 Time.timeScale = Mathf.Clamp01(Time.timeScale + Time.unscaledDeltaTime * 2f);
+                GameManager.Get().SetCarVolume(Time.timeScale * 0.3f + 0.7f);
                 yield return null;
             }
             

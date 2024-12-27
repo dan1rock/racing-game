@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.iOS;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -42,6 +43,9 @@ public class GameManager : MonoBehaviour
 
     public int[] challengeData;
 
+    public float totalPlaytime;
+    public float lastReviewRequest;
+
     public event Action OnStageLoad;
     
     private AdMobManager _adMobManager;
@@ -76,6 +80,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Get()
     {
         return _instance;
+    }
+
+    private void Update()
+    {
+        totalPlaytime += Time.unscaledDeltaTime;
     }
 
     public void LoadStage(MenuManager menuManager)
@@ -204,6 +213,9 @@ public class GameManager : MonoBehaviour
 
             challengeData = playerData.challengeData;
             challengeData ??= new int[1024];
+
+            totalPlaytime = playerData.totalPlaytime;
+            lastReviewRequest = playerData.lastReviewRequest;
             
             if (bots <= 0) bots = 4;
         }
@@ -225,6 +237,16 @@ public class GameManager : MonoBehaviour
         headlightsQuality = settings.headlightsQuality;
         
         SavePlayer();
+    }
+
+    public void RequestStoreReview()
+    {
+#if UNITY_IPHONE
+        if (totalPlaytime - lastReviewRequest < 3600) return;
+        Device.RequestStoreReview();
+        lastReviewRequest = totalPlaytime;
+        SavePlayer();
+#endif
     }
 
     public int CountTotalStars()

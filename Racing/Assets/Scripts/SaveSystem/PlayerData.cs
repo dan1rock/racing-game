@@ -20,6 +20,9 @@ public class PlayerData
 
     public int[] challengeData;
 
+    public float totalPlaytime;
+    public float lastReviewRequest;
+
     public PlayerData(GameManager player)
     {
         menuSelectedQuality = player.graphicsQuality;
@@ -40,5 +43,8 @@ public class PlayerData
         masterVolume = player.masterVolume;
 
         challengeData = player.challengeData;
+
+        totalPlaytime = player.totalPlaytime;
+        lastReviewRequest = player.lastReviewRequest;
     }
 }

@@ -64,6 +64,7 @@ public class MenuManager : MonoBehaviour
         if (!GameManager.Get().firstScene)
         {
             FindFirstObjectByType<SceneTransition>()?.PlayTransitionIn();
+            GameManager.Get().RequestStoreReview();
         }
         
         GameObject car = Instantiate(menuCars[Random.Range(0, menuCars.Count - 1)], carSpawn.position, carSpawn.rotation);
